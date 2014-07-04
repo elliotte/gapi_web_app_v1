@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Elliotte</title>
+	<%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+	<%= csrf_meta_tags %>
+</head>
+<body>
+	<%= yield %>
+	<%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+	<script type="text/javascript">
+		(function() {
+	        var po = document.createElement('script');
+	        po.type = 'text/javascript'; po.async = true;
+	        po.src = 'http://plus.google.com/js/client:plusone.js';
+	        var s = document.getElementsByTagName('script')[0];
+	        s.parentNode.insertBefore(po, s);
+	    })();
+	</script>
+</body>
+</html>
