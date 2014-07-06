@@ -58,14 +58,31 @@ class SigninController < ApplicationController
     end
 
     # Authorize the client and construct a Google+ service.
-    $client.authorization.update_token!(session[:token].to_hash)
+    $client.authorization.access_token = session[:token]
     plus = $client.discovered_api('plus', 'v1')
 
     # Get the list of people as JSON and return it.
     response = $client.execute!(plus.people.list,
         :collection => 'visible',
         :userId => 'me').body
-    render json: response.to_json
+
+    render json: JSON.parse(response).to_json
+  end
+
+  def calendar
+    # Check for stored credentials in the current user's session.
+    if !session[:token]
+      render json: 'User not connected.'.to_json
+    end
+
+    # Authorize the client and construct a Google+ service.
+    $client.authorization.access_token = session[:token]
+    calendar = $client.discovered_api('calendar', 'v3')
+
+    response = $client.execute(:api_method => calendar.events.list,
+                              :parameters => {'calendarId' => 'primary'})
+
+    render json: response.data.to_json
   end
 
   def disconnect

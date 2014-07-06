@@ -91,7 +91,8 @@ return {
         contentType: 'application/octet-stream; charset=utf-8',
         success: function(result) {
           console.log(result);
-          // helper.people();
+          helper.people();
+          helper.calendar();
         },
         processData: false,
         data: this.authResult.code + ',' + this.authResult.id_token + ',' + this.authResult.access_token
@@ -106,7 +107,24 @@ return {
         url: window.location.href + 'signin/people',
         contentType: 'application/octet-stream; charset=utf-8',
         success: function(result) {
+          console.log(result);
           helper.appendCircled(result);
+        },
+        processData: false
+      });
+    },
+    /**
+     * Calls the server endpoint to get the list of events in calendar visible to this app.
+     */
+    calendar: function() {
+      $.ajax({
+        type: 'GET',
+        url: window.location.href + 'signin/calendar',
+        contentType: 'application/octet-stream; charset=utf-8',
+        success: function(result) {
+          console.log(result);
+          $('#calendarEvent').empty();
+          $('#calendarEvent').append('Events: ' + result + '<br/>');
         },
         processData: false
       });
@@ -123,7 +141,7 @@ return {
           people.totalItems + '<br/>');
       for (var personIndex in people.items) {
         person = people.items[personIndex];
-        $('#visiblePeople').append('<img src="' + person.image.url + '">');
+        $('#visiblePeople').append(person.displayName + '<img src="' + person.image.url + '">');
       }
     },
   };

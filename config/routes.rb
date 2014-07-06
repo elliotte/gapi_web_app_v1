@@ -4,6 +4,7 @@ GooglePlay::Application.routes.draw do
   resources :signin, :only => [ :index ] do
     collection do
       get :people
+      get :calendar
       post :connect
       post :disconnect
     end
