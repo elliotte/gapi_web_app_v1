@@ -5,8 +5,12 @@ GooglePlay::Application.routes.draw do
     collection do
       get :people
       get :calendar
+      get :drive
+      get :task_lists
+      get :tasks
       post :connect
       post :disconnect
+      post :save_user
     end
   end
 

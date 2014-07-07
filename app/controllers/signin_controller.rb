@@ -1,4 +1,7 @@
 class SigninController < ApplicationController
+
+  before_filter :verify_token, only: [:people, :calendar, :drive, :task_lists, :tasks]
+
   $authorization = Signet::OAuth2::Client.new(
       :authorization_uri => ENV['AUTH_URI'],
       :token_credential_uri => ENV['TOKEN_URI'],
@@ -52,11 +55,6 @@ class SigninController < ApplicationController
   end
 
   def people
-    # Check for stored credentials in the current user's session.
-    if !session[:token]
-      render json: 'User not connected.'.to_json
-    end
-
     # Authorize the client and construct a Google+ service.
     $client.authorization.access_token = session[:token]
     plus = $client.discovered_api('plus', 'v1')
@@ -70,17 +68,43 @@ class SigninController < ApplicationController
   end
 
   def calendar
-    # Check for stored credentials in the current user's session.
-    if !session[:token]
-      render json: 'User not connected.'.to_json
-    end
-
     # Authorize the client and construct a Google+ service.
     $client.authorization.access_token = session[:token]
     calendar = $client.discovered_api('calendar', 'v3')
 
     response = $client.execute(:api_method => calendar.events.list,
                               :parameters => {'calendarId' => 'primary'})
+
+    render json: response.data.to_json
+  end
+
+  def drive
+    # Authorize the client and construct a Google+ service.
+    $client.authorization.access_token = session[:token]
+    drive = $client.discovered_api('drive', 'v2')
+
+    response = $client.execute(:api_method => drive.files.list)
+
+    render json: response.data.to_json
+  end
+
+  def task_lists
+    # Authorize the client and construct a Google+ service.
+    $client.authorization.access_token = session[:token]
+    tasks = $client.discovered_api('tasks', 'v1')
+
+    response = $client.execute(:api_method => tasks.tasklists.list)
+
+    render json: response.data.to_json
+  end
+
+  def tasks
+    # Authorize the client and construct a Google+ service.
+    $client.authorization.access_token = session[:token]
+    tasks = $client.discovered_api('tasks', 'v1')
+
+    response = $client.execute(:api_method => tasks.tasks.list,
+                              :parameters => {'tasklist' => params[:taskListId]})
 
     render json: response.data.to_json
   end
@@ -105,7 +129,22 @@ class SigninController < ApplicationController
 
       render json: 'User disconnected.'.to_json
     else
-      render json: 'User not connected.'.to_json
+      render json: 'User is not connected.'.to_json
+    end
+  end
+
+  def save_user
+    if User.find_or_create_by_google_id(request.body.read)
+      render json: 'User is saved.'.to_json
+    else
+      render json: 'User is not saved.'.to_json
+    end
+  end
+
+  def verify_token
+    # Check for stored credentials in the current user's session.
+    if !session[:token]
+      render json: 'User is not connected.'.to_json
     end
   end
 end

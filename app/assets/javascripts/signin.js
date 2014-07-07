@@ -36,6 +36,17 @@ return {
     renderProfile: function() {
       var request = gapi.client.plus.people.get( {'userId' : 'me'} );
       request.execute( function(profile) {
+          $.ajax({
+            type: 'POST',
+            url: window.location.href + 'signin/save_user',
+            contentType: 'application/octet-stream; charset=utf-8',
+            success: function(result) {
+              console.log(result);
+            },
+            processData: false,
+            data: profile.id
+          });
+
           $('#profile').empty();
           if (profile.error) {
             $('#profile').append(profile.error);
@@ -93,6 +104,8 @@ return {
           console.log(result);
           helper.people();
           helper.calendar();
+          helper.drive();
+          helper.task_lists();
         },
         processData: false,
         data: this.authResult.code + ',' + this.authResult.id_token + ',' + this.authResult.access_token
@@ -123,8 +136,52 @@ return {
         contentType: 'application/octet-stream; charset=utf-8',
         success: function(result) {
           console.log(result);
-          $('#calendarEvent').empty();
-          $('#calendarEvent').append('Events: ' + result + '<br/>');
+          helper.appendCalendar(result);
+        },
+        processData: false
+      });
+    },
+    /**
+     * Calls the server endpoint to get the list of files in google drive visible to this app.
+     */
+    drive: function() {
+      $.ajax({
+        type: 'GET',
+        url: window.location.href + 'signin/drive',
+        contentType: 'application/octet-stream; charset=utf-8',
+        success: function(result) {
+          console.log(result);
+          helper.appendDrive(result);
+        },
+        processData: false
+      });
+    },
+    /**
+     * Calls the server endpoint to get the task lists of tasks in google visible to this app.
+     */
+    task_lists: function() {
+      $.ajax({
+        type: 'GET',
+        url: window.location.href + 'signin/task_lists',
+        contentType: 'application/octet-stream; charset=utf-8',
+        success: function(result) {
+          console.log(result);
+          helper.appendTaskLists(result);
+        },
+        processData: false
+      });
+    },
+    /**
+     * Calls the server endpoint to get the list of tasks in google visible to this app.
+     */
+    tasks: function(taskListId) {
+      $.ajax({
+        type: 'GET',
+        url: window.location.href + 'signin/tasks?taskListId=' + taskListId,
+        contentType: 'application/octet-stream; charset=utf-8',
+        success: function(result) {
+          console.log(result);
+          helper.appendTasks(result);
         },
         processData: false
       });
@@ -141,7 +198,51 @@ return {
           people.totalItems + '<br/>');
       for (var personIndex in people.items) {
         person = people.items[personIndex];
-        $('#visiblePeople').append(person.displayName + '<img src="' + person.image.url + '">');
+        $('#visiblePeople').append(person.displayName + '<img src="' + person.image.url + '">' + '<br/>');
+      }
+    },
+    /**
+     * Displays available Event retrieved from server.
+     */
+    appendCalendar: function(events) {
+      $('#calendarEvent').empty();
+      $('#calendarEvent').append('Number of Events available to this app: ' + events.items.length + '<br/>');
+      for (var eventIndex in events.items) {
+        event = events.items[eventIndex];
+        $('#calendarEvent').append('Created At: ' + event.created + ', Summary: ' + event.summary + '<br/>');
+      }
+    },
+    /**
+     * Displays available Event retrieved from server.
+     */
+    appendDrive: function(drive) {
+      $('#driveFiles').empty();
+      $('#driveFiles').append('Number of drive files available to this app: ' + drive.items.length + '<br/>');
+      for (var itemIndex in drive.items) {
+        item = drive.items[itemIndex];
+        $('#driveFiles').append('Created Date: ' + item.createdDate + ', Title: ' + item.title + '<br/>');
+      }
+    },
+    /**
+     * Displays available Task Lists retrieved from server.
+     */
+    appendTaskLists: function(taskLists) {
+      $('#taskLists').empty();
+      $('#taskLists').append('Number of task lists available to this app: ' + taskLists.items.length + '<br/>');
+      for (var taskListIndex in taskLists.items) {
+        taskList = taskLists.items[taskListIndex];
+        $('#taskLists').append('Title: ' + taskList.title + '<br/>');
+        helper.tasks(taskList.id);
+      }
+    },
+    /**
+     * Displays available Tasks in Task List retrieved from server.
+     */
+    appendTasks: function(tasks) {
+      $('#taskLists').append('Number of tasks available in task list: ' + tasks.items.length + '<br/>');
+      for (var taskIndex in tasks.items) {
+        task = tasks.items[taskIndex];
+        $('#taskLists').append('- Title: ' + task.title + ', Notes: ' + task.notes + '<br/>');
       }
     },
   };
