@@ -180,12 +180,12 @@
 
           
           <div class="method-source-code" id="calendar-source">
-            <pre><span class="ruby-comment"># File app/controllers/signin_controller.rb, line 70</span>
+            <pre><span class="ruby-comment"># File app/controllers/signin_controller.rb, line 60</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">calendar</span>
-  <span class="ruby-comment"># Authorize the client and construct a Google+ service.</span>
-  <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">authorization</span>.<span class="ruby-identifier">access_token</span> = <span class="ruby-identifier">session</span>[<span class="ruby-value">:token</span>]
+  <span class="ruby-comment"># Authorizing the client and constructing a Google+ service.</span>
   <span class="ruby-identifier">calendar</span> = <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">discovered_api</span>(<span class="ruby-string">&#39;calendar&#39;</span>, <span class="ruby-string">&#39;v3&#39;</span>)
 
+  <span class="ruby-comment"># Get the list of calendar events.</span>
   <span class="ruby-identifier">response</span> = <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-value">:api_method</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">calendar</span>.<span class="ruby-identifier">events</span>.<span class="ruby-identifier">list</span>,
                             <span class="ruby-value">:parameters</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-string">&#39;calendarId&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;primary&#39;</span>})
 
@@ -222,29 +222,20 @@
           <div class="method-source-code" id="connect-source">
             <pre><span class="ruby-comment"># File app/controllers/signin_controller.rb, line 23</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">connect</span>
-  <span class="ruby-comment"># Get the token from the session if available or exchange the authorization</span>
-  <span class="ruby-comment"># code for a token.</span>
   <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">session</span>[<span class="ruby-value">:token</span>]
-    <span class="ruby-comment"># Make sure that the state we set on the client matches the state sent</span>
-    <span class="ruby-comment"># in the request to protect against request forgery.</span>
     <span class="ruby-keyword">if</span> <span class="ruby-identifier">session</span>[<span class="ruby-value">:state</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:state</span>]
-      <span class="ruby-comment"># Upgrade the code into a token object.</span>
       <span class="ruby-identifier">responseData</span> = <span class="ruby-identifier">request</span>.<span class="ruby-identifier">body</span>.<span class="ruby-identifier">read</span>
 
       <span class="ruby-identifier">$authorization</span>.<span class="ruby-identifier">code</span> = <span class="ruby-identifier">responseData</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;,&#39;</span>)[<span class="ruby-value">0</span>]
       <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">authorization</span> = <span class="ruby-identifier">$authorization</span>
       <span class="ruby-identifier">id_token</span> = <span class="ruby-identifier">responseData</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;,&#39;</span>)[<span class="ruby-value">1</span>]
       <span class="ruby-identifier">encoded_json_body</span> = <span class="ruby-identifier">id_token</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;.&#39;</span>)[<span class="ruby-value">1</span>]
-      <span class="ruby-comment"># Base64 must be a multiple of 4 characters long, trailing with &#39;=&#39;</span>
+      
       <span class="ruby-identifier">encoded_json_body</span> <span class="ruby-operator">+=</span> ([<span class="ruby-string">&#39;=&#39;</span>] <span class="ruby-operator">*</span> (<span class="ruby-identifier">encoded_json_body</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">%</span> <span class="ruby-value">4</span>)).<span class="ruby-identifier">join</span>(<span class="ruby-string">&#39;&#39;</span>)
       <span class="ruby-identifier">json_body</span> = <span class="ruby-constant">Base64</span>.<span class="ruby-identifier">decode64</span>(<span class="ruby-identifier">encoded_json_body</span>)
       <span class="ruby-identifier">body</span> = <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">json_body</span>)
-      <span class="ruby-comment"># You can read the Google user ID in the ID token.</span>
-      <span class="ruby-comment"># &quot;sub&quot; represents the ID token subscriber which in our case</span>
-      <span class="ruby-comment"># is the user ID. This sample does not use the user ID.</span>
       <span class="ruby-identifier">gplus_id</span> = <span class="ruby-identifier">body</span>[<span class="ruby-string">&#39;sub&#39;</span>]
 
-      <span class="ruby-comment"># Serialize and store the token in the user&#39;s session.</span>
       <span class="ruby-identifier">session</span>[<span class="ruby-value">:token</span>] = <span class="ruby-identifier">responseData</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;,&#39;</span>)[<span class="ruby-value">2</span>]
     <span class="ruby-keyword">else</span>
       <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;The client state does not match the server state.&#39;</span>.<span class="ruby-identifier">to_json</span>
@@ -283,29 +274,22 @@
 
           
           <div class="method-source-code" id="disconnect-source">
-            <pre><span class="ruby-comment"># File app/controllers/signin_controller.rb, line 112</span>
+            <pre><span class="ruby-comment"># File app/controllers/signin_controller.rb, line 102</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">disconnect</span>
-  <span class="ruby-comment"># halt 401, &#39;No stored credentials&#39; unless session[:token]</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">session</span>[<span class="ruby-value">:token</span>]
-    <span class="ruby-comment"># Use either the refresh or access token to revoke if present.</span>
-    <span class="ruby-identifier">token</span> = <span class="ruby-identifier">session</span>[<span class="ruby-value">:token</span>]
+  <span class="ruby-comment"># Using either the refresh or access token to revoke if present.</span>
+  <span class="ruby-identifier">token</span> = <span class="ruby-identifier">session</span>[<span class="ruby-value">:token</span>]
 
-    <span class="ruby-comment"># You could reset the state at this point, but as-is it will still stay unique</span>
-    <span class="ruby-comment"># to this user and we&#39;re avoiding resetting the client state.</span>
-    <span class="ruby-comment"># session.delete(:state)</span>
-    <span class="ruby-identifier">session</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-value">:token</span>)
+  <span class="ruby-comment"># Destroy session token</span>
+  <span class="ruby-identifier">session</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-value">:token</span>)
 
-    <span class="ruby-comment"># Send the revocation request and return the result.</span>
-    <span class="ruby-identifier">revokePath</span> = <span class="ruby-string">&#39;https://accounts.google.com/o/oauth2/revoke?token=&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">token</span>
-    <span class="ruby-identifier">uri</span> = <span class="ruby-constant">URI</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">revokePath</span>)
-    <span class="ruby-identifier">request</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">host</span>, <span class="ruby-identifier">uri</span>.<span class="ruby-identifier">port</span>)
-    <span class="ruby-identifier">request</span>.<span class="ruby-identifier">use_ssl</span> = <span class="ruby-keyword">true</span>
-    <span class="ruby-identifier">request</span>.<span class="ruby-identifier">get</span>(<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">request_uri</span>).<span class="ruby-identifier">code</span>
+  <span class="ruby-comment"># Sending the revocation request and returning the result.</span>
+  <span class="ruby-identifier">revokePath</span> = <span class="ruby-string">&#39;https://accounts.google.com/o/oauth2/revoke?token=&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">token</span>
+  <span class="ruby-identifier">uri</span> = <span class="ruby-constant">URI</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">revokePath</span>)
+  <span class="ruby-identifier">request</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">host</span>, <span class="ruby-identifier">uri</span>.<span class="ruby-identifier">port</span>)
+  <span class="ruby-identifier">request</span>.<span class="ruby-identifier">use_ssl</span> = <span class="ruby-keyword">true</span>
+  <span class="ruby-identifier">request</span>.<span class="ruby-identifier">get</span>(<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">request_uri</span>).<span class="ruby-identifier">code</span>
 
-    <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;User disconnected.&#39;</span>.<span class="ruby-identifier">to_json</span>
-  <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;User is not connected.&#39;</span>.<span class="ruby-identifier">to_json</span>
-  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;User disconnected.&#39;</span>.<span class="ruby-identifier">to_json</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- disconnect-source -->
           
@@ -336,12 +320,12 @@
 
           
           <div class="method-source-code" id="drive-source">
-            <pre><span class="ruby-comment"># File app/controllers/signin_controller.rb, line 81</span>
+            <pre><span class="ruby-comment"># File app/controllers/signin_controller.rb, line 71</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">drive</span>
-  <span class="ruby-comment"># Authorize the client and construct a Google+ service.</span>
-  <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">authorization</span>.<span class="ruby-identifier">access_token</span> = <span class="ruby-identifier">session</span>[<span class="ruby-value">:token</span>]
+  <span class="ruby-comment"># Authorizing the client and constructing a Google+ service.</span>
   <span class="ruby-identifier">drive</span> = <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">discovered_api</span>(<span class="ruby-string">&#39;drive&#39;</span>, <span class="ruby-string">&#39;v2&#39;</span>)
 
+  <span class="ruby-comment"># Get the list of files in drive</span>
   <span class="ruby-identifier">response</span> = <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-value">:api_method</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">drive</span>.<span class="ruby-identifier">files</span>.<span class="ruby-identifier">list</span>)
 
   <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-identifier">response</span>.<span class="ruby-identifier">data</span>.<span class="ruby-identifier">to_json</span>
@@ -413,13 +397,12 @@
 
           
           <div class="method-source-code" id="people-source">
-            <pre><span class="ruby-comment"># File app/controllers/signin_controller.rb, line 57</span>
+            <pre><span class="ruby-comment"># File app/controllers/signin_controller.rb, line 48</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">people</span>
-  <span class="ruby-comment"># Authorize the client and construct a Google+ service.</span>
-  <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">authorization</span>.<span class="ruby-identifier">access_token</span> = <span class="ruby-identifier">session</span>[<span class="ruby-value">:token</span>]
+  <span class="ruby-comment"># Authorizing the client and constructing a Google+ service.</span>
   <span class="ruby-identifier">plus</span> = <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">discovered_api</span>(<span class="ruby-string">&#39;plus&#39;</span>, <span class="ruby-string">&#39;v1&#39;</span>)
 
-  <span class="ruby-comment"># Get the list of people as JSON and return it.</span>
+  <span class="ruby-comment"># Get the list of people as JSON.</span>
   <span class="ruby-identifier">response</span> = <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">execute!</span>(<span class="ruby-identifier">plus</span>.<span class="ruby-identifier">people</span>.<span class="ruby-identifier">list</span>,
       <span class="ruby-value">:collection</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;visible&#39;</span>,
       <span class="ruby-value">:userId</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;me&#39;</span>).<span class="ruby-identifier">body</span>
@@ -455,9 +438,10 @@
 
           
           <div class="method-source-code" id="save_user-source">
-            <pre><span class="ruby-comment"># File app/controllers/signin_controller.rb, line 136</span>
+            <pre><span class="ruby-comment"># File app/controllers/signin_controller.rb, line 119</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">save_user</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-constant">User</span>.<span class="ruby-identifier">find_or_create_by_google_id</span>(<span class="ruby-identifier">request</span>.<span class="ruby-identifier">body</span>.<span class="ruby-identifier">read</span>)
+  <span class="ruby-comment"># Save or find User</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-constant">User</span>.<span class="ruby-identifier">find_or_create_by</span>(<span class="ruby-identifier">google_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">body</span>.<span class="ruby-identifier">read</span>)
     <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;User is saved.&#39;</span>.<span class="ruby-identifier">to_json</span>
   <span class="ruby-keyword">else</span>
     <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;User is not saved.&#39;</span>.<span class="ruby-identifier">to_json</span>
@@ -492,12 +476,12 @@
 
           
           <div class="method-source-code" id="task_lists-source">
-            <pre><span class="ruby-comment"># File app/controllers/signin_controller.rb, line 91</span>
+            <pre><span class="ruby-comment"># File app/controllers/signin_controller.rb, line 81</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">task_lists</span>
-  <span class="ruby-comment"># Authorize the client and construct a Google+ service.</span>
-  <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">authorization</span>.<span class="ruby-identifier">access_token</span> = <span class="ruby-identifier">session</span>[<span class="ruby-value">:token</span>]
+  <span class="ruby-comment"># Authorizing the client and constructing a Google+ service.</span>
   <span class="ruby-identifier">tasks</span> = <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">discovered_api</span>(<span class="ruby-string">&#39;tasks&#39;</span>, <span class="ruby-string">&#39;v1&#39;</span>)
 
+  <span class="ruby-comment"># Get the task lists.</span>
   <span class="ruby-identifier">response</span> = <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-value">:api_method</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">tasklists</span>.<span class="ruby-identifier">list</span>)
 
   <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-identifier">response</span>.<span class="ruby-identifier">data</span>.<span class="ruby-identifier">to_json</span>
@@ -531,12 +515,12 @@
 
           
           <div class="method-source-code" id="tasks-source">
-            <pre><span class="ruby-comment"># File app/controllers/signin_controller.rb, line 101</span>
+            <pre><span class="ruby-comment"># File app/controllers/signin_controller.rb, line 91</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">tasks</span>
-  <span class="ruby-comment"># Authorize the client and construct a Google+ service.</span>
-  <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">authorization</span>.<span class="ruby-identifier">access_token</span> = <span class="ruby-identifier">session</span>[<span class="ruby-value">:token</span>]
+  <span class="ruby-comment"># Authorizing the client and constructing a Google+ service.</span>
   <span class="ruby-identifier">tasks</span> = <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">discovered_api</span>(<span class="ruby-string">&#39;tasks&#39;</span>, <span class="ruby-string">&#39;v1&#39;</span>)
 
+  <span class="ruby-comment"># Get the list of tasks in task list.</span>
   <span class="ruby-identifier">response</span> = <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-value">:api_method</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">list</span>,
                             <span class="ruby-value">:parameters</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-string">&#39;tasklist&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:taskListId</span>]})
 
@@ -571,11 +555,13 @@
 
           
           <div class="method-source-code" id="verify_token-source">
-            <pre><span class="ruby-comment"># File app/controllers/signin_controller.rb, line 144</span>
+            <pre><span class="ruby-comment"># File app/controllers/signin_controller.rb, line 128</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">verify_token</span>
   <span class="ruby-comment"># Check for stored credentials in the current user&#39;s session.</span>
   <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">session</span>[<span class="ruby-value">:token</span>]
     <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;User is not connected.&#39;</span>.<span class="ruby-identifier">to_json</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">authorization</span>.<span class="ruby-identifier">access_token</span> = <span class="ruby-identifier">session</span>[<span class="ruby-value">:token</span>]
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- verify_token-source -->
