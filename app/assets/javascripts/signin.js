@@ -1,3 +1,11 @@
+(function() {
+  var po = document.createElement('script');
+  po.type = 'text/javascript'; po.async = true;
+  po.src = 'http://plus.google.com/js/client:plusone.js';
+  var s = document.getElementsByTagName('script')[0];
+  s.parentNode.insertBefore(po, s);
+})();
+
 var helper = (function() {
 var authResult = undefined;
 
@@ -5,26 +13,17 @@ return {
   /**
   * Hides the sign-in button and connects the server-side app after
   * the user successfully signs in.
-  *
-  * @param {Object} authResult An Object which contains the access token and
-  *   other authentication information.
   */
     onSignInCallback: function(authResult) {
-      $('#authResult').html('Auth Result:<br/>');
-      for (var field in authResult) {
-        $('#authResult').append(' ' + field + ': ' + authResult[field] + '<br/>');
-      }
       if (authResult['access_token']) {
         // The user is signed in
         this.authResult = authResult;
         helper.connectServer();
-        // After we load the Google+ API, render the profile data from Google+.
+        // After loading the Google+ API, render the profile data from Google+.
         gapi.client.load('plus','v1',this.renderProfile);
       } else if (authResult['error']) {
-        // There was an error, which means the user is not signed in.
-        // As an example, you can troubleshoot by writing to the console:
+        // The user is not signed in.
         console.log('There was an error: ' + authResult['error']);
-        $('#authResult').append('Logged out');
         $('#authOps').hide('slow');
         $('#gConnect').show();
       }
@@ -38,7 +37,7 @@ return {
       request.execute( function(profile) {
           $.ajax({
             type: 'POST',
-            url: window.location.href + 'signin/save_user',
+            url: '/signin/save_user',
             contentType: 'application/octet-stream; charset=utf-8',
             success: function(result) {
               console.log(result);
@@ -55,8 +54,7 @@ return {
           $('#profile').append(
               $('<p><img src=\"' + profile.image.url + '\"></p>'));
           $('#profile').append(
-              $('<p>Hello ' + profile.displayName + '!<br />Tagline: ' +
-              profile.tagline + '<br />About: ' + profile.aboutMe + '</p>'));
+              $('<p>Hello ' + profile.displayName + '!</p>'));
           if (profile.cover && profile.coverPhoto) {
             $('#profile').append(
                 $('<p><img src=\"' + profile.cover.coverPhoto.url + '\"></p>'));
@@ -72,14 +70,13 @@ return {
       // Revoke the server tokens
       $.ajax({
         type: 'POST',
-        url: window.location.href + 'signin/disconnect',
+        url: '/signin/disconnect',
         async: false,
         success: function(result) {
           console.log('revoke response: ' + result);
           $('#authOps').hide();
           $('#profile').empty();
           $('#visiblePeople').empty();
-          $('#authResult').empty();
           $('#gConnect').show();
         },
         error: function(e) {
@@ -88,17 +85,13 @@ return {
       });
     },
     /**
-     * Calls the server endpoint to connect the app for the user. The client
-     * sends the one-time authorization code to the server and the server
-     * exchanges the code for its own tokens to use for offline API access.
-     * For more information, see:
-     *   https://developers.google.com/+/web/signin/server-side-flow
+     * Calls the server endpoint to connect the app for the user.
      */
     connectServer: function() {
       console.log(this.authResult.code);
       $.ajax({
         type: 'POST',
-        url: window.location.href + 'signin/connect?state=' + $("#state").text(),
+        url: '/signin/connect?state=' + $("#state").text(),
         contentType: 'application/octet-stream; charset=utf-8',
         success: function(result) {
           console.log(result);
@@ -112,12 +105,12 @@ return {
       });
     },
     /**
-     * Calls the server endpoint to get the list of people visible to this app.
+     * Calls the server endpoint to get the list of people in user's circle.
      */
     people: function() {
       $.ajax({
         type: 'GET',
-        url: window.location.href + 'signin/people',
+        url: '/signin/people',
         contentType: 'application/octet-stream; charset=utf-8',
         success: function(result) {
           console.log(result);
@@ -127,12 +120,12 @@ return {
       });
     },
     /**
-     * Calls the server endpoint to get the list of events in calendar visible to this app.
+     * Calls the server endpoint to get the list of events in calendar.
      */
     calendar: function() {
       $.ajax({
         type: 'GET',
-        url: window.location.href + 'signin/calendar',
+        url: '/signin/calendar',
         contentType: 'application/octet-stream; charset=utf-8',
         success: function(result) {
           console.log(result);
@@ -142,12 +135,12 @@ return {
       });
     },
     /**
-     * Calls the server endpoint to get the list of files in google drive visible to this app.
+     * Calls the server endpoint to get the list of files in google drive.
      */
     drive: function() {
       $.ajax({
         type: 'GET',
-        url: window.location.href + 'signin/drive',
+        url: '/signin/drive',
         contentType: 'application/octet-stream; charset=utf-8',
         success: function(result) {
           console.log(result);
@@ -157,12 +150,12 @@ return {
       });
     },
     /**
-     * Calls the server endpoint to get the task lists of tasks in google visible to this app.
+     * Calls the server endpoint to get the task lists.
      */
     task_lists: function() {
       $.ajax({
         type: 'GET',
-        url: window.location.href + 'signin/task_lists',
+        url: '/signin/task_lists',
         contentType: 'application/octet-stream; charset=utf-8',
         success: function(result) {
           console.log(result);
@@ -172,12 +165,12 @@ return {
       });
     },
     /**
-     * Calls the server endpoint to get the list of tasks in google visible to this app.
+     * Calls the server endpoint to get the list of tasks.
      */
     tasks: function(taskListId) {
       $.ajax({
         type: 'GET',
-        url: window.location.href + 'signin/tasks?taskListId=' + taskListId,
+        url: '/signin/tasks?taskListId=' + taskListId,
         contentType: 'application/octet-stream; charset=utf-8',
         success: function(result) {
           console.log(result);
@@ -188,39 +181,37 @@ return {
     },
     /**
      * Displays visible People retrieved from server.
-     *
-     * @param {Object} people A list of Google+ Person resources.
      */
     appendCircled: function(people) {
       $('#visiblePeople').empty();
 
-      $('#visiblePeople').append('Number of people visible to this app: ' +
+      $('#visiblePeople').append('Number of Friends: ' +
           people.totalItems + '<br/>');
       for (var personIndex in people.items) {
         person = people.items[personIndex];
-        $('#visiblePeople').append(person.displayName + '<img src="' + person.image.url + '">' + '<br/>');
+        $('#visiblePeople').append('<a href="' + person.url + '" target="_blank">' + '<img src="' + person.image.url + '">' + person.displayName  + '</a><br/>');
       }
     },
     /**
-     * Displays available Event retrieved from server.
+     * Displays available Calendar Event retrieved from server.
      */
     appendCalendar: function(events) {
       $('#calendarEvent').empty();
-      $('#calendarEvent').append('Number of Events available to this app: ' + events.items.length + '<br/>');
+      $('#calendarEvent').append('Number of Events: ' + events.items.length + '<br/>');
       for (var eventIndex in events.items) {
         event = events.items[eventIndex];
-        $('#calendarEvent').append('Created At: ' + event.created + ', Summary: ' + event.summary + '<br/>');
+        $('#calendarEvent').append('Created At: ' + event.created.substring(0, 10) + ', Summary: <a href="' + event.htmlLink + '" target="_blank"> ' + event.summary + '</a><br/>');
       }
     },
     /**
-     * Displays available Event retrieved from server.
+     * Displays available files in drive retrieved from server.
      */
     appendDrive: function(drive) {
       $('#driveFiles').empty();
-      $('#driveFiles').append('Number of drive files available to this app: ' + drive.items.length + '<br/>');
+      $('#driveFiles').append('Number of files in drive: ' + drive.items.length + '<br/>');
       for (var itemIndex in drive.items) {
         item = drive.items[itemIndex];
-        $('#driveFiles').append('Created Date: ' + item.createdDate + ', Title: ' + item.title + '<br/>');
+        $('#driveFiles').append('Created Date: ' + item.createdDate.substring(0, 10) + ', Title: <a href="' + item.alternateLink + '" target="_blank"> ' + item.title + '</a><br/>');
       }
     },
     /**
@@ -228,7 +219,7 @@ return {
      */
     appendTaskLists: function(taskLists) {
       $('#taskLists').empty();
-      $('#taskLists').append('Number of task lists available to this app: ' + taskLists.items.length + '<br/>');
+      $('#taskLists').append('Number of task lists: ' + taskLists.items.length + '<br/>');
       for (var taskListIndex in taskLists.items) {
         taskList = taskLists.items[taskListIndex];
         $('#taskLists').append('Title: ' + taskList.title + '<br/>');
@@ -239,10 +230,16 @@ return {
      * Displays available Tasks in Task List retrieved from server.
      */
     appendTasks: function(tasks) {
-      $('#taskLists').append('Number of tasks available in task list: ' + tasks.items.length + '<br/>');
+      $('#taskLists').append('Number of tasks in task list: ' + tasks.items.length + '<br/>');
       for (var taskIndex in tasks.items) {
         task = tasks.items[taskIndex];
-        $('#taskLists').append('- Title: ' + task.title + ', Notes: ' + task.notes + '<br/>');
+        $('#taskLists').append('- Title: ' + task.title + ', Notes: ' + task.notes + ', Due Date: ' + task.due.substring(0, 10));
+        if (task.status == "completed") {
+          $('#taskLists').append(", Status: completed, Completed at: " + task.completed.substring(0,10));
+        } else {
+          $('#taskLists').append(", Status: pending");
+        }
+        $('#taskLists').append('</br>');
       }
     },
   };

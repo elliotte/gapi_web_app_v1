@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+
+<title>class SigninController - Rails Application Documentation</title>
+
+<link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="./index.html">Home</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>app/controllers/signin_controller.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link"><a href="ApplicationController.html">ApplicationController</a>
+  
+</nav>
+
+    
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li ><a href="#method-i-calendar">#calendar</a>
+    
+    <li ><a href="#method-i-connect">#connect</a>
+    
+    <li ><a href="#method-i-disconnect">#disconnect</a>
+    
+    <li ><a href="#method-i-drive">#drive</a>
+    
+    <li ><a href="#method-i-index">#index</a>
+    
+    <li ><a href="#method-i-people">#people</a>
+    
+    <li ><a href="#method-i-save_user">#save_user</a>
+    
+    <li ><a href="#method-i-task_lists">#task_lists</a>
+    
+    <li ><a href="#method-i-tasks">#tasks</a>
+    
+    <li ><a href="#method-i-verify_token">#verify_token</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="./README_rdoc.html">README</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./ApplicationController.html">ApplicationController</a>
+  
+    <li><a href="./ApplicationHelper.html">ApplicationHelper</a>
+  
+    <li><a href="./SigninController.html">SigninController</a>
+  
+    <li><a href="./SigninController/Google.html">SigninController::Google</a>
+  
+    <li><a href="./SigninController/Signet.html">SigninController::Signet</a>
+  
+    <li><a href="./SigninController/Signet/OAuth2.html">SigninController::Signet::OAuth2</a>
+  
+    <li><a href="./TokenPair.html">TokenPair</a>
+  
+    <li><a href="./User.html">User</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class SigninController</h1>
+
+  <div id="description" class="description">
+    
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-calendar" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">calendar</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="calendar-source">
+            <pre><span class="ruby-comment"># File app/controllers/signin_controller.rb, line 70</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">calendar</span>
+  <span class="ruby-comment"># Authorize the client and construct a Google+ service.</span>
+  <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">authorization</span>.<span class="ruby-identifier">access_token</span> = <span class="ruby-identifier">session</span>[<span class="ruby-value">:token</span>]
+  <span class="ruby-identifier">calendar</span> = <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">discovered_api</span>(<span class="ruby-string">&#39;calendar&#39;</span>, <span class="ruby-string">&#39;v3&#39;</span>)
+
+  <span class="ruby-identifier">response</span> = <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-value">:api_method</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">calendar</span>.<span class="ruby-identifier">events</span>.<span class="ruby-identifier">list</span>,
+                            <span class="ruby-value">:parameters</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-string">&#39;calendarId&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;primary&#39;</span>})
+
+  <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-identifier">response</span>.<span class="ruby-identifier">data</span>.<span class="ruby-identifier">to_json</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- calendar-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- calendar-method -->
+
+    
+      <div id="method-i-connect" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">connect</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="connect-source">
+            <pre><span class="ruby-comment"># File app/controllers/signin_controller.rb, line 23</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">connect</span>
+  <span class="ruby-comment"># Get the token from the session if available or exchange the authorization</span>
+  <span class="ruby-comment"># code for a token.</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">session</span>[<span class="ruby-value">:token</span>]
+    <span class="ruby-comment"># Make sure that the state we set on the client matches the state sent</span>
+    <span class="ruby-comment"># in the request to protect against request forgery.</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">session</span>[<span class="ruby-value">:state</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:state</span>]
+      <span class="ruby-comment"># Upgrade the code into a token object.</span>
+      <span class="ruby-identifier">responseData</span> = <span class="ruby-identifier">request</span>.<span class="ruby-identifier">body</span>.<span class="ruby-identifier">read</span>
+
+      <span class="ruby-identifier">$authorization</span>.<span class="ruby-identifier">code</span> = <span class="ruby-identifier">responseData</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;,&#39;</span>)[<span class="ruby-value">0</span>]
+      <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">authorization</span> = <span class="ruby-identifier">$authorization</span>
+      <span class="ruby-identifier">id_token</span> = <span class="ruby-identifier">responseData</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;,&#39;</span>)[<span class="ruby-value">1</span>]
+      <span class="ruby-identifier">encoded_json_body</span> = <span class="ruby-identifier">id_token</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;.&#39;</span>)[<span class="ruby-value">1</span>]
+      <span class="ruby-comment"># Base64 must be a multiple of 4 characters long, trailing with &#39;=&#39;</span>
+      <span class="ruby-identifier">encoded_json_body</span> <span class="ruby-operator">+=</span> ([<span class="ruby-string">&#39;=&#39;</span>] <span class="ruby-operator">*</span> (<span class="ruby-identifier">encoded_json_body</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">%</span> <span class="ruby-value">4</span>)).<span class="ruby-identifier">join</span>(<span class="ruby-string">&#39;&#39;</span>)
+      <span class="ruby-identifier">json_body</span> = <span class="ruby-constant">Base64</span>.<span class="ruby-identifier">decode64</span>(<span class="ruby-identifier">encoded_json_body</span>)
+      <span class="ruby-identifier">body</span> = <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">json_body</span>)
+      <span class="ruby-comment"># You can read the Google user ID in the ID token.</span>
+      <span class="ruby-comment"># &quot;sub&quot; represents the ID token subscriber which in our case</span>
+      <span class="ruby-comment"># is the user ID. This sample does not use the user ID.</span>
+      <span class="ruby-identifier">gplus_id</span> = <span class="ruby-identifier">body</span>[<span class="ruby-string">&#39;sub&#39;</span>]
+
+      <span class="ruby-comment"># Serialize and store the token in the user&#39;s session.</span>
+      <span class="ruby-identifier">session</span>[<span class="ruby-value">:token</span>] = <span class="ruby-identifier">responseData</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;,&#39;</span>)[<span class="ruby-value">2</span>]
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;The client state does not match the server state.&#39;</span>.<span class="ruby-identifier">to_json</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;Connected&quot;</span>.<span class="ruby-identifier">to_json</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;Current user is already connected.&#39;</span>.<span class="ruby-identifier">to_json</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- connect-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- connect-method -->
+
+    
+      <div id="method-i-disconnect" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">disconnect</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="disconnect-source">
+            <pre><span class="ruby-comment"># File app/controllers/signin_controller.rb, line 112</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">disconnect</span>
+  <span class="ruby-comment"># halt 401, &#39;No stored credentials&#39; unless session[:token]</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">session</span>[<span class="ruby-value">:token</span>]
+    <span class="ruby-comment"># Use either the refresh or access token to revoke if present.</span>
+    <span class="ruby-identifier">token</span> = <span class="ruby-identifier">session</span>[<span class="ruby-value">:token</span>]
+
+    <span class="ruby-comment"># You could reset the state at this point, but as-is it will still stay unique</span>
+    <span class="ruby-comment"># to this user and we&#39;re avoiding resetting the client state.</span>
+    <span class="ruby-comment"># session.delete(:state)</span>
+    <span class="ruby-identifier">session</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-value">:token</span>)
+
+    <span class="ruby-comment"># Send the revocation request and return the result.</span>
+    <span class="ruby-identifier">revokePath</span> = <span class="ruby-string">&#39;https://accounts.google.com/o/oauth2/revoke?token=&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">token</span>
+    <span class="ruby-identifier">uri</span> = <span class="ruby-constant">URI</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">revokePath</span>)
+    <span class="ruby-identifier">request</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">host</span>, <span class="ruby-identifier">uri</span>.<span class="ruby-identifier">port</span>)
+    <span class="ruby-identifier">request</span>.<span class="ruby-identifier">use_ssl</span> = <span class="ruby-keyword">true</span>
+    <span class="ruby-identifier">request</span>.<span class="ruby-identifier">get</span>(<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">request_uri</span>).<span class="ruby-identifier">code</span>
+
+    <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;User disconnected.&#39;</span>.<span class="ruby-identifier">to_json</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;User is not connected.&#39;</span>.<span class="ruby-identifier">to_json</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- disconnect-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- disconnect-method -->
+
+    
+      <div id="method-i-drive" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">drive</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="drive-source">
+            <pre><span class="ruby-comment"># File app/controllers/signin_controller.rb, line 81</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">drive</span>
+  <span class="ruby-comment"># Authorize the client and construct a Google+ service.</span>
+  <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">authorization</span>.<span class="ruby-identifier">access_token</span> = <span class="ruby-identifier">session</span>[<span class="ruby-value">:token</span>]
+  <span class="ruby-identifier">drive</span> = <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">discovered_api</span>(<span class="ruby-string">&#39;drive&#39;</span>, <span class="ruby-string">&#39;v2&#39;</span>)
+
+  <span class="ruby-identifier">response</span> = <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-value">:api_method</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">drive</span>.<span class="ruby-identifier">files</span>.<span class="ruby-identifier">list</span>)
+
+  <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-identifier">response</span>.<span class="ruby-identifier">data</span>.<span class="ruby-identifier">to_json</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- drive-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- drive-method -->
+
+    
+      <div id="method-i-index" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">index</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="index-source">
+            <pre><span class="ruby-comment"># File app/controllers/signin_controller.rb, line 14</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
+  <span class="ruby-comment"># Create a string for verification</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">session</span>[<span class="ruby-value">:state</span>]
+    <span class="ruby-identifier">state</span> = (<span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-value">13</span>).<span class="ruby-identifier">map</span>{(<span class="ruby-string">&#39;a&#39;</span><span class="ruby-operator">..</span><span class="ruby-string">&#39;z&#39;</span>).<span class="ruby-identifier">to_a</span>[<span class="ruby-identifier">rand</span>(<span class="ruby-value">26</span>)]}.<span class="ruby-identifier">join</span>
+    <span class="ruby-identifier">session</span>[<span class="ruby-value">:state</span>] = <span class="ruby-identifier">state</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-ivar">@state</span> = <span class="ruby-identifier">session</span>[<span class="ruby-value">:state</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- index-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- index-method -->
+
+    
+      <div id="method-i-people" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">people</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="people-source">
+            <pre><span class="ruby-comment"># File app/controllers/signin_controller.rb, line 57</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">people</span>
+  <span class="ruby-comment"># Authorize the client and construct a Google+ service.</span>
+  <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">authorization</span>.<span class="ruby-identifier">access_token</span> = <span class="ruby-identifier">session</span>[<span class="ruby-value">:token</span>]
+  <span class="ruby-identifier">plus</span> = <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">discovered_api</span>(<span class="ruby-string">&#39;plus&#39;</span>, <span class="ruby-string">&#39;v1&#39;</span>)
+
+  <span class="ruby-comment"># Get the list of people as JSON and return it.</span>
+  <span class="ruby-identifier">response</span> = <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">execute!</span>(<span class="ruby-identifier">plus</span>.<span class="ruby-identifier">people</span>.<span class="ruby-identifier">list</span>,
+      <span class="ruby-value">:collection</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;visible&#39;</span>,
+      <span class="ruby-value">:userId</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;me&#39;</span>).<span class="ruby-identifier">body</span>
+
+  <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">response</span>).<span class="ruby-identifier">to_json</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- people-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- people-method -->
+
+    
+      <div id="method-i-save_user" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">save_user</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="save_user-source">
+            <pre><span class="ruby-comment"># File app/controllers/signin_controller.rb, line 136</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">save_user</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-constant">User</span>.<span class="ruby-identifier">find_or_create_by_google_id</span>(<span class="ruby-identifier">request</span>.<span class="ruby-identifier">body</span>.<span class="ruby-identifier">read</span>)
+    <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;User is saved.&#39;</span>.<span class="ruby-identifier">to_json</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;User is not saved.&#39;</span>.<span class="ruby-identifier">to_json</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- save_user-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- save_user-method -->
+
+    
+      <div id="method-i-task_lists" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">task_lists</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="task_lists-source">
+            <pre><span class="ruby-comment"># File app/controllers/signin_controller.rb, line 91</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">task_lists</span>
+  <span class="ruby-comment"># Authorize the client and construct a Google+ service.</span>
+  <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">authorization</span>.<span class="ruby-identifier">access_token</span> = <span class="ruby-identifier">session</span>[<span class="ruby-value">:token</span>]
+  <span class="ruby-identifier">tasks</span> = <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">discovered_api</span>(<span class="ruby-string">&#39;tasks&#39;</span>, <span class="ruby-string">&#39;v1&#39;</span>)
+
+  <span class="ruby-identifier">response</span> = <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-value">:api_method</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">tasklists</span>.<span class="ruby-identifier">list</span>)
+
+  <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-identifier">response</span>.<span class="ruby-identifier">data</span>.<span class="ruby-identifier">to_json</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- task_lists-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- task_lists-method -->
+
+    
+      <div id="method-i-tasks" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">tasks</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="tasks-source">
+            <pre><span class="ruby-comment"># File app/controllers/signin_controller.rb, line 101</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">tasks</span>
+  <span class="ruby-comment"># Authorize the client and construct a Google+ service.</span>
+  <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">authorization</span>.<span class="ruby-identifier">access_token</span> = <span class="ruby-identifier">session</span>[<span class="ruby-value">:token</span>]
+  <span class="ruby-identifier">tasks</span> = <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">discovered_api</span>(<span class="ruby-string">&#39;tasks&#39;</span>, <span class="ruby-string">&#39;v1&#39;</span>)
+
+  <span class="ruby-identifier">response</span> = <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-value">:api_method</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">list</span>,
+                            <span class="ruby-value">:parameters</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-string">&#39;tasklist&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:taskListId</span>]})
+
+  <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-identifier">response</span>.<span class="ruby-identifier">data</span>.<span class="ruby-identifier">to_json</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- tasks-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- tasks-method -->
+
+    
+      <div id="method-i-verify_token" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">verify_token</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="verify_token-source">
+            <pre><span class="ruby-comment"># File app/controllers/signin_controller.rb, line 144</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">verify_token</span>
+  <span class="ruby-comment"># Check for stored credentials in the current user&#39;s session.</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">session</span>[<span class="ruby-value">:token</span>]
+    <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;User is not connected.&#39;</span>.<span class="ruby-identifier">to_json</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- verify_token-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- verify_token-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 4.0.0.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

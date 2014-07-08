@@ -1,48 +1,33 @@
 <div id="gConnect">
-<button class="g-signin"
-    data-scope="<%= ENV['PLUS_LOGIN_SCOPE'] %>"
-    data-requestvisibleactions="http://schemas.google.com/AddActivity"
-    data-clientId="<%= ENV['CLIENT_ID'] %>"
-    data-accesstype="offline"
-    data-callback="onSignInCallback"
-    data-theme="dark"
-    data-cookiepolicy="single_host_origin">
-</button>
+	<button class="g-signin"
+	    data-scope="<%= ENV['PLUS_LOGIN_SCOPE'] %>"
+	    data-requestvisibleactions="http://schemas.google.com/AddActivity"
+	    data-clientId="<%= ENV['CLIENT_ID'] %>"
+	    data-accesstype="offline"
+	    data-callback="onSignInCallback"
+	    data-theme="dark"
+	    data-cookiepolicy="single_host_origin">
+	</button>
 </div>
 <div id="authOps" style="display:none">
-<h2>User is now signed in to the app using Google+</h2>
-<p>If the user chooses to disconnect, the app must delete all stored
-information retrieved from Google for the given user.</p>
-<button id="disconnect" >Disconnect your Google account from this app</button>
+	<h2>You are now signed in to the app using Google+</h2>
+	<p>If you chooses to disconnect, the app deletes all stored information retrieved from Google.</p>
+	<button id="disconnect" >Disconnect your Google account from this app</button>
 
-<h2>User's profile information</h2>
-<p>This data is retrieved client-side by using the Google JavaScript API
-client library.</p>
-<div id="profile"></div>
+	<h2>Your's profile information.</h2>
+	<div id="profile"></div>
 
-<h2>User's friends that are visible to this app</h2>
-<p>This data is retrieved from your server, where your server makes
-an authorized HTTP request on the user's behalf.</p>
-<p>If your app uses server-side rendering, this is the section you
-would change using your server-side templating system.</p>
-<div id="visiblePeople"></div>
+	<h2>Your's friends.</h2>
+	<div id="visiblePeople"></div>
 
-<h2>User's calendar events that are visible to this app</h2>
-<p>This data is retrieved client-side by using the Google Calendar API
-client library.</p>
-<div id="calendarEvent"></div>
+	<h2>Your's calendar events.</h2>
+	<div id="calendarEvent"></div>
 
-<h2>User's drive files that are visible to this app</h2>
-<p>This data is retrieved client-side by using the Google Drive API
-client library.</p>
-<div id="driveFiles"></div>
+	<h2>Your's drive files.</h2>
+	<div id="driveFiles"></div>
 
-<h2>User's task lists that are visible to this app</h2>
-<p>This data is retrieved client-side by using the Google Tasks API
-client library.</p>
-<div id="taskLists"></div>
+	<h2>Your's task lists.</h2>
+	<div id="taskLists"></div>
 
-<div id="state" class="hide"><%= @state %></div>
-<h2>Authentication Logs</h2>
-<pre id="authResult"></pre>
+	<div id="state" class="hide"><%= @state %></div>
 </div>
