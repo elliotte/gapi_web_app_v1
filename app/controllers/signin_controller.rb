@@ -2,13 +2,22 @@ class SigninController < ApplicationController
 
   before_filter :verify_token, except: [:index, :connect, :save_user]
 
+  # $authorization = Signet::OAuth2::Client.new(
+  #     :authorization_uri => ENV['AUTH_URI'],
+  #     :token_credential_uri => ENV['TOKEN_URI'],
+  #     :client_id => ENV['CLIENT_ID'],
+  #     :client_secret => ENV['CLIENT_SECRET'],
+  #     :redirect_uri => ENV['REDIRECT_URIS'],
+  #     :scope => ENV['PLUS_LOGIN_SCOPE'])
+  # $client = Google::APIClient.new
+
   $authorization = Signet::OAuth2::Client.new(
-      :authorization_uri => ENV['AUTH_URI'],
-      :token_credential_uri => ENV['TOKEN_URI'],
-      :client_id => ENV['CLIENT_ID'],
-      :client_secret => ENV['CLIENT_SECRET'],
-      :redirect_uri => ENV['REDIRECT_URIS'],
-      :scope => ENV['PLUS_LOGIN_SCOPE'])
+      :authorization_uri => "https://accounts.google.com/o/oauth2/auth",
+      :token_credential_uri => "https://accounts.google.com/o/oauth2/token",
+      :client_id => "792513003123-ok9t5e2oqver2v15tr5v049ov6286bjc.apps.googleusercontent.com",
+      :client_secret => "yux592HlZjk9TlPC6AgQESwe",
+      :redirect_uri => "postmessage",
+      :scope => 'https://www.googleapis.com/auth/plus.login')
   $client = Google::APIClient.new
 
   def index
