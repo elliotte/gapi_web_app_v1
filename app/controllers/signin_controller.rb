@@ -94,9 +94,41 @@ class SigninController < ApplicationController
 
     # Get the list of tasks in task list.
     response = $client.execute(:api_method => tasks.tasks.list,
-                              :parameters => {'tasklist' => params[:taskListId]})
+                              :parameters => {'tasklist' => params[:task_list_id]})
 
     render json: response.data.to_json
+  end
+
+  def complete_task
+    # Authorizing the client and constructing a Google+ service.
+    tasks = $client.discovered_api('tasks', 'v1')
+
+    # Get the task with tasklist id and task id.
+    response = $client.execute(:api_method => tasks.tasks.get,
+                              :parameters => {'tasklist' => params[:task_list_id], 'task' => params[:task_id]})
+
+    task = response.data
+    task.status = 'completed'
+
+    # Update the task with status as complete
+    result = $client.execute(:api_method => tasks.tasks.update,
+                              :parameters => {'tasklist' => params[:task_list_id], 'task' => params[:task_id]},
+                              :body_object => task,
+                        	  :headers => {'Content-Type' => 'application/json'})
+
+    render json: result.data.to_json
+  end
+
+  def activity_feed
+    # Authorizing the client and constructing a Google+ service.
+    plus = $client.discovered_api('plus', 'v1')
+
+    # Get the list of Activities as JSON.
+    response = $client.execute!(plus.activities.list,
+        :collection => 'public',
+        :userId => 'me').body
+
+    render json: JSON.parse(response).to_json
   end
 
   def disconnect

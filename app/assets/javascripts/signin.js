@@ -7,13 +7,13 @@
 })();
 
 var helper = (function() {
-var authResult = undefined;
+  var authResult = undefined;
 
-return {
-  /**
-  * Hides the sign-in button and connects the server-side app after
-  * the user successfully signs in.
-  */
+  return {
+    /**
+    * Hides the sign-in button and connects the server-side app after
+    * the user successfully signs in.
+    */
     onSignInCallback: function(authResult) {
       if (authResult['access_token']) {
         // The user is signed in
@@ -35,31 +35,32 @@ return {
     renderProfile: function() {
       var request = gapi.client.plus.people.get( {'userId' : 'me'} );
       request.execute( function(profile) {
-          $.ajax({
-            type: 'POST',
-            url: '/signin/save_user',
-            contentType: 'application/octet-stream; charset=utf-8',
-            success: function(result) {
-              console.log(result);
-            },
-            processData: false,
-            data: profile.id
-          });
-
-          $('#profile').empty();
-          if (profile.error) {
-            $('#profile').append(profile.error);
-            return;
-          }
-          $('#profile').append(
-              $('<p><img src=\"' + profile.image.url + '\"></p>'));
-          $('#profile').append(
-              $('<p>Hello ' + profile.displayName + '!</p>'));
-          if (profile.cover && profile.coverPhoto) {
-            $('#profile').append(
-                $('<p><img src=\"' + profile.cover.coverPhoto.url + '\"></p>'));
-          }
+        console.log(profile);
+        $.ajax({
+          type: 'POST',
+          url: '/signin/save_user',
+          contentType: 'application/octet-stream; charset=utf-8',
+          success: function(result) {
+            console.log(result);
+          },
+          processData: false,
+          data: profile.id
         });
+
+        $('#profile').empty();
+        if (profile.error) {
+          $('#profile').append(profile.error);
+          return;
+        }
+        $('#profile').append(
+          $('<p><img src=\"' + profile.image.url + '\"></p>'));
+        $('#profile').append(
+          $('<p>Hello ' + profile.displayName + '!</p>'));
+        if (profile.cover && profile.cover.coverPhoto) {
+          $('#profile').append(
+            $('<p><img src=\"' + profile.cover.coverPhoto.url + '\"></p>'));
+        }
+      });
       $('#authOps').show('slow');
       $('#gConnect').hide();
     },
@@ -99,6 +100,8 @@ return {
           helper.calendar();
           helper.drive();
           helper.task_lists();
+          helper.activity_feed();
+          helper.circles();
         },
         processData: false,
         data: this.authResult.code + ',' + this.authResult.id_token + ',' + this.authResult.access_token
@@ -170,11 +173,26 @@ return {
     tasks: function(taskListId) {
       $.ajax({
         type: 'GET',
-        url: '/signin/tasks?taskListId=' + taskListId,
+        url: '/signin/tasks?task_list_id=' + taskListId,
         contentType: 'application/octet-stream; charset=utf-8',
         success: function(result) {
           console.log(result);
           helper.appendTasks(result);
+        },
+        processData: false
+      });
+    },
+    /**
+     * Calls the server endpoint to get the list of Activities.
+     */
+    activity_feed: function() {
+      $.ajax({
+        type: 'GET',
+        url: '/signin/activity_feed',
+        contentType: 'application/octet-stream; charset=utf-8',
+        success: function(result) {
+          console.log(result);
+          helper.appendActivity(result);
         },
         processData: false
       });
@@ -185,8 +203,7 @@ return {
     appendCircled: function(people) {
       $('#visiblePeople').empty();
 
-      $('#visiblePeople').append('Number of Friends: ' +
-          people.totalItems + '<br/>');
+      $('#visiblePeople').append('Number of Friends: ' + people.totalItems + '<br/>');
       for (var personIndex in people.items) {
         person = people.items[personIndex];
         $('#visiblePeople').append('<a href="' + person.url + '" target="_blank">' + '<img src="' + person.image.url + '">' + person.displayName  + '</a><br/>');
@@ -230,16 +247,25 @@ return {
      * Displays available Tasks in Task List retrieved from server.
      */
     appendTasks: function(tasks) {
-      $('#taskLists').append('Number of tasks in task list: ' + tasks.items.length + '<br/>');
       for (var taskIndex in tasks.items) {
         task = tasks.items[taskIndex];
-        $('#taskLists').append('- Title: ' + task.title + ', Notes: ' + task.notes + ', Due Date: ' + task.due.substring(0, 10));
         if (task.status == "completed") {
-          $('#taskLists').append(", Status: completed, Completed at: " + task.completed.substring(0,10));
+          $('#tasksCompleted').append('- Title: ' + task.title + ', Notes: ' + task.notes + ', Due Date: ' + task.due.substring(0, 10) + ', Completed at: ' + task.completed.substring(0,10) + '<br/>');
         } else {
-          $('#taskLists').append(", Status: pending");
+          $('#tasksPending').append('- Title: ' + task.title + ', Notes: ' + task.notes + ', Due Date: ' + task.due.substring(0, 10) + '<br/>');
         }
-        $('#taskLists').append('</br>');
+      }
+    },
+    /**
+     * Displays available Activities retrieved from server.
+     */
+    appendActivity: function(activity) {
+      $('#activityFeeds').empty();
+
+      $('#activityFeeds').append('Number of Activity Feeds: ' + activity.items.length + '<br/>');
+      for (var activityIndex in activity.items) {
+        item = activity.items[activityIndex];
+        $('#activityFeeds').append('Title: ' + item.title + ', Content: ' + item.object.content + '<br/>');
       }
     },
   };

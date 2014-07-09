@@ -9,7 +9,7 @@
 	    data-cookiepolicy="single_host_origin">
 	</button>
 </div>
-<div id="authOps" style="display:none">
+<div id="authOps" class="hide">
 	<h2>You are now signed in to the app using Google+</h2>
 	<p>If you chooses to disconnect, the app deletes all stored information retrieved from Google.</p>
 	<button id="disconnect" >Disconnect your Google account from this app</button>
@@ -29,5 +29,14 @@
 	<h2>Your's task lists.</h2>
 	<div id="taskLists"></div>
 
+	<h2>Your's tasks.</h2>
+	<div id="tasksCompleted">Completed Tasks: <br/></div>
+	<div id="tasksPending">Pending Tasks: <br/></div>
+
+	<h2>Your's activity feeds.</h2>
+	<div id="activityFeeds"></div>
+
 	<div id="state" class="hide"><%= @state %></div>
+
+	<div class="g-hangout" data-render="createhangout"></div>
 </div>
