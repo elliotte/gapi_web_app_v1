@@ -1,14 +1,15 @@
 <div id="gConnect">
 	<button class="g-signin"
-	    data-scope="https://www.googleapis.com/auth/plus.login"
+	    data-scope="<%= ENV['PLUS_LOGIN_SCOPE'] %>"
 	    data-requestvisibleactions="http://schemas.google.com/AddActivity"
-	    data-clientId="792513003123-ok9t5e2oqver2v15tr5v049ov6286bjc.apps.googleusercontent.com"
+	    data-clientId="<%= ENV['CLIENT_ID'] %>"
 	    data-accesstype="offline"
 	    data-callback="onSignInCallback"
 	    data-theme="dark"
 	    data-cookiepolicy="single_host_origin">
 	</button>
 </div>
+
 <div id="authOps" class="hide">
 	<h2>You are now signed in to the app using Google+</h2>
 	<p>If you chooses to disconnect, the app deletes all stored information retrieved from Google.</p>
