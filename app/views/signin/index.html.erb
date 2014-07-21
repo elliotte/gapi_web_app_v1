@@ -11,33 +11,73 @@
 </div>
 
 <div id="authOps" class="hide">
-	<h2>You are now signed in to the app using Google+</h2>
-	<p>If you chooses to disconnect, the app deletes all stored information retrieved from Google.</p>
-	<button id="disconnect" >Disconnect your Google account from this app</button>
 
-	<h2>Your's profile information.</h2>
+<h2>You are now signed in to the app using Google+</h2>
+
+	<p>startSomethingNewBox:</p>
+	<ul>
+		<li><a href="">startProject</a></li>
+		<li><a href="">buildReport</a></li>
+		<li><a href="">buildTasksLog</a></li>
+		<li><a href="">buildTrackerLog</a></li>
+		<li><a href="">bookTransactions</a></li>
+		<li><a href="">startResearch</a></li>
+	</ul>
+
+	<ul>
+		<li><a href="https://mail.google.com/mail/?tab=mm" target="_blank">Gmail</a></li>
+		<li><a href="https://www.google.com/calendar?tab=mc" target="_blank">Calendar</a></li>
+		<li><a href="https://drive.google.com/?tab=mo&authuser=0" target="_blank">GoogleDrive</a></li>
+		<li><a href="https://plus.google.com/u/0/?tab=mX" target="_blank">Google+</a></li>
+		<li><a href="">MoneaFinance</a></li>
+		<li><a href="">MoneaFood</a></li>
+	</ul>
+
+	<a href="">joinAccountant</a>
+	<a href="">joinTeam</a>
+	<a href="">joinProject</a>
+	<a href="">buildTeam</a>
+	
+	<div class="g-hangout" data-render="createhangout"></div>
+
+	<ul>
+		<li><a href="">addEvent</a></li>
+		<li><a href="">addTask</a></li>
+		<li><a href="">shareEvent </a></li>
+		<li><a href="">shareTask </a></li>
+		<li><a href="">shareSS </a></li>
+		<li><a href="">shareDoc </a></li>
+		<li><a href="">searchPeople</a></li>
+		<li><a href="">newCircle</a></li>
+	</ul>
+
+	<button id="disconnect" >Disconnect</button>
+
+	<h2>Your working teams.</h2>
+	<div id="teams"></div>
+
+	<h2>Your profile information.</h2>
 	<div id="profile"></div>
 
 	<h2>Your's friends.</h2>
 	<div id="visiblePeople"></div>
 
-	<h2>Your's calendar events.</h2>
+	<h2>Your calendar events.</h2>
 	<div id="calendarEvent"></div>
 
-	<h2>Your's drive files.</h2>
+	<h2>Your drive files.</h2>
 	<div id="driveFiles"></div>
 
-	<h2>Your's task lists.</h2>
+	<h2>Your task lists.</h2>
 	<div id="taskLists"></div>
 
-	<h2>Your's tasks.</h2>
+	<h2>Your tasks.</h2>
 	<div id="tasksCompleted">Completed Tasks: <br/></div>
 	<div id="tasksPending">Pending Tasks: <br/></div>
 
-	<h2>Your's activity feeds.</h2>
-	<div id="activityFeeds"></div>
+	<h2>My history feed.</h2>
+	<div id="myActivity"></div>
 
 	<div id="state" class="hide"><%= @state %></div>
 
-	<div class="g-hangout" data-render="createhangout"></div>
 </div>

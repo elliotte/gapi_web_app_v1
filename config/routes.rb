@@ -6,7 +6,7 @@ GooglePlay::Application.routes.draw do
       get :drive
       get :task_lists
       get :tasks
-      get :activity_feed
+      get :my_history_feed
       post :connect
       post :disconnect
       post :save_user

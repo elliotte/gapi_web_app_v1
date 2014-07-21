@@ -2,23 +2,23 @@ class SigninController < ApplicationController
 
   before_filter :verify_token, except: [:index, :connect, :save_user]
 
-  $authorization = Signet::OAuth2::Client.new(
-      :authorization_uri => ENV['AUTH_URI'],
-      :token_credential_uri => ENV['TOKEN_URI'],
-      :client_id => ENV['CLIENT_ID'],
-      :client_secret => ENV['CLIENT_SECRET'],
-      :redirect_uri => ENV['REDIRECT_URIS'],
-      :scope => ENV['PLUS_LOGIN_SCOPE'])
-  $client = Google::APIClient.new
-
   # $authorization = Signet::OAuth2::Client.new(
-  #     :authorization_uri => "https://accounts.google.com/o/oauth2/auth",
-  #     :token_credential_uri => "https://accounts.google.com/o/oauth2/token",
-  #     :client_id => "861321116128-uhn4jo21t8f3gf22v514k0ci243ubm2r.apps.googleusercontent.com",
-  #     :client_secret => "NkvWi_yG_tWlKf-B8et7t-rw",
-  #     :redirect_uri => "postmessage",
-  #     :scope => 'https://www.googleapis.com/auth/plus.login')
+  #     :authorization_uri => ENV['AUTH_URI'],
+  #     :token_credential_uri => ENV['TOKEN_URI'],
+  #     :client_id => ENV['CLIENT_ID'],
+  #     :client_secret => ENV['CLIENT_SECRET'],
+  #     :redirect_uri => ENV['REDIRECT_URIS'],
+  #     :scope => ENV['PLUS_LOGIN_SCOPE'])
   # $client = Google::APIClient.new
+
+  $authorization = Signet::OAuth2::Client.new(
+      :authorization_uri => "https://accounts.google.com/o/oauth2/auth",
+      :token_credential_uri => "https://accounts.google.com/o/oauth2/token",
+      :client_id => "861321116128-uhn4jo21t8f3gf22v514k0ci243ubm2r.apps.googleusercontent.com",
+      :client_secret => "NkvWi_yG_tWlKf-B8et7t-rw",
+      :redirect_uri => "postmessage",
+      :scope => 'https://www.googleapis.com/auth/plus.login')
+  $client = Google::APIClient.new
 
   def index
     # Create a string for verification
@@ -128,7 +128,7 @@ class SigninController < ApplicationController
     render json: result.data.to_json
   end
 
-  def activity_feed
+  def my_history_feed
     # Authorizing the client and constructing a Google+ service.
     plus = $client.discovered_api('plus', 'v1')
 

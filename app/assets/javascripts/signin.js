@@ -100,7 +100,7 @@ var helper = (function() {
           helper.calendar();
           helper.drive();
           helper.task_lists();
-          helper.activity_feed();
+          helper.my_history_feed();
           helper.circles();
         },
         processData: false,
@@ -185,10 +185,10 @@ var helper = (function() {
     /**
      * Calls the server endpoint to get the list of Activities.
      */
-    activity_feed: function() {
+    my_history_feed: function() {
       $.ajax({
         type: 'GET',
-        url: '/signin/activity_feed',
+        url: '/signin/my_history_feed',
         contentType: 'application/octet-stream; charset=utf-8',
         success: function(result) {
           console.log(result);
@@ -206,7 +206,7 @@ var helper = (function() {
       $('#visiblePeople').append('Number of Friends: ' + people.totalItems + '<br/>');
       for (var personIndex in people.items) {
         person = people.items[personIndex];
-        $('#visiblePeople').append('<a href="' + person.url + '" target="_blank">' + '<img src="' + person.image.url + '">' + person.displayName  + '</a><br/>');
+        $('#visiblePeople').append('<div class="people_card"><img src="' + person.image.url + '">' + '<br>' + '<a href="' + person.url + '" target="_blank">' + person.displayName  + '</a></div>');
       }
     },
     /**
@@ -217,7 +217,7 @@ var helper = (function() {
       $('#calendarEvent').append('Number of Events: ' + events.items.length + '<br/>');
       for (var eventIndex in events.items) {
         event = events.items[eventIndex];
-        $('#calendarEvent').append('Created At: ' + event.created.substring(0, 10) + ', Summary: <a href="' + event.htmlLink + '" target="_blank"> ' + event.summary + '</a><br/>');
+        $('#calendarEvent').append('<div class="calendar_card">' + '<a href="' + event.htmlLink + '" target="_blank"> ' + event.summary + '</a> ' +  '<span>' + event.start.dateTime + '<span>' +  '</div>');
       }
     },
     /**
@@ -228,7 +228,7 @@ var helper = (function() {
       $('#driveFiles').append('Number of files in drive: ' + drive.items.length + '<br/>');
       for (var itemIndex in drive.items) {
         item = drive.items[itemIndex];
-        $('#driveFiles').append('Created Date: ' + item.createdDate.substring(0, 10) + ', Title: <a href="' + item.alternateLink + '" target="_blank"> ' + item.title + '</a><br/>');
+        $('#driveFiles').append('<img src=" ' + item.iconLink + ' "> ' + '<div class="drive_card">' + '<a href="' + item.alternateLink + '" target="_blank"> ' + item.title + '</a></div>');
       }
     },
     /**
@@ -250,9 +250,9 @@ var helper = (function() {
       for (var taskIndex in tasks.items) {
         task = tasks.items[taskIndex];
         if (task.status == "completed") {
-          $('#tasksCompleted').append('- Title: ' + task.title + ', Notes: ' + task.notes + ', Due Date: ' + task.due.substring(0, 10) + ', Completed at: ' + task.completed.substring(0,10) + '<br/>');
+          $('#tasksCompleted').append('<div class="task_card">'+ '- Title: ' + task.title + ', Notes: ' + task.notes + ', Due Date: ' + task.due + ', Completed at: ' + task.completed + '</div>');
         } else {
-          $('#tasksPending').append('- Title: ' + task.title + ', Notes: ' + task.notes + ', Due Date: ' + task.due.substring(0, 10) + '<br/>');
+          $('#tasksPending').append('<div class="task_card">' +'- Title: ' + task.title + ', Notes: ' + task.notes + ', Due Date: ' + task.due + '</div>');
         }
       }
     },
@@ -260,12 +260,12 @@ var helper = (function() {
      * Displays available Activities retrieved from server.
      */
     appendActivity: function(activity) {
-      $('#activityFeeds').empty();
+      $('#myActivity').empty();
 
-      $('#activityFeeds').append('Number of Activity Feeds: ' + activity.items.length + '<br/>');
+      $('#myActivity').append('Number of Activity Feeds: ' + activity.items.length + '<br/>');
       for (var activityIndex in activity.items) {
         item = activity.items[activityIndex];
-        $('#activityFeeds').append('Title: ' + item.title + ', Content: ' + item.object.content + '<br/>');
+        $('#myActivity').append('Title: ' + item.title + ', Content: ' + item.object.content + '<br/>');
       }
     },
   };
