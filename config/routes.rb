@@ -15,4 +15,7 @@ GooglePlay::Application.routes.draw do
   end
 
   root 'signin#index'
+
+  match '/signin/delete_calendar_event/:id' => 'signin#delete_calendar_event', :via => :post
+  match '/signin/update_calendar_event/:id' => 'signin#update_calendar_event', :via => :put
 end

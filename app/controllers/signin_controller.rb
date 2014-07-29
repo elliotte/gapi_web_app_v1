@@ -68,6 +68,20 @@ class SigninController < ApplicationController
     render json: response.data.to_json
   end
 
+  def delete_calendar_event
+    calendar = $client.discovered_api('calendar', 'v3')
+    result = $client.execute(:api_method => calendar.events.delete,
+                        :parameters => {'calendarId' => 'primary', 'eventId' => params[:id]})
+
+    render json: result.data.to_json
+  end
+  def update_calendar_event
+     respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+
   def drive
     # Authorizing the client and constructing a Google+ service.
     drive = $client.discovered_api('drive', 'v2')

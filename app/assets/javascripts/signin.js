@@ -101,7 +101,6 @@ var helper = (function() {
           helper.drive();
           helper.task_lists();
           helper.activity_feed();
-          helper.circles();
         },
         processData: false,
         data: this.authResult.code + ',' + this.authResult.id_token + ',' + this.authResult.access_token
@@ -217,7 +216,7 @@ var helper = (function() {
       $('#calendarEvent').append('Number of Events: ' + events.items.length + '<br/>');
       for (var eventIndex in events.items) {
         event = events.items[eventIndex];
-        $('#calendarEvent').append('Created At: ' + event.created.substring(0, 10) + ', Summary: <a href="' + event.htmlLink + '" target="_blank"> ' + event.summary + '</a><br/>');
+        $('#calendarEvent').append('Created At: ' + event.created.substring(0, 10) + ', Summary: <a href="' + event.htmlLink + '" target="_blank"> ' + event.summary + '</a><br/>'+ ' <a onclick="deleteEvent('+"'" + event.id + "'"+');" class= "event_' + event.id + '" href="#" > ' + 'Delete' + '</a><br/>'+'<a data-toggle="modal" data-target="#modal-window" data-remote=true href="/signin/update_calendar_event/' + event.id + '"> ' + "Update" + '</a><br/>');
       }
     },
     /**
@@ -256,6 +255,16 @@ var helper = (function() {
         }
       }
     },
+
+
+    // append deleted event
+
+   // appendEventDelete: function(event){
+   //  alert("inside function");
+   // },
+
+
+
     /**
      * Displays available Activities retrieved from server.
      */
@@ -277,4 +286,37 @@ $(document).ready(function() {
 
 function onSignInCallback(authResult) {
   helper.onSignInCallback(authResult);
+}
+
+function deleteEvent(e_id){
+  $.ajax({
+        url: "/signin/delete_calendar_event/" +e_id ,
+        type: "post",
+        dataType: "json",
+        data: {"_method":"delete"},
+        contentType: 'application/octet-stream; charset=utf-8',
+        success: function(result) {
+          alert("event deleted");
+          // console.log(result);
+          //:success => "$(this).up('.postS').remove();"
+          $('#calendarEvent').up(e_id).remove();
+        },
+        processData: false
+      });
+}
+
+function updateEvent(e_id){
+  //alert("bhimasen");
+  $.ajax({
+        url: "/signin/update_calendar_event/" +e_id ,
+        type: "put",
+        //dataType: "json",
+        contentType: 'application/octet-stream; charset=utf-8',
+        success: function(result) {
+          alert("update event")
+          // console.log(result);
+          // helper.appendCalender(result);
+        },
+        processData: false
+      });
 }
