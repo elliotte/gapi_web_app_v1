@@ -75,11 +75,39 @@ class SigninController < ApplicationController
 
     render json: result.data.to_json
   end
-  def update_calendar_event
-     respond_to do |format|
+
+  def show_calendar_event
+    calendar = $client.discovered_api('calendar', 'v3')
+    result = $client.execute(:api_method => calendar.events.get,
+                        :parameters => {'calendarId' => 'primary', 'eventId' => params[:id]})
+
+    respond_to do |format|
       format.html
-      format.js
+      format.js { @event = result.data }
     end
+  end
+
+  def update_calendar_event
+    calendar = $client.discovered_api('calendar', 'v3')
+    response = $client.execute(:api_method => calendar.events.get,
+                        :parameters => {'calendarId' => 'primary', 'eventId' => params[:id]})
+
+    event = response.data
+
+    event.summary = params[:event][:summary]
+    event.start.dateTime = params[:event][:start_time].to_datetime
+    event.end.dateTime = params[:event][:end_time].to_datetime
+    event.location = params[:event][:location]
+    event.description = params[:event][:description]
+    event.status = params[:event][:status]
+    event.visibility = params[:event][:visibility]
+
+    result = $client.execute(:api_method => calendar.events.update,
+                        :parameters => {'calendarId' => 'primary', 'eventId' => event.id},
+                        :body_object => event,
+                        :headers => {'Content-Type' => 'application/json'})
+    
+    render json: result.data.to_json
   end
 
   def drive
