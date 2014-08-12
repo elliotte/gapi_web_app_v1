@@ -2,15 +2,6 @@ class SigninController < ApplicationController
 
   before_filter :verify_token, except: [:index, :connect, :save_user]
 
-  $authorization = Signet::OAuth2::Client.new(
-      :authorization_uri => ENV['AUTH_URI'],
-      :token_credential_uri => ENV['TOKEN_URI'],
-      :client_id => ENV['CLIENT_ID'],
-      :client_secret => ENV['CLIENT_SECRET'],
-      :redirect_uri => ENV['REDIRECT_URIS'],
-      :scope => ENV['PLUS_LOGIN_SCOPE'])
-  $client = Google::APIClient.new
-
   def index
     # Create a string for verification
     if !session[:state]
@@ -57,59 +48,6 @@ class SigninController < ApplicationController
     render json: JSON.parse(response).to_json
   end
 
-  def calendar
-    # Authorizing the client and constructing a Google+ service.
-    calendar = $client.discovered_api('calendar', 'v3')
-
-    # Get the list of calendar events.
-    response = $client.execute(:api_method => calendar.events.list,
-                              :parameters => {'calendarId' => 'primary'})
-
-    render json: response.data.to_json
-  end
-
-  def delete_calendar_event
-    calendar = $client.discovered_api('calendar', 'v3')
-    result = $client.execute(:api_method => calendar.events.delete,
-                        :parameters => {'calendarId' => 'primary', 'eventId' => params[:id]})
-
-    render json: result.data.to_json
-  end
-
-  def show_calendar_event
-    calendar = $client.discovered_api('calendar', 'v3')
-    result = $client.execute(:api_method => calendar.events.get,
-                        :parameters => {'calendarId' => 'primary', 'eventId' => params[:id]})
-
-    respond_to do |format|
-      format.html
-      format.js { @event = result.data }
-    end
-  end
-
-  def update_calendar_event
-    calendar = $client.discovered_api('calendar', 'v3')
-    response = $client.execute(:api_method => calendar.events.get,
-                        :parameters => {'calendarId' => 'primary', 'eventId' => params[:id]})
-
-    event = response.data
-
-    event.summary = params[:event][:summary]
-    event.start.dateTime = params[:event][:start_time].to_datetime
-    event.end.dateTime = params[:event][:end_time].to_datetime
-    event.location = params[:event][:location]
-    event.description = params[:event][:description]
-    event.status = params[:event][:status]
-    event.visibility = params[:event][:visibility]
-
-    result = $client.execute(:api_method => calendar.events.update,
-                        :parameters => {'calendarId' => 'primary', 'eventId' => event.id},
-                        :body_object => event,
-                        :headers => {'Content-Type' => 'application/json'})
-    
-    render json: result.data.to_json
-  end
-
   def drive
     # Authorizing the client and constructing a Google+ service.
     drive = $client.discovered_api('drive', 'v2')
@@ -154,9 +92,9 @@ class SigninController < ApplicationController
 
     # Update the task with status as complete
     result = $client.execute(:api_method => tasks.tasks.update,
-                              :parameters => {'tasklist' => params[:task_list_id], 'task' => params[:task_id]},
-                              :body_object => task,
-                        	  :headers => {'Content-Type' => 'application/json'})
+                            :parameters => {'tasklist' => params[:task_list_id], 'task' => params[:task_id]},
+                            :body_object => task,
+                            :headers => {'Content-Type' => 'application/json'})
 
     render json: result.data.to_json
   end
@@ -167,8 +105,8 @@ class SigninController < ApplicationController
 
     # Get the list of Activities as JSON.
     response = $client.execute!(plus.activities.list,
-        :collection => 'public',
-        :userId => 'me').body
+                                :collection => 'public',
+                                :userId => 'me').body
 
     render json: JSON.parse(response).to_json
   end

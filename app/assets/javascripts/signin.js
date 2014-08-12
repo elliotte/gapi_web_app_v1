@@ -127,7 +127,7 @@ var helper = (function() {
     calendar: function() {
       $.ajax({
         type: 'GET',
-        url: '/signin/calendar',
+        url: '/calendar_events',
         contentType: 'application/octet-stream; charset=utf-8',
         success: function(result) {
           console.log(result);
@@ -216,7 +216,7 @@ var helper = (function() {
       $('#calendarEvent').append('Number of Events: ' + events.items.length + '<br/>');
       for (var eventIndex in events.items) {
         event = events.items[eventIndex];
-        $('#calendarEvent').append('Created At: ' + event.created.substring(0, 10) + ', Summary: <a href="' + event.htmlLink + '" target="_blank"> ' + event.summary + '</a><br/>'+ '<a onclick=deleteEvent("'+ event.id + '"); href="#" >Delete</a><br/>'+'<a data-toggle="modal" data-target="#modal-window" data-remote=true href="/signin/show_calendar_event/' + event.id + '">Update</a><br/>');
+        $('#calendarEvent').append('Created At: ' + event.created.substring(0, 10) + ', Summary: <a href="' + event.htmlLink + '" target="_blank"> ' + event.summary + '</a><br/>'+ '<a onclick=helper.deleteEvent("'+ event.id + '"); href="#" >Delete</a><br/>'+'<a data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendar_events/' + event.id + '">Update</a><br/>');
       }
     },
     /**
@@ -267,6 +267,24 @@ var helper = (function() {
         $('#activityFeeds').append('Title: ' + item.title + ', Content: ' + item.object.content + '<br/>');
       }
     },
+    /**
+     * Delete a Calendar Event from server.
+     */
+    deleteEvent: function(event_id) {
+      $.ajax({
+        url: "/calendar_events/" + event_id ,
+        type: "delete",
+        contentType: 'application/octet-stream; charset=utf-8',
+        success: function(result) {
+          if (result == null) {
+            alert("event deleted");
+          } else {
+            alert(result.error.message);
+          }
+        },
+        processData: false
+      });
+    },
   };
 })();
 
@@ -276,32 +294,4 @@ $(document).ready(function() {
 
 function onSignInCallback(authResult) {
   helper.onSignInCallback(authResult);
-}
-
-function deleteEvent(e_id) {
-  $.ajax({
-    url: "/signin/delete_calendar_event/" +e_id ,
-    type: "post",
-    contentType: 'application/octet-stream; charset=utf-8',
-    success: function(result) {
-      if (result == null) {
-        alert("event deleted");
-      } else {
-        alert(result.error.message);
-      }
-    },
-    processData: false
-  });
-}
-
-function updateEvent(e_id) {
-  $.ajax({
-    url: "/signin/update_calendar_event/" +e_id ,
-    type: "put",
-    contentType: 'application/octet-stream; charset=utf-8',
-    success: function(result) {
-      alert("update event");
-    },
-    processData: false
-  });
 }

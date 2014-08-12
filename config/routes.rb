@@ -2,7 +2,6 @@ GooglePlay::Application.routes.draw do
   resources :signin, :only => [ :index ] do
     collection do
       get :people
-      get :calendar
       get :drive
       get :task_lists
       get :tasks
@@ -14,9 +13,7 @@ GooglePlay::Application.routes.draw do
     end
   end
 
-  post '/signin/delete_calendar_event/:id', to: 'signin#delete_calendar_event', as: 'delete_calendar_event'
-  get '/signin/show_calendar_event/:id', to: 'signin#show_calendar_event', as: 'show_calendar_event'
-  post '/signin/update_calendar_event/:id', to: 'signin#update_calendar_event', as: 'update_calendar_event'
+  resources :calendar_events, :only => [ :index, :show, :update, :destroy ]
 
   root 'signin#index'
 end
