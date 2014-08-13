@@ -157,7 +157,7 @@ var helper = (function() {
     task_lists: function() {
       $.ajax({
         type: 'GET',
-        url: '/signin/task_lists',
+        url: '/task_lists',
         contentType: 'application/octet-stream; charset=utf-8',
         success: function(result) {
           console.log(result);
@@ -172,7 +172,7 @@ var helper = (function() {
     tasks: function(taskListId) {
       $.ajax({
         type: 'GET',
-        url: '/signin/tasks?task_list_id=' + taskListId,
+        url: '/task_lists/' + taskListId + '/tasks',
         contentType: 'application/octet-stream; charset=utf-8',
         success: function(result) {
           console.log(result);
