@@ -52,13 +52,18 @@ var helper = (function() {
           $('#profile').append(profile.error);
           return;
         }
-        $('#profile').append(
-          $('<p><img src=\"' + profile.image.url + '\"></p>'));
-        $('#profile').append(
-          $('<p>Hello ' + profile.displayName + '!</p>'));
-        if (profile.cover && profile.cover.coverPhoto) {
-          $('#profile').append(
-            $('<p><img src=\"' + profile.cover.coverPhoto.url + '\"></p>'));
+        if (profile.gender == "male") {
+          if (profile.cover && profile.cover.coverPhoto) {
+            $('#profile').append('<div class="col-md-12"><div class="feature-box-style2"><div class="feature-box-title"><i class="fa fa-male"></i></div><div class="feature-box-containt"><h3><a href="' + profile.url + '" target="_blank">' + profile.displayName + '</a></h3><p><a href="' + profile.url + '" target="_blank"><img src="' + profile.image.url + '"></a></p><p><img src="' + profile.cover.coverPhoto.url + '"></p></div></div></div>');
+          } else {
+            $('#profile').append('<div class="col-md-12"><div class="feature-box-style2"><div class="feature-box-title"><i class="fa fa-male"></i></div><div class="feature-box-containt"><h3><a href="' + profile.url + '" target="_blank">' + profile.displayName + '</a></h3><p><a href="' + profile.url + '" target="_blank"><img src="' + profile.image.url + '"></a></p></div></div></div>');
+          }
+        } else {
+          if (profile.cover && profile.cover.coverPhoto) {
+            $('#profile').append('<div class="col-md-12"><div class="feature-box-style2"><div class="feature-box-title"><i class="fa fa-female"></i></div><div class="feature-box-containt"><h3><a href="' + profile.url + '" target="_blank">' + profile.displayName + '</a></h3><p><a href="' + profile.url + '" target="_blank"><img src="' + profile.image.url + '"></a></p><p><img src="' + profile.cover.coverPhoto.url + '"></p></div></div></div>');
+          } else {
+            $('#profile').append('<div class="col-md-12"><div class="feature-box-style2"><div class="feature-box-title"><i class="fa fa-female"></i></div><div class="feature-box-containt"><h3><a href="' + profile.url + '" target="_blank">' + profile.displayName + '</a></h3><p><a href="' + profile.url + '" target="_blank"><img src="' + profile.image.url + '"></a></p></div></div></div>');
+          }
         }
       });
       $('#authOps').show('slow');
@@ -201,11 +206,9 @@ var helper = (function() {
      */
     appendCircled: function(people) {
       $('#visiblePeople').empty();
-
-      $('#visiblePeople').append('Number of Friends: ' + people.totalItems + '<br/>');
       for (var personIndex in people.items) {
         person = people.items[personIndex];
-        $('#visiblePeople').append('<a href="' + person.url + '" target="_blank">' + '<img src="' + person.image.url + '">' + person.displayName  + '</a><br/>');
+        $('#visiblePeople').append('<div class="col-md-6"><div class="feature-box-style2"><div class="feature-box-title"><i class="fa fa-users"></i></div><div class="feature-box-containt"><h3><a href="' + person.url + '" target="_blank">' + person.displayName + '</a></h3><p><a href="' + person.url + '" target="_blank"><img src="' + person.image.url + '"></a></p></div></div></div>');
       }
     },
     /**
@@ -213,10 +216,9 @@ var helper = (function() {
      */
     appendCalendar: function(events) {
       $('#calendarEvent').empty();
-      $('#calendarEvent').append('Number of Events: ' + events.items.length + '<br/>');
       for (var eventIndex in events.items) {
         event = events.items[eventIndex];
-        $('#calendarEvent').append('Created At: ' + event.created.substring(0, 10) + ', Summary: <a href="' + event.htmlLink + '" target="_blank"> ' + event.summary + '</a><br/>'+ '<a onclick=helper.deleteEvent("'+ event.id + '"); href="#" >Delete</a><br/>'+'<a data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendar_events/' + event.id + '">Update</a><br/>');
+        $('#calendarEvent').append('<div class="col-md-6"><div class="feature-box-style2"><div class="feature-box-title"><i class="fa fa-calendar"></i></div><div class="feature-box-containt"><h3><a href="' + event.htmlLink + '" target="_blank"> ' + event.summary + '</a></h3><p>' + event.description + ' <a onclick=helper.deleteEvent("'+ event.id + '"); href="javascript:void(0)" class="btn btn-primary btn-main-o" >Delete</a> <a class="btn btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendar_events/' + event.id + '">Update</a></p></div></div></div>');
       }
     },
     /**
@@ -234,11 +236,11 @@ var helper = (function() {
      * Displays available Task Lists retrieved from server.
      */
     appendTaskLists: function(taskLists) {
-      $('#taskLists').empty();
-      $('#taskLists').append('Number of task lists: ' + taskLists.items.length + '<br/>');
+      // $('#taskLists').empty();
+      // $('#taskLists').append('Number of task lists: ' + taskLists.items.length + '<br/>');
       for (var taskListIndex in taskLists.items) {
         taskList = taskLists.items[taskListIndex];
-        $('#taskLists').append('Title: ' + taskList.title + '<br/>');
+        // $('#taskLists').append('Title: ' + taskList.title + '<br/>');
         helper.tasks(taskList.id);
       }
     },
@@ -249,9 +251,9 @@ var helper = (function() {
       for (var taskIndex in tasks.items) {
         task = tasks.items[taskIndex];
         if (task.status == "completed") {
-          $('#tasksCompleted').append('- Title: ' + task.title + ', Notes: ' + task.notes + ', Due Date: ' + task.due.substring(0, 10) + ', Completed at: ' + task.completed.substring(0,10) + '<br/>');
+          $('#tasksCompleted').append('<p>- Title: ' + task.title + ', Notes: ' + task.notes + ', Completed at: ' + task.completed.substring(0,10) + '</p>');
         } else {
-          $('#tasksPending').append('- Title: ' + task.title + ', Notes: ' + task.notes + ', Due Date: ' + task.due.substring(0, 10) + '<br/>');
+          $('#tasksPending').append('<p>- Title: ' + task.title + ', Notes: ' + task.notes + ', Due Date: ' + task.due.substring(0, 10) + '</p>');
         }
       }
     },

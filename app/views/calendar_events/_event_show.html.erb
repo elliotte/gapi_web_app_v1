@@ -1,42 +1,41 @@
-<div class="modal-header">
-  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-  <h3 id="myModalLabel">Event Details</h3>
-</div>
-<div class="modal-body">
-  <%= form_tag("/calendar_events/#{event.id}", :id => "update_event", :method => "put") do %>
-    <div class="form-group">
-      Summary: <%= text_field_tag "event[summary]", event.summary, class: "form-control", placeholder: "Summary", id: "summary" %> <br/>
-      Start Time: <%= text_field_tag "event[start_time]", event.start.dateTime, class: "form-control", placeholder: "Start Time", id: "start_time" %> <br/>
-      End Time: <%= text_field_tag "event[end_time]", event.end.dateTime, class: "form-control", placeholder: "End Time", id: "end_time" %> <br/>
-      Location: <%= text_field_tag "event[location]", event.location, class: "form-control", placeholder: "Location", id: "location" %> <br/>
-      Organizer Name: <%= text_field_tag "event[organizer_name]", event.organizer.displayName, class: "form-control", placeholder: "Organizer Name", id: "organizer_name" %> <br/>
-      Organizer Email: <%= text_field_tag "event[organizer_email]", event.organizer.email, class: "form-control", placeholder: "Organizer Email", id: "organizer_email" %> <br/>
-      Creator Name: <%= text_field_tag "event[creator_name]", event.creator.displayName, class: "form-control", placeholder: "Creator Name", id: "creator_name" %> <br/>
-      Creator Email: <%= text_field_tag "event[creator_email]", event.creator.email, class: "form-control", placeholder: "Creator Email", id: "creator_email" %> <br/>
-      <% if event.attendees %>
-        Attendees (<%= event.attendees.length %>) :-
-        <% event.attendees.each_with_index do |attendee, index| %>
-          <%= index + 1 %> :
-          Name: <%= text_field_tag "event[attendee_name][]", attendee.displayName, class: "form-control", placeholder: "Attendee Name", id: "attendee_name_#{index+1}" %> <br/>
-          Email: <%= text_field_tag "event[attendee_email][]", attendee.email, class: "form-control", placeholder: "Attendee Email", id: "attendee_email_#{index+1}" %> <br/>
-          Response Status: <%= text_field_tag "event[attendee_response_status][]", attendee.responseStatus, class: "form-control", placeholder: "Attendee Response Status", id: "attendee_response_status_#{index+1}" %> <br/>
-        <% end %>
-      <% end %>
-      <%#= text_field_tag "event[attendee_name][]", "", class: "form-control", placeholder: "Attendee Name", id: "attendee_name" %> <br/>
-      <%#= text_field_tag "event[attendee_email][]", "", class: "form-control", placeholder: "Attendee Email", id: "attendee_email" %> <br/>
-      <%#= text_field_tag "event[attendee_response_status][]", "", class: "form-control", placeholder: "Attendee Response Status", id: "attendee_response_status" %> <br/>
-      <br/>
-      Description: <%= text_field_tag "event[description]", event.description, class: "form-control", placeholder: "Description", id: "description" %> <br/>
-      Status: <%= text_field_tag "event[status]", event.status, class: "form-control", placeholder: "Status", id: "status" %> <br/>
-      Visibility: <%= text_field_tag "event[visibility]", event.visibility, class: "form-control", placeholder: "Visibility", id: "visibility" %> <br/>
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="myModalLabel">Event Details</h3>
     </div>
-  <% end %>
+    <div class="modal-body">
+      <%= form_tag("/calendar_events/#{event.id}", :id => "update_event", :method => "put") do %>
+        <div class="form-group">
+          Summary: <%= text_field_tag "event[summary]", event.summary, class: "form-control", placeholder: "Summary", id: "summary" %>
+          Start Time: <%= text_field_tag "event[start_time]", event.start.dateTime, class: "form-control", placeholder: "Start Time", id: "start_time" %>
+          End Time: <%= text_field_tag "event[end_time]", event.end.dateTime, class: "form-control", placeholder: "End Time", id: "end_time" %>
+          Location: <%= text_field_tag "event[location]", event.location, class: "form-control", placeholder: "Location", id: "location" %>
+          Organizer Name: <%= text_field_tag "event[organizer_name]", event.organizer.displayName, class: "form-control", placeholder: "Organizer Name", id: "organizer_name" %>
+          Organizer Email: <%= text_field_tag "event[organizer_email]", event.organizer.email, class: "form-control", placeholder: "Organizer Email", id: "organizer_email" %>
+          Creator Name: <%= text_field_tag "event[creator_name]", event.creator.displayName, class: "form-control", placeholder: "Creator Name", id: "creator_name" %>
+          Creator Email: <%= text_field_tag "event[creator_email]", event.creator.email, class: "form-control", placeholder: "Creator Email", id: "creator_email" %>
+          <% if event.attendees %>
+            Attendees (<%= event.attendees.length %>) :-
+            <% event.attendees.each_with_index do |attendee, index| %>
+              <%= index + 1 %> :
+              Name: <%= text_field_tag "event[attendee_name][]", attendee.displayName, class: "form-control", placeholder: "Attendee Name", id: "attendee_name_#{index+1}" %>
+              Email: <%= text_field_tag "event[attendee_email][]", attendee.email, class: "form-control", placeholder: "Attendee Email", id: "attendee_email_#{index+1}" %>
+              Response Status: <%= text_field_tag "event[attendee_response_status][]", attendee.responseStatus, class: "form-control", placeholder: "Attendee Response Status", id: "attendee_response_status_#{index+1}" %>
+            <% end %>
+          <% end %>
+          Description: <%= text_field_tag "event[description]", event.description, class: "form-control", placeholder: "Description", id: "description" %>
+          Status: <%= text_field_tag "event[status]", event.status, class: "form-control", placeholder: "Status", id: "status" %>
+          Visibility: <%= text_field_tag "event[visibility]", event.visibility, class: "form-control", placeholder: "Visibility", id: "visibility" %>
+        </div>
+      <% end %>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+      <button class="btn btn-primary" id="update_button">Update</button>
+    </div>
+  </div>
 </div>
-<div class="modal-footer">
-  <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-  <button class="btn btn-primary" id="update_button">Update</button>
-</div>
-
 <script type="text/javascript">
   $('#update_button').click(function(){
     $('#update_event').submit();

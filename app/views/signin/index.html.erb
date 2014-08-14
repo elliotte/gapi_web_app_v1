@@ -1,44 +1,232 @@
-<div id="gConnect">
-	<button class="g-signin"
-	    data-scope="<%= ENV['PLUS_LOGIN_SCOPE'] %>"
-	    data-requestvisibleactions="http://schemas.google.com/AddActivity"
-	    data-clientId="<%= ENV['CLIENT_ID'] %>"
-	    data-accesstype="offline"
-	    data-callback="onSignInCallback"
-	    data-theme="dark"
-	    data-cookiepolicy="single_host_origin">
-	</button>
-</div>
-<div id="authOps">
-	<h2>You are now signed in to the app using Google+</h2>
-	<p>If you chooses to disconnect, the app deletes all stored information retrieved from Google.</p>
-	<button id="disconnect" >Disconnect your Google account from this app</button>
+<div class="backstretch-overlayer"></div>
 
-	<h2>Your's profile information.</h2>
-	<div id="profile"></div>
+<!-- gn-menu-main -->
+<ul id="gn-menu" class="gn-menu-main">
+    <!-- gn-trigger -->
+    <li class="gn-trigger">
+		<!-- gn-icon-menu -->
+        <a class="gn-icon-menu" href="javascript:void(0)"><i class="fa fa-bars"></i> Menu</a>
+		<!-- gn-menu-wrapper -->
+        <nav class="gn-menu-wrapper">
+			<!-- gn-scroller -->
+            <div class="gn-scroller">
+				<!-- gn-menu -->
+                <ul class="gn-menu">
+                    <li><a class="gn-active" href="javascript:void(0)" title="Home"><i class="fa fa-home"></i> Home</a></li>
+                    <li><a href="javascript:void(0)" title="About Us"><i class="fa fa-user"></i> About Us</a></li>
+                    <li><a href="javascript:void(0)" title="Contact Us"><i class="fa fa-phone"></i> Contact Us</a></li>
+                </ul><!-- /gn-menu -->
+            </div><!-- /gn-scroller -->
+		</nav><!-- /gn-menu-wrapper -->
+    </li><!-- /gn-trigger -->
+    <!-- #menu-social-icons -->
+    <li id="menu-social-icons">
+        <!-- menu-social-icons -->
+        <ul class="menu-social-icons">
+           	<!-- search -->
+           	<li>
+				<div class="col-xs-12">
+					<input class="form-control" type="search" id="search_p" placeholder="Search" style="color: #E6E6E6;background-color: #7B7B7B;border: 1px solid #7B7B7B;border-radius: 0px;" />
+					<span class="glyphicon glyphicon-search" style="position: absolute;right: 0;padding: 8px 27px;color: #E6E6E6;"></span>
+				</div>
+			</li> <!-- /search -->
+            <li><a href="javascript:void(0)" title="Discover Virgin">DISCOVER VIRGIN <i class="fa fa-th-large"></i></a></li>
+            <li>
+            	<div id="gConnect" style="padding-top: 9px;">
+					<button class="g-signin"
+	    				data-scope="<%= ENV['PLUS_LOGIN_SCOPE'] %>"
+	    				data-requestvisibleactions="http://schemas.google.com/AddActivity"
+					    data-clientId="<%= ENV['CLIENT_ID'] %>"
+					    data-accesstype="offline"
+					    data-callback="onSignInCallback"
+					    data-theme="dark"
+					    data-cookiepolicy="single_host_origin">
+					</button>
+				</div>
+            </li>
+        </ul><!-- /menu-social-icons -->
+    </li><!-- /#menu-social-icons -->
+</ul><!-- /gn-menu-main -->
 
-	<h2>Your's friends.</h2>
-	<div id="visiblePeople"></div>
+<!-- home-section -->
+<section id="home-section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+		</div> <!-- /row -->
+	</div><!-- /container -->
+</section><!-- /home-section -->
 
-	<h2>Your's calendar events.</h2>
-	<div id="calendarEvent"></div>
+<!-- white-section -->
+<section id="white-section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+        	<!-- col-md-12 -->
+		    <div class="col-md-12">
+		    	<div id="authOps">
+					<h2>You are now signed in to the app using Google+</h2>
+					<p>If you chooses to disconnect, the app deletes all stored information retrieved from Google.</p>
 
-	<h2>Your's drive files.</h2>
-	<div id="driveFiles"></div>
+					<a href="javascript:void(0)" title="Sign Out" class="btn btn-sm btn-main-o" id="disconnect">Sign Out</a>
 
-	<h2>Your's task lists.</h2>
-	<div id="taskLists"></div>
+					<!-- col-md-12 -->
+			        <div class="col-md-12">
+	                    <!-- section-title -->
+	                    <div class="section-title">
+	                        <!-- main-title -->
+	                        <div class="main-title">
+	                            <h2>Profile Information</h2>
+	                        </div><!-- /main-title -->
+	                    </div><!-- /section-title -->
+			        </div><!-- /col-md-12 -->
 
-	<h2>Your's tasks.</h2>
-	<div id="tasksCompleted">Completed Tasks: <br/></div>
-	<div id="tasksPending">Pending Tasks: <br/></div>
+	                <!-- feature-boxs-wrapper -->
+	                <div class="feature-boxs-wrapper">
+	                	<div id="profile">
+		                </div>
+	                </div><!-- /feature-boxs-wrapper -->
 
-	<h2>Your's activity feeds.</h2>
-	<div id="activityFeeds"></div>
+					<!-- col-md-12 -->
+			        <div class="col-md-12">
+	                    <!-- section-title -->
+	                    <div class="section-title">
+	                        <!-- main-title -->
+	                        <div class="main-title">
+	                            <h2>Tasks</h2>
+	                        </div><!-- /main-title -->
+	                    </div><!-- /section-title -->
+			        </div><!-- /col-md-12 -->
 
-	<div id="state" class="hide"><%= @state %></div>
+	                <!-- feature-boxs-wrapper -->
+	                <div class="feature-boxs-wrapper">
+	                    <!-- col-md-6 -->
+	                    <div class="col-md-6">
+	                        <!-- feature-box-style2 -->
+	                        <div class="feature-box-style2">
+	                            <!-- feature-box-title -->
+	                            <div class="feature-box-title">
+	                                <!-- icon -->
+	                                <i class="fa fa-search"></i>
+	                            </div><!-- /feature-box-title -->
+	                            <!-- feature-box-containt -->
+	                            <div class="feature-box-containt">
+	                                <h3>Completed Tasks</h3>
+	                                <div id="tasksCompleted"></div>
+	                            </div><!-- /feature-box-containt -->
+	                        </div><!-- /feature-box-style2 -->
+	                    </div><!-- /col-md-6 -->
+	                    <!-- col-md-6 -->
+	                    <div class="col-md-6">
+	                        <!-- feature-box-style2 -->
+	                        <div class="feature-box-style2">
+	                            <!-- feature-box-title -->
+	                            <div class="feature-box-title">
+	                                <!-- icon -->
+	                                <i class="fa fa-search"></i>
+	                            </div><!-- /feature-box-title -->
+	                            <!-- feature-box-containt -->
+	                            <div class="feature-box-containt">
+	                                <h3>Pending Tasks</h3>
+	                                <div id="tasksPending"></div>
+	                            </div><!-- /feature-box-containt -->
+	                        </div><!-- /feature-box-style2 -->
+	                    </div><!-- /col-md-6 -->
+	                </div><!-- /feature-boxs-wrapper -->
 
-	<div class="g-hangout" data-render="createhangout"></div>
+	                <!-- col-md-12 -->
+			        <div class="col-md-12">
+	                    <!-- section-title -->
+	                    <div class="section-title">
+	                        <!-- main-title -->
+	                        <div class="main-title">
+	                            <h2>Calendar Events</h2>
+	                        </div><!-- /main-title -->
+	                    </div><!-- /section-title -->
+			        </div><!-- /col-md-12 -->
 
-	<div id="modal-window" class="modal hide fade"></div>
-</div>
+	                <!-- feature-boxs-wrapper -->
+	                <div class="feature-boxs-wrapper">
+	                	<div id="calendarEvent">
+		                </div>
+	                </div><!-- /feature-boxs-wrapper -->
+
+	                <!-- col-md-12 -->
+			        <div class="col-md-12">
+	                    <!-- section-title -->
+	                    <div class="section-title">
+	                        <!-- main-title -->
+	                        <div class="main-title">
+	                            <h2>Friends</h2>
+	                        </div><!-- /main-title -->
+	                    </div><!-- /section-title -->
+			        </div><!-- /col-md-12 -->
+
+	                <!-- feature-boxs-wrapper -->
+	                <div class="feature-boxs-wrapper">
+	                	<div id="visiblePeople">
+		                </div>
+	                </div><!-- /feature-boxs-wrapper -->
+
+	                <h2>Your's drive files.</h2>
+					<div id="driveFiles"></div>
+
+					<h2>Your's activity feeds.</h2>
+					<div id="activityFeeds"></div>
+
+					<div id="state" class="hide"><%= @state %></div>
+
+					<div class="g-hangout" data-render="createhangout"></div>
+
+					<div class="modal fade" id="modal-window" tabindex="-1" role="dialog" aria-hidden="true"></div>
+				</div>
+			</div><!-- /col-md-12 -->
+		</div> <!-- /row -->
+	</div><!-- /container -->
+</section><!-- /white-section -->
+
+<!-- footer -->
+<div class="footer">
+    <!-- container -->
+	<div class="container">
+		<!-- row -->
+		<div class="row">
+            <div class="topcontrol">
+                <a href="#" title="To Top"><i class="fa fa-angle-up"></i></a>
+            </div>
+        </div><!-- /row -->
+	</div><!-- /container -->
+
+    <!-- copy-right -->
+    <div class="copyright">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-9">
+                     <p>Copyright &copy; <%= Time.now.year %> <a href="javascript:void(0)">virgin.com</a> All rights reserved!</p>
+                </div>
+                <div class="col-md-3">
+                    <!-- social-icons -->
+                    <ul class="social-icons">
+                        <li><a href="javascript:void(0)" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="javascript:void(0)" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="javascript:void(0)" title="Google Plus"><i class="fa fa-google-plus"></i></a></li>
+                        <li><a href="javascript:void(0)" title="LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+                    </ul><!-- /social-icons -->
+                </div>
+            </div><!-- /row -->
+        </div><!-- /container -->
+    </div><!-- /copy-right -->
+</div><!-- /footer -->
+
+<script type="text/javascript">
+    $('#home-section').backstretch([
+                "/assets/slider/1-1920x1080.jpg"
+    ], {
+        fade: 750,
+        duration: 25000
+    });
+</script>

@@ -482,30 +482,6 @@ jQuery(document).ready(function () {
 
 
     /* ==========================================================================
-    Counter
-    ========================================================================== */
-    counter_url = 'php/social_counter.php';
-    social_networks = [ 'facebook_Count', 'youtube_Count' ];
-    $(function () {
-        $.each(social_networks, function (key) {
-            $('.' + social_networks[key]).html('<img src="images/ajax-load-black.gif" />');
-        });
-
-        $.each(social_networks, function (key) {
-            $.ajax({
-                type: "POST",
-                url: counter_url,
-                data: 'act=' + social_networks[key],
-                error : 'error',
-                success: function (html) {
-                    $('.' + social_networks[key]).html(html);
-                }
-            });
-        });
-    });
-
-
-    /* ==========================================================================
     Progrss Counter
     ========================================================================== */
     $("h2[data-to]").each(function () {
@@ -514,41 +490,6 @@ jQuery(document).ready(function () {
         $this.waypoint(function () {
             $this.countTo({});
         }, {offset: '90%', triggerOnce: true});
-    });
-
-
-    /* ==========================================================================
-    FORM Validation
-    ========================================================================== */
-    $('form#form').submit(function () {
-        $('form#form .error').remove();
-        var hasError = false;
-        $('.requiredField').each(function () {
-            if (jQuery.trim($(this).val()) === '') {
-                $(this).parent().append('<span class="error"><i class="fa fa-exclamation-triangle"></i></span>');
-                $(this).addClass('inputError');
-                hasError = true;
-            } else if ($(this).hasClass('email')) {
-                var emailReg = /^([\w-\.]+@([\w]+\.)+[\w]{2,4})?$/;
-                if (!emailReg.test(jQuery.trim($(this).val()))) {
-                    $(this).parent().append('<span class="error"><i class="fa fa-exclamation-triangle"></i></span>');
-                    $(this).addClass('inputError');
-                    hasError = true;
-                }
-            }
-        });
-        if (!hasError) {
-            $('form#form input.submit').fadeOut('normal', function () {
-                $(this).parent().append('');
-            });
-            formInput = $(this).serialize();
-            $.post($(this).attr('action'), formInput, function (data) {
-                $('form#form').slideUp("fast", function () {
-                    $(this).before('<p class="success">Thanks! Your email was successfully sent. We will contact you asap.</p>');
-                });
-            });
-        }
-        return false;
     });
 
 
