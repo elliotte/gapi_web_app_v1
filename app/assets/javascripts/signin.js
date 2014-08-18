@@ -7,7 +7,7 @@
 })();
 
 var helper = (function() {
-  var authResult = undefined;
+var authResult = undefined;
 
   return {
     /**
@@ -103,9 +103,9 @@ var helper = (function() {
           console.log(result);
           helper.people();
           helper.calendar();
-          helper.drive();
+          helper.files();
           helper.task_lists();
-          helper.activity_feed();
+          helper.activities();
         },
         processData: false,
         data: this.authResult.code + ',' + this.authResult.id_token + ',' + this.authResult.access_token
@@ -144,10 +144,10 @@ var helper = (function() {
     /**
      * Calls the server endpoint to get the list of files in google drive.
      */
-    drive: function() {
+    files: function() {
       $.ajax({
         type: 'GET',
-        url: '/signin/drive',
+        url: '/files',
         contentType: 'application/octet-stream; charset=utf-8',
         success: function(result) {
           console.log(result);
@@ -189,10 +189,10 @@ var helper = (function() {
     /**
      * Calls the server endpoint to get the list of Activities.
      */
-    activity_feed: function() {
+    activities: function() {
       $.ajax({
         type: 'GET',
-        url: '/signin/activity_feed',
+        url: '/activities',
         contentType: 'application/octet-stream; charset=utf-8',
         success: function(result) {
           console.log(result);
@@ -226,21 +226,17 @@ var helper = (function() {
      */
     appendDrive: function(drive) {
       $('#driveFiles').empty();
-      $('#driveFiles').append('Number of files in drive: ' + drive.items.length + '<br/>');
       for (var itemIndex in drive.items) {
         item = drive.items[itemIndex];
-        $('#driveFiles').append('Created Date: ' + item.createdDate.substring(0, 10) + ', Title: <a href="' + item.alternateLink + '" target="_blank"> ' + item.title + '</a><br/>');
+        $('#driveFiles').append('<div class="col-md-3"><div class="feature-box-style2"><div class="feature-box-title"><i class="fa fa-file"></i></div><div class="feature-box-containt"><h3><a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a></h3></div></div></div>');
       }
     },
     /**
      * Displays available Task Lists retrieved from server.
      */
     appendTaskLists: function(taskLists) {
-      // $('#taskLists').empty();
-      // $('#taskLists').append('Number of task lists: ' + taskLists.items.length + '<br/>');
       for (var taskListIndex in taskLists.items) {
         taskList = taskLists.items[taskListIndex];
-        // $('#taskLists').append('Title: ' + taskList.title + '<br/>');
         helper.tasks(taskList.id);
       }
     },
@@ -262,11 +258,9 @@ var helper = (function() {
      */
     appendActivity: function(activity) {
       $('#activityFeeds').empty();
-
-      $('#activityFeeds').append('Number of Activity Feeds: ' + activity.items.length + '<br/>');
       for (var activityIndex in activity.items) {
         item = activity.items[activityIndex];
-        $('#activityFeeds').append('Title: ' + item.title + ', Content: ' + item.object.content + '<br/>');
+        $('#activityFeeds').append('<div class="col-md-3"><div class="feature-box-style2"><div class="feature-box-title"><i class="fa fa-archive"></i></div><div class="feature-box-containt"><h3><a href="' + item.url + '" target="_blank">' + item.title + '</a></h3></div></div></div>');
       }
     },
     /**

@@ -48,27 +48,15 @@ class SigninController < ApplicationController
     render json: JSON.parse(response).to_json
   end
 
-  def drive
-    # Authorizing the client and constructing a Google+ service.
-    drive = $client.discovered_api('drive', 'v2')
+  # def drive
+  #   # Authorizing the client and constructing a Google+ service.
+  #   drive = $client.discovered_api('drive', 'v2')
 
-    # Get the list of files in drive
-    response = $client.execute(:api_method => drive.files.list)
+  #   # Get the list of files in drive
+  #   response = $client.execute(:api_method => drive.files.list)
 
-    render json: response.data.to_json
-  end
-
-  def activity_feed
-    # Authorizing the client and constructing a Google+ service.
-    plus = $client.discovered_api('plus', 'v1')
-
-    # Get the list of Activities as JSON.
-    response = $client.execute!(plus.activities.list,
-                                :collection => 'public',
-                                :userId => 'me').body
-
-    render json: JSON.parse(response).to_json
-  end
+  #   render json: response.data.to_json
+  # end
 
   def disconnect
     # Using either the refresh or access token to revoke if present.

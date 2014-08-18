@@ -2,17 +2,17 @@ GooglePlay::Application.routes.draw do
   resources :signin, :only => [:index] do
     collection do
       get :people
-      get :drive
-      get :task_lists
-      get :tasks
-      get :activity_feed
       post :connect
       post :disconnect
       post :save_user
     end
   end
 
+  resources :activities, :only => [:index, :show]
+
   resources :calendar_events, :only => [:index, :show, :update, :destroy]
+
+  resources :files, :only => [:index, :show, :create]
 
   resources :task_lists, :only => [:index, :show, :create, :update, :destroy] do
     resources :tasks, :only => [:index, :show, :create, :update, :destroy] do
