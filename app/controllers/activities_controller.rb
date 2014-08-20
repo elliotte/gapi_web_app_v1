@@ -19,6 +19,20 @@ class ActivitiesController < ApplicationController
     	render json: JSON.parse(response).to_json
 	end
 
+	def search
+    	# Search public activities.
+    	if params[:page_token].present?
+		    response = $client.execute!(@plus.activities.search,
+  										{'query' => params[:query],
+		                                'pageToken' => params[:page_token]}).body
+		else
+			response = $client.execute!(@plus.activities.search,
+  										{'query' => params[:query]}).body
+		end
+
+    	render json: JSON.parse(response).to_json
+	end
+
 	private
 
 	def discover_api

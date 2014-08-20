@@ -7,7 +7,7 @@
 })();
 
 var helper = (function() {
-var authResult = undefined;
+  var authResult = undefined;
 
   return {
     /**
@@ -117,7 +117,7 @@ var authResult = undefined;
     people: function() {
       $.ajax({
         type: 'GET',
-        url: '/signin/people',
+        url: '/peoples',
         contentType: 'application/octet-stream; charset=utf-8',
         success: function(result) {
           console.log(result);

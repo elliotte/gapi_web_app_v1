@@ -1,6 +1,6 @@
 class SigninController < ApplicationController
 
-  before_filter :verify_token, except: [:index, :connect, :save_user]
+  skip_before_filter :verify_token, except: [:disconnect]
 
   def index
     # Create a string for verification
@@ -36,28 +36,6 @@ class SigninController < ApplicationController
     end
   end
 
-  def people
-    # Authorizing the client and constructing a Google+ service.
-    plus = $client.discovered_api('plus', 'v1')
-
-    # Get the list of people as JSON.
-    response = $client.execute!(plus.people.list,
-        :collection => 'visible',
-        :userId => 'me').body
-
-    render json: JSON.parse(response).to_json
-  end
-
-  # def drive
-  #   # Authorizing the client and constructing a Google+ service.
-  #   drive = $client.discovered_api('drive', 'v2')
-
-  #   # Get the list of files in drive
-  #   response = $client.execute(:api_method => drive.files.list)
-
-  #   render json: response.data.to_json
-  # end
-
   def disconnect
     # Using either the refresh or access token to revoke if present.
     token = session[:token]
@@ -81,15 +59,6 @@ class SigninController < ApplicationController
       render json: 'User is saved.'.to_json
     else
       render json: 'User is not saved.'.to_json
-    end
-  end
-
-  def verify_token
-    # Check for stored credentials in the current user's session.
-    if !session[:token]
-      render json: 'User is not connected.'.to_json
-    else
-      $client.authorization.access_token = session[:token]
     end
   end
 end
