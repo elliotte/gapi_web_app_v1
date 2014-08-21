@@ -1,7 +1,7 @@
 class RepliesController < ApplicationController
 
 	before_action :discover_api
-	before_action :get_reply, only: [:show]
+	before_action :get_reply, only: [:show, :update]
 
 	def index
 		# Lists all of the replies to a comment.
@@ -21,6 +21,44 @@ class RepliesController < ApplicationController
 
 	def show
 		render json: @response.data.to_json
+	end
+
+	def create
+		# Creates a new reply to the given comment.
+		reply = @drive.replies.insert.request_schema.new({
+		    'content' => params[:content]
+		})
+		
+		response = $client.execute( :api_method => @drive.replies.insert,
+								    :body_object => reply,
+								    :parameters => {'fileId' => params[:file_id],
+								      				'commentId' => params[:comment_id] })
+
+		render json: response.data.to_json
+	end
+
+	def update
+		# Updates an existing reply.
+		reply = @response.data
+	    reply.content = params[:content]
+
+	    result = $client.execute( :api_method => @drive.replies.update,
+							      :body_object => reply,
+							      :parameters => {'fileId' => params[:file_id],
+      											'commentId' => params[:comment_id],
+      											'replyId' => params[:id] })
+
+	    render json: result.data.to_json
+	end
+
+	def destroy
+		# Deletes a reply.
+		response = $client.execute(:api_method => @drive.replies.delete,
+							      :parameters => {'fileId' => params[:file_id],
+      											'commentId' => params[:comment_id],
+      											'replyId' => params[:id] })
+
+	    render json: response.data.to_json
 	end
 
 	private

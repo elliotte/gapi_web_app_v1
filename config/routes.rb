@@ -16,11 +16,15 @@ GooglePlay::Application.routes.draw do
 
   resources :comments, :only => [:show]
 
+  resources :calendars, :only => [:show]
+
   resources :calendar_events, :only => [:index, :show, :update, :destroy]
+
+  resources :calendar_lists, :only => [:index, :show, :create, :update, :destroy]
 
   resources :files, :only => [:index, :show, :create, :update, :destroy] do
     resources :file_comments, :only => [:index, :show, :create, :update, :destroy], :path => 'comments', :as => 'comments' do
-      resources :replies, :only => [:index, :show]
+      resources :replies, :only => [:index, :show, :create, :update, :destroy]
     end
     member do
       post :copy
