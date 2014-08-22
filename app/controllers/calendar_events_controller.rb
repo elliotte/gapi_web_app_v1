@@ -6,7 +6,7 @@ class CalendarEventsController < ApplicationController
 	def index
     # Get the list of calendar events.
     response = $client.execute(:api_method => @calendar.events.list,
-                              :parameters => {'calendarId' => 'primary'})
+                              :parameters => {'calendarId' => params[:calendar_id]})
 
     render json: response.data.to_json
   end
@@ -18,7 +18,35 @@ class CalendarEventsController < ApplicationController
     end
   end
 
+  def create
+    # Creates an event.
+    event = {
+      'summary' => params[:summary],
+      'location' => params[:location],
+      'description' => params[:description],
+      'start' => {
+        'dateTime' => params[:start_time].to_datetime
+      },
+      'end' => {
+        'dateTime' => params[:end_time].to_datetime
+      },
+      'attendees' => [
+        {
+          'email' => params[:attendees][:email]
+        }
+      ]
+    }
+
+    response = $client.execute(:api_method => @calendar.events.insert,
+                              :parameters => {'calendarId' => params[:calendar_id]},
+                              :body => JSON.dump(event),
+                              :headers => {'Content-Type' => 'application/json'})
+
+    render json: response.data.to_json
+  end
+
   def update
+    # Updates an event.
     event = @response.data
 
     event.summary = params[:event][:summary] if params[:event][:summary].present? # Title of the event (string)
@@ -49,7 +77,7 @@ class CalendarEventsController < ApplicationController
     end
 
     result = $client.execute(:api_method => @calendar.events.update,
-                            :parameters => {'calendarId' => 'primary', 'eventId' => event.id},
+                            :parameters => {'calendarId' => params[:calendar_id], 'eventId' => event.id},
                             :body_object => event,
                             :headers => {'Content-Type' => 'application/json'})
     
@@ -57,8 +85,18 @@ class CalendarEventsController < ApplicationController
   end
 
   def destroy
+    # Deletes an event.
     response = $client.execute(:api_method => @calendar.events.delete,
-                            :parameters => {'calendarId' => 'primary', 'eventId' => params[:id]})
+                              :parameters => {'calendarId' => params[:calendar_id], 'eventId' => params[:id]})
+
+    render json: response.data.to_json
+  end
+
+  def move
+    # Moves an event to another calendar, i.e. changes an event's organizer.
+    response = $client.execute(:api_method => @calendar.events.move,
+                              :parameters => {'calendarId' => params[:calendar_id], 'eventId' => params[:id],
+                                              'destination' => params[:destination_calendar_id]})
 
     render json: response.data.to_json
   end
@@ -73,6 +111,6 @@ class CalendarEventsController < ApplicationController
   def get_event
     # Get the event.
     @response = $client.execute(:api_method => @calendar.events.get,
-                            :parameters => {'calendarId' => 'primary', 'eventId' => params[:id]})
+                                :parameters => {'calendarId' => params[:calendar_id], 'eventId' => params[:id]})
   end
 end

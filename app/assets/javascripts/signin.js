@@ -132,7 +132,7 @@ var helper = (function() {
     calendar: function() {
       $.ajax({
         type: 'GET',
-        url: '/calendar_events',
+        url: '/calendars/primary/events',
         contentType: 'application/octet-stream; charset=utf-8',
         success: function(result) {
           console.log(result);
@@ -218,7 +218,7 @@ var helper = (function() {
       $('#calendarEvent').empty();
       for (var eventIndex in events.items) {
         event = events.items[eventIndex];
-        $('#calendarEvent').append('<div class="col-md-6"><div class="feature-box-style2"><div class="feature-box-title"><i class="fa fa-calendar"></i></div><div class="feature-box-containt"><h3><a href="' + event.htmlLink + '" target="_blank"> ' + event.summary + '</a></h3><p>' + event.description + ' <a onclick=helper.deleteEvent("'+ event.id + '"); href="javascript:void(0)" class="btn btn-primary btn-main-o" >Delete</a> <a class="btn btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendar_events/' + event.id + '">Update</a></p></div></div></div>');
+        $('#calendarEvent').append('<div class="col-md-6"><div class="feature-box-style2"><div class="feature-box-title"><i class="fa fa-calendar"></i></div><div class="feature-box-containt"><h3><a href="' + event.htmlLink + '" target="_blank"> ' + event.summary + '</a></h3><p>' + event.description + ' <a onclick=helper.deleteEvent("'+ event.id + '"); href="javascript:void(0)" class="btn btn-primary btn-main-o" >Delete</a> <a class="btn btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendars/primary/events/' + event.id + '">Update</a></p></div></div></div>');
       }
     },
     /**
@@ -268,7 +268,7 @@ var helper = (function() {
      */
     deleteEvent: function(event_id) {
       $.ajax({
-        url: "/calendar_events/" + event_id ,
+        url: "/calendars/primary/events/" + event_id ,
         type: "delete",
         contentType: 'application/octet-stream; charset=utf-8',
         success: function(result) {
