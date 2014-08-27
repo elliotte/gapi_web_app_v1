@@ -106,6 +106,7 @@ var helper = (function() {
           helper.files();
           helper.task_lists();
           helper.activities();
+          helper.circles();
         },
         processData: false,
         data: this.authResult.code + ',' + this.authResult.id_token + ',' + this.authResult.access_token
@@ -197,6 +198,20 @@ var helper = (function() {
         success: function(result) {
           console.log(result);
           helper.appendActivity(result);
+        },
+        processData: false
+      });
+    },
+    /**
+     * Calls the server endpoint to get the list of Circles.
+     */
+    circles: function() {
+      $.ajax({
+        type: 'GET',
+        url: '/circles',
+        contentType: 'application/octet-stream; charset=utf-8',
+        success: function(result) {
+          console.log(result);
         },
         processData: false
       });

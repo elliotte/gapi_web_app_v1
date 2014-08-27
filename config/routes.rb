@@ -29,6 +29,8 @@ GooglePlay::Application.routes.draw do
 
   resources :calendar_lists, :only => [:index, :show, :create, :update, :destroy]
 
+  resources :circles, :only => [:index, :show, :create, :destroy]
+
   get '/colors/calendar', :to => 'colors#calendar', :as => 'colors_calendar'
   get '/colors/event', :to => 'colors#event', :as => 'colors_event'
 
