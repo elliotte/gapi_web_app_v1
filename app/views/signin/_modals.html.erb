@@ -1,0 +1,121 @@
+<div class="modal fade" id="modal-window" tabindex="-1" role="dialog" aria-hidden="true"></div>
+					
+<div class="modal fade" id="modal-window-quick-create-event" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" style="width: 500px;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="myModalLabel">Quick Create Event</h3>
+			</div>
+			<div class="modal-body">
+				<%= form_tag("/calendars/primary/events/quick_add", :id => "quick_create_event_form", :method => "post") do %>
+					<div class="form-group">
+						Text: <%= text_field_tag "event[text]", "", class: "form-control", placeholder: "Text", id: "text" %>
+					</div>
+				<% end %>
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+				<button class="btn btn-primary" id="quick_create_button_event">Create</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="modal-window-create-event" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="myModalLabel">Create Event</h3>
+			</div>
+			<div class="modal-body">
+				<%= form_tag("/calendars/primary/events", :id => "create_event_form", :method => "post") do %>
+					<div class="form-group">
+						Summary: <%= text_field_tag "event[summary]", "", class: "form-control", placeholder: "Summary" %>
+						Start Time: <%= text_field_tag "event[start_time]", "", class: "form-control", placeholder: "Start Time", id: "start_time_event" %>
+						End Time: <%= text_field_tag "event[end_time]", "", class: "form-control", placeholder: "End Time", id: "end_time_event" %>
+						Location: <%= text_field_tag "event[location]", "", class: "form-control", placeholder: "Location" %>
+						Attendees :-
+						Name: <%= text_field_tag "event[attendee_name]", "", class: "form-control", placeholder: "Attendee Name" %>
+						Email: <%= text_field_tag "event[attendee_email]", "", class: "form-control", placeholder: "Attendee Email" %>
+						Description: <%= text_field_tag "event[description]", "", class: "form-control", placeholder: "Description" %>
+						Status: <%= text_field_tag "event[status]", "confirmed", class: "form-control", placeholder: "Status" %>
+						Visibility: <%= text_field_tag "event[visibility]", "default", class: "form-control", placeholder: "Visibility" %>
+					</div>
+				<% end %>
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+				<button class="btn btn-primary" id="create_button_event">Create</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="modal-window-create-circle" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" style="width: 500px;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="myModalLabel">Create Circle</h3>
+			</div>
+			<div class="modal-body">
+				<%= form_tag(circles_path, :id => "create_circle_form", :method => "post") do %>
+					<div class="form-group">
+						Name: <%= text_field_tag "circle[display_name]", "", class: "form-control", placeholder: "Name", id: "name" %>
+						Description: <%= text_area_tag "circle[description]", "", class: "form-control", placeholder: "Description", id: "description" %>
+					</div>
+				<% end %>
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+				<button class="btn btn-primary" id="create_button_circle">Create</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="modal-window-create-spreadsheet" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" style="width: 500px;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="myModalLabel">Create Spreadsheet</h3>
+			</div>
+			<div class="modal-body">
+				<%= form_tag(files_path, :id => "create_spreadsheet_form", :method => "post", :multipart => true) do %>
+					<div class="form-group">
+						Select Spreadsheet: <%= file_field_tag "file", class: "form-control", :accept => ".csv, .xlsx, .xls" %>
+					</div>
+				<% end %>
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+				<button class="btn btn-primary" id="create_button_spreadsheet">Create</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="modal-window-create-document" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" style="width: 500px;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="myModalLabel">Create Document</h3>
+			</div>
+			<div class="modal-body">
+				<%= form_tag(files_path, :id => "create_document_form", :method => "post", :multipart => true) do %>
+					<div class="form-group">
+						Select Document: <%= file_field_tag "file", class: "form-control" %>
+					</div>
+				<% end %>
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+				<button class="btn btn-primary" id="create_button_document">Create</button>
+			</div>
+		</div>
+	</div>
+</div>

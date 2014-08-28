@@ -5,7 +5,7 @@
       <h3 id="myModalLabel">Event Details</h3>
     </div>
     <div class="modal-body">
-      <%= form_tag("/calendar_events/#{event.id}", :id => "update_event", :method => "put") do %>
+      <%= form_tag("/calendars/primary/events/#{event.id}", :id => "update_event", :method => "put") do %>
         <div class="form-group">
           Summary: <%= text_field_tag "event[summary]", event.summary, class: "form-control", placeholder: "Summary", id: "summary" %>
           Start Time: <%= text_field_tag "event[start_time]", event.start.dateTime, class: "form-control", placeholder: "Start Time", id: "start_time" %>

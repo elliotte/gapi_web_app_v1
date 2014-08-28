@@ -30,7 +30,8 @@ class FilesController < ApplicationController
 	      		'uploadType' => 'multipart',
 	      		'alt' => 'json'})
 
-	    render json: response.data.to_json
+	    # render json: response.data.to_json
+	    redirect_to root_path
 	end
 
 	def update

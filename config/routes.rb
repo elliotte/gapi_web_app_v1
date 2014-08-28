@@ -17,9 +17,13 @@ GooglePlay::Application.routes.draw do
   resources :comments, :only => [:show]
 
   resources :calendars, :only => [:show, :create, :update, :destroy] do
-    resources :calendar_events, :only => [:index, :show, :create, :update, :destroy], :path => 'events', :as => 'events' do
+    resources :calendar_events, :only => [:index, :new, :show, :create, :update, :destroy], :path => 'events', :as => 'events' do
       member do
         post :move
+        get :destroy_show
+      end
+      collection do
+        post :quick_add
       end
     end
     member do
@@ -29,7 +33,11 @@ GooglePlay::Application.routes.draw do
 
   resources :calendar_lists, :only => [:index, :show, :create, :update, :destroy]
 
-  resources :circles, :only => [:index, :show, :create, :destroy]
+  resources :circles do
+    member do
+      get :destroy_show
+    end
+  end
 
   get '/colors/calendar', :to => 'colors#calendar', :as => 'colors_calendar'
   get '/colors/event', :to => 'colors#event', :as => 'colors_event'

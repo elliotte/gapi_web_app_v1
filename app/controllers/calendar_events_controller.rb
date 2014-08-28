@@ -1,7 +1,7 @@
 class CalendarEventsController < ApplicationController
 
   before_action :discover_api
-  before_action :get_event, only: [:show, :update]
+  before_action :get_event, only: [:show, :update, :destroy_show]
 
 	def index
     # Get the list of calendar events.
@@ -18,23 +18,33 @@ class CalendarEventsController < ApplicationController
     end
   end
 
+  def new
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+
   def create
     # Creates an event.
     event = {
-      'summary' => params[:summary],
-      'location' => params[:location],
-      'description' => params[:description],
+      'summary' => params[:event][:summary],
+      'location' => params[:event][:location],
+      'description' => params[:event][:description],
       'start' => {
-        'dateTime' => params[:start_time].to_datetime
+        'dateTime' => params[:event][:start_time].to_datetime
       },
       'end' => {
-        'dateTime' => params[:end_time].to_datetime
+        'dateTime' => params[:event][:end_time].to_datetime
       },
       'attendees' => [
         {
-          'email' => params[:attendees][:email]
+          'email' => params[:event][:attendee_email],
+          'displayName' => params[:event][:attendee_name]
         }
-      ]
+      ],
+      'status' => params[:event][:status],
+      'visibility' => params[:event][:visibility]
     }
 
     response = $client.execute(:api_method => @calendar.events.insert,
@@ -42,7 +52,18 @@ class CalendarEventsController < ApplicationController
                               :body => JSON.dump(event),
                               :headers => {'Content-Type' => 'application/json'})
 
-    render json: response.data.to_json
+    # render json: response.data.to_json
+    redirect_to root_path
+  end
+
+  def quick_add
+    # Creates an quick event.
+    response = $client.execute(:api_method => @calendar.events.quick_add,
+                              :parameters => {'calendarId' => params[:calendar_id],
+                                              'text' => params[:event][:text]})
+
+    # render json: response.data.to_json
+    redirect_to root_path
   end
 
   def update
@@ -81,7 +102,8 @@ class CalendarEventsController < ApplicationController
                             :body_object => event,
                             :headers => {'Content-Type' => 'application/json'})
     
-    render json: result.data.to_json
+    # render json: result.data.to_json
+    redirect_to root_path
   end
 
   def destroy
@@ -89,7 +111,15 @@ class CalendarEventsController < ApplicationController
     response = $client.execute(:api_method => @calendar.events.delete,
                               :parameters => {'calendarId' => params[:calendar_id], 'eventId' => params[:id]})
 
-    render json: response.data.to_json
+    # render json: response.data.to_json
+    redirect_to root_path
+  end
+
+  def destroy_show
+    respond_to do |format|
+      format.html
+      format.js { @event = @response.data }
+    end
   end
 
   def move

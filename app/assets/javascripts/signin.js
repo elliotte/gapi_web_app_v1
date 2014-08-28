@@ -212,6 +212,7 @@ var helper = (function() {
         contentType: 'application/octet-stream; charset=utf-8',
         success: function(result) {
           console.log(result);
+          helper.appendCircles(result);
         },
         processData: false
       });
@@ -227,13 +228,23 @@ var helper = (function() {
       }
     },
     /**
+     * Displays circles retrieved from DB.
+     */
+    appendCircles: function(circles) {
+      $('#circle').empty();
+      for (var c in circles) {
+        circle = circles[c];
+        $('#circle').append('<div class="col-md-6"><div class="feature-box-style2"><div class="feature-box-title"><i class="fa fa-support"></i></div><div class="feature-box-containt"><h3><a data-toggle="modal" data-target="#modal-window" data-remote=true href="/circles/' + circle.id + '">' + circle.display_name + '</a></h3><p>' + circle.description + ' <a data-toggle="modal" data-target="#modal-window" data-remote=true href="/circles/' + circle.id + '/destroy_show" class="btn btn-main-o" >Delete</a> <a class="btn btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/circles/' + circle.id + '/edit">Update</a></p></div></div></div>');
+      }
+    },
+    /**
      * Displays available Calendar Event retrieved from server.
      */
     appendCalendar: function(events) {
       $('#calendarEvent').empty();
       for (var eventIndex in events.items) {
         event = events.items[eventIndex];
-        $('#calendarEvent').append('<div class="col-md-6"><div class="feature-box-style2"><div class="feature-box-title"><i class="fa fa-calendar"></i></div><div class="feature-box-containt"><h3><a href="' + event.htmlLink + '" target="_blank"> ' + event.summary + '</a></h3><p>' + event.description + ' <a onclick=helper.deleteEvent("'+ event.id + '"); href="javascript:void(0)" class="btn btn-primary btn-main-o" >Delete</a> <a class="btn btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendars/primary/events/' + event.id + '">Update</a></p></div></div></div>');
+        $('#calendarEvent').append('<div class="col-md-6"><div class="feature-box-style2"><div class="feature-box-title"><i class="fa fa-calendar"></i></div><div class="feature-box-containt"><h3><a href="' + event.htmlLink + '" target="_blank"> ' + event.summary + '</a></h3><p>' + event.description + ' <a data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendars/primary/events/' + event.id + '/destroy_show" class="btn btn-main-o" >Delete</a> <a class="btn btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendars/primary/events/' + event.id + '">Update</a></p></div></div></div>');
       }
     },
     /**
@@ -277,24 +288,6 @@ var helper = (function() {
         item = activity.items[activityIndex];
         $('#activityFeeds').append('<div class="col-md-3"><div class="feature-box-style2"><div class="feature-box-title"><i class="fa fa-archive"></i></div><div class="feature-box-containt"><h3><a href="' + item.url + '" target="_blank">' + item.title + '</a></h3></div></div></div>');
       }
-    },
-    /**
-     * Delete a Calendar Event from server.
-     */
-    deleteEvent: function(event_id) {
-      $.ajax({
-        url: "/calendars/primary/events/" + event_id ,
-        type: "delete",
-        contentType: 'application/octet-stream; charset=utf-8',
-        success: function(result) {
-          if (result == null) {
-            alert("event deleted");
-          } else {
-            alert(result.error.message);
-          }
-        },
-        processData: false
-      });
     },
   };
 })();

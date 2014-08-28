@@ -1,53 +1,72 @@
 class CirclesController < ApplicationController
 
-	before_action :discover_api
-	before_action :get_circle, only: [:show]
+	before_action :get_circle, except: [:index, :create]
 
 	def index
-    	# Get the list of circles.
-	    response = $client.execute!(:api_method => @plus_domain.circles.list,
-	                                :parameters => {:userId => 'me'})
+		@circle = Circle.all
+    	render json: @circle
+	end
 
-	    render json: response.data.to_json
+	def new
+		@circle = Circle.new
 	end
 
 	def show
-	    render json: @response.data.to_json
+		respond_to do |format|
+	    	format.js { @circle }
+    	end
+	end
+
+	def edit
+		respond_to do |format|
+	    	format.js { @circle }
+    	end
 	end
 
 	def create
-		# Create a new circle.
-		circle = {
-		    'displayName' => 'Club',
-		    'description' => 'Fukre Club'
-		}
+		circle = Circle.new(circle_params)
+		if circle.save
+			# render json: circle
+			redirect_to root_path
+		else
+			# render json: "Circle not saved"
+			redirect_to root_path
+		end
+	end
 
-	    response = $client.execute!(:api_method => @plus_domain.circles.insert,
-	                                :parameters => {:userId => params[:user_id]},
-		                        	:body => JSON.dump(circle),
-		                        	:headers => {'Content-Type' => 'application/json'})
-
-	    render json: response.data.to_json
+	def update
+		if @circle.update_attributes(circle_params)
+			# render json: @circle
+			redirect_to root_path
+		else
+			# render json: "Circle not updated"
+			redirect_to root_path
+		end
 	end
 
 	def destroy
-		# Delete the circle.
-		response = $client.execute!(:api_method => @plus_domain.circles.remove,
-									:parameters => {:circleId => params[:id]})
+		if @circle.destroy
+			# render json: "Circle deleted"
+			redirect_to root_path
+		else
+			# render json: "Circle not deleted"
+			redirect_to root_path
+		end
+	end
 
-		render json: response.data.to_json
+	def destroy_show
+		respond_to do |format|
+	    	format.js { @circle }
+    	end
 	end
 
 	private
 
-	def discover_api
-		# Authorizing the client and constructing a Google+ service.
-		@plus_domain = $client.discovered_api('plusDomains', 'v1')
+	def get_circle
+		@circle = Circle.find(params[:id])
 	end
 
-	def get_circle
-		# Get the circle
-		@response = $client.execute!(:api_method => @plus_domain.circles.get,
-									:parameters => {:circleId => params[:id]})
-	end
+	def circle_params
+   		params.require(:circle).permit(:display_name, :description)
+ 	end
 end
