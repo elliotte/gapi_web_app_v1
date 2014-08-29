@@ -3,7 +3,7 @@
     <div class="modal-header">
       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
       <h3 id="myModalLabel">Are you sure?</h3>
-      <%= form_tag(calendar_event_path("primary", event.id), :id => "delete_event", :method => "delete") do %>
+      <%= form_tag(task_list_task_path(task_list_id, task.id), :id => "delete_task", :method => "delete") do %>
       <% end %>
     </div>
     <div class="modal-footer">
@@ -14,6 +14,6 @@
 </div>
 <script type="text/javascript">
   $('#delete_button').click(function(){
-    $('#delete_event').submit();
+    $('#delete_task').submit();
   });
 </script>

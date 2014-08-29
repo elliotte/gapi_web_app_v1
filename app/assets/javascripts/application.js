@@ -50,6 +50,9 @@ $(document).ready(function () {
 	$("#create_document").click(function() {
 		$("#modal-window-create-document").modal("show");
 	});
+	$("#create_tasklist").click(function() {
+		$("#modal-window-create-tasklist").modal("show");
+	});
 
 	$('#quick_create_button_event').click(function(){
 		$('#quick_create_event_form').submit();
@@ -65,6 +68,9 @@ $(document).ready(function () {
 	});
 	$('#create_button_document').click(function(){
 		$('#create_document_form').submit();
+	});
+	$('#create_button_tasklist').click(function(){
+	    $('#create_tasklist_form').submit();
 	});
 
 	$('#start_time_event').datepicker({

@@ -12,12 +12,13 @@
             <div class="gn-scroller">
 				<!-- gn-menu -->
                 <ul class="gn-menu">
-                    <li><a class="gn-active" href="javascript:void(0)" title="Home"><i class="fa fa-home"></i> Home</a></li>
-                    <li><a href="javascript:void(0)" title="Quick Add Event" id="quick_add_event"><i class="fa fa-calendar"></i> Quick Add Event</a></li>
-                    <li><a href="javascript:void(0)" title="Add Event" id="add_event"><i class="fa fa-calendar"></i> Add Event</a></li>
-                    <li><a href="javascript:void(0)" title="Create Circle" id="create_circle"><i class="fa fa-support"></i> Create Circle</a></li>
-                    <li><a href="javascript:void(0)" title="Create Spreadsheet" id="create_spreadsheet"><i class="fa fa-file"></i> Create Spreadsheet</a></li>
-                    <li><a href="javascript:void(0)" title="Create Document" id="create_document"><i class="fa fa-file"></i> Create Document</a></li>
+                    <li><a class="gn-active" href="#home" title="Home"><i class="fa fa-home"></i> Home</a></li>
+                    <li><a href="#quick-add-event" title="Quick Add Event" id="quick_add_event"><i class="fa fa-calendar"></i> Quick Add Event</a></li>
+                    <li><a href="#add-event" title="Add Event" id="add_event"><i class="fa fa-calendar"></i> Add Event</a></li>
+                    <li><a href="#create-circle" title="Create Circle" id="create_circle"><i class="fa fa-support"></i> Create Circle</a></li>
+                    <li><a href="#create-spreadsheet" title="Create Spreadsheet" id="create_spreadsheet"><i class="fa fa-file"></i> Create Spreadsheet</a></li>
+                    <li><a href="#create-document" title="Create Document" id="create_document"><i class="fa fa-file"></i> Create Document</a></li>
+                    <li><a href="#create-tasklist" title="Create Task List" id="create_tasklist"><i class="fa fa-tasks"></i> Create Task List</a></li>
                 </ul><!-- /gn-menu -->
             </div><!-- /gn-scroller -->
 		</nav><!-- /gn-menu-wrapper -->
@@ -29,8 +30,8 @@
            	<!-- search -->
            	<li>
 				<div class="col-xs-12">
-					<input class="form-control" type="search" id="search_p" placeholder="Search" style="color: #E6E6E6;background-color: #7B7B7B;border: 1px solid #7B7B7B;border-radius: 0px;" />
-					<span class="glyphicon glyphicon-search" style="position: absolute;right: 0;padding: 8px 27px;color: #E6E6E6;"></span>
+					<input class="form-control" type="search" id="search_p" placeholder="Search" />
+					<span class="glyphicon glyphicon-search" id="search-glyphicon"></span>
 				</div>
 			</li> <!-- /search -->
             <li><a href="javascript:void(0)" title="Discover Virgin">DISCOVER ELLIOTTE <i class="fa fa-th-large"></i></a></li>
@@ -130,6 +131,25 @@
 		                </div>
 	                </div><!-- /feature-boxs-wrapper -->
 	                <!--####################################### /Circles ###################### -->
+
+	                <!--####################################### Task Lists ###################### -->
+	                <!-- col-md-12 -->
+			        <div class="col-md-12">
+	                    <!-- section-title -->
+	                    <div class="section-title">
+	                        <!-- main-title -->
+	                        <div class="main-title">
+	                            <h2>Task Lists</h2>
+	                        </div><!-- /main-title -->
+	                    </div><!-- /section-title -->
+			        </div><!-- /col-md-12 -->
+
+	                <!-- feature-boxs-wrapper -->
+	                <div class="feature-boxs-wrapper">
+	                	<div id="taskLists">
+		                </div>
+	                </div><!-- /feature-boxs-wrapper -->
+	                <!--####################################### /Task Lists ###################### -->
 
 	                <!--####################################### Tasks ###################### -->
 					<!-- col-md-12 -->

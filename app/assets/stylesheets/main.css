@@ -1,0 +1,27 @@
+.modal-default-width {
+	padding-top: 50px;
+}
+
+.modal-small-width {
+	width: 300px;
+	padding-top: 50px;
+}
+
+.modal-medium-width {
+	width: 500px;
+	padding-top: 50px;
+}
+
+#search_p {
+	color: #E6E6E6;
+	background-color: #7B7B7B;
+	border: 1px solid #7B7B7B;
+	border-radius: 0px;
+}
+
+#search-glyphicon {
+	position: absolute;
+	right: 0;
+	padding: 8px 27px;
+	color: #E6E6E6;
+}

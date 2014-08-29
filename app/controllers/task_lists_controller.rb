@@ -1,7 +1,7 @@
 class TaskListsController < ApplicationController
 
 	before_action :discover_api
-	before_action :get_task_list, only: [:show, :update]
+	before_action :get_task_list, only: [:show, :update, :destroy_show]
 
 	def index
     	# Get the task lists.
@@ -11,7 +11,10 @@ class TaskListsController < ApplicationController
 	end
 
 	def show
-    	render json: @response.data.to_json
+        respond_to do |format|
+            format.html
+            format.js { @task = @response.data }
+        end
 	end
 
 	def create
@@ -22,7 +25,8 @@ class TaskListsController < ApplicationController
     							:body_object => tasklist,
 								:headers => {'Content-Type' => 'application/json'})
 
-    	render json: response.data.to_json
+    	# render json: response.data.to_json
+        redirect_to root_path
 	end
 
 	def update
@@ -35,7 +39,8 @@ class TaskListsController < ApplicationController
     							:body_object => tasklist,
 								:headers => {'Content-Type' => 'application/json'})
 
-    	render json: result.data.to_json
+    	# render json: result.data.to_json
+        redirect_to root_path
 	end
 
 	def destroy
@@ -43,8 +48,16 @@ class TaskListsController < ApplicationController
     	response = $client.execute(:api_method => @tasks.tasklists.delete,
     							:parameters => {'tasklist' => params[:id]})
 
-    	render json: response.data.to_json
+    	# render json: response.data.to_json
+        redirect_to root_path
 	end
+
+    def destroy_show
+        respond_to do |format|
+            format.html
+            format.js { @task = @response.data }
+        end
+    end
 
 	private
 

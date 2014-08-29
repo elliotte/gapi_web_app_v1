@@ -2,13 +2,12 @@
   <div class="modal-content">
     <div class="modal-header">
       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-      <h3 id="myModalLabel">Circle Details</h3>
+      <h3 id="myModalLabel">Task List Details</h3>
     </div>
     <div class="modal-body">
-      <%= form_tag(circle_path(circle.id), :id => "update_circle", :method => "put") do %>
+      <%= form_tag(task_list_path(task.id), :id => "update_task_list", :method => "put") do %>
         <div class="form-group">
-          Name: <%= text_field_tag "circle[display_name]", circle.display_name, class: "form-control", placeholder: "Name", id: "name" %>
-          Description: <%= text_area_tag "circle[description]", circle.description, class: "form-control", placeholder: "Description", id: "description" %>
+          Title: <%= text_field_tag "task_list[title]", task.title, class: "form-control", placeholder: "Title" %>
         </div>
       <% end %>
     </div>
@@ -20,6 +19,6 @@
 </div>
 <script type="text/javascript">
   $('#update_button').click(function(){
-    $('#update_circle').submit();
+    $('#update_task_list').submit();
   });
 </script>

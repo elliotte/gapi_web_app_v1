@@ -20,7 +20,7 @@ GooglePlay::Application.routes.draw do
     resources :calendar_events, :only => [:index, :new, :show, :create, :update, :destroy], :path => 'events', :as => 'events' do
       member do
         post :move
-        get :destroy_show
+        get :destroy_show, path: 'destroy'
       end
       collection do
         post :quick_add
@@ -35,7 +35,7 @@ GooglePlay::Application.routes.draw do
 
   resources :circles do
     member do
-      get :destroy_show
+      get :destroy_show, path: 'destroy'
     end
   end
 
@@ -51,6 +51,8 @@ GooglePlay::Application.routes.draw do
       post :touch
       post :trash
       post :untrash
+      get :destroy_show, path: 'destroy'
+      get :copy_show, path: 'copy'
     end
   end
 
@@ -62,13 +64,18 @@ GooglePlay::Application.routes.draw do
   end
 
   resources :task_lists, :only => [:index, :show, :create, :update, :destroy] do
-    resources :tasks, :only => [:index, :show, :create, :update, :destroy] do
+    resources :tasks, :only => [:index, :show, :new, :create, :update, :destroy] do
       member do
         put :complete_task
+        get :destroy_show, path: 'destroy'
+        get :complete_show, path: 'complete'
       end
       collection do
         post :clear
       end
+    end
+    member do
+      get :destroy_show, path: 'destroy'
     end
   end
 

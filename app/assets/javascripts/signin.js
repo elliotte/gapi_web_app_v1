@@ -54,15 +54,65 @@ var helper = (function() {
         }
         if (profile.gender == "male") {
           if (profile.cover && profile.cover.coverPhoto) {
-            $('#profile').append('<div class="col-md-12"><div class="feature-box-style2"><div class="feature-box-title"><i class="fa fa-male"></i></div><div class="feature-box-containt"><h3><a href="' + profile.url + '" target="_blank">' + profile.displayName + '</a></h3><p><a href="' + profile.url + '" target="_blank"><img src="' + profile.image.url + '"></a></p><p><img src="' + profile.cover.coverPhoto.url + '"></p></div></div></div>');
+            $('#profile').append(
+              '<div class="col-md-12">'+
+                '<div class="feature-box-style2">'+
+                  '<div class="feature-box-title">'+
+                    '<i class="fa fa-male"></i>'+
+                  '</div>'+
+                  '<div class="feature-box-containt">'+
+                    '<h3><a href="' + profile.url + '" target="_blank">' + profile.displayName + '</a></h3>'+
+                    '<p><a href="' + profile.url + '" target="_blank"><img src="' + profile.image.url + '"></a></p>'+
+                    '<p><img src="' + profile.cover.coverPhoto.url + '"></p>'+
+                  '</div>'+
+                '</div>'+
+              '</div>'
+            );
           } else {
-            $('#profile').append('<div class="col-md-12"><div class="feature-box-style2"><div class="feature-box-title"><i class="fa fa-male"></i></div><div class="feature-box-containt"><h3><a href="' + profile.url + '" target="_blank">' + profile.displayName + '</a></h3><p><a href="' + profile.url + '" target="_blank"><img src="' + profile.image.url + '"></a></p></div></div></div>');
+            $('#profile').append(
+              '<div class="col-md-12">'+
+                '<div class="feature-box-style2">'+
+                  '<div class="feature-box-title">'+
+                    '<i class="fa fa-male"></i>'+
+                  '</div>'+
+                  '<div class="feature-box-containt">'+
+                    '<h3><a href="' + profile.url + '" target="_blank">' + profile.displayName + '</a></h3>'+
+                    '<p><a href="' + profile.url + '" target="_blank"><img src="' + profile.image.url + '"></a></p>'+
+                  '</div>'+
+                '</div>'+
+              '</div>'
+            );
           }
         } else {
           if (profile.cover && profile.cover.coverPhoto) {
-            $('#profile').append('<div class="col-md-12"><div class="feature-box-style2"><div class="feature-box-title"><i class="fa fa-female"></i></div><div class="feature-box-containt"><h3><a href="' + profile.url + '" target="_blank">' + profile.displayName + '</a></h3><p><a href="' + profile.url + '" target="_blank"><img src="' + profile.image.url + '"></a></p><p><img src="' + profile.cover.coverPhoto.url + '"></p></div></div></div>');
+            $('#profile').append(
+              '<div class="col-md-12">'+
+                '<div class="feature-box-style2">'+
+                  '<div class="feature-box-title">'+
+                    '<i class="fa fa-female"></i>'+
+                  '</div>'+
+                  '<div class="feature-box-containt">'+
+                    '<h3><a href="' + profile.url + '" target="_blank">' + profile.displayName + '</a></h3>'+
+                    '<p><a href="' + profile.url + '" target="_blank"><img src="' + profile.image.url + '"></a></p>'+
+                    '<p><img src="' + profile.cover.coverPhoto.url + '"></p>'+
+                  '</div>'+
+                '</div>'+
+              '</div>'
+            );
           } else {
-            $('#profile').append('<div class="col-md-12"><div class="feature-box-style2"><div class="feature-box-title"><i class="fa fa-female"></i></div><div class="feature-box-containt"><h3><a href="' + profile.url + '" target="_blank">' + profile.displayName + '</a></h3><p><a href="' + profile.url + '" target="_blank"><img src="' + profile.image.url + '"></a></p></div></div></div>');
+            $('#profile').append(
+              '<div class="col-md-12">'+
+                '<div class="feature-box-style2">'+
+                  '<div class="feature-box-title">'+
+                    '<i class="fa fa-female"></i>'+
+                  '</div>'+
+                  '<div class="feature-box-containt">'+
+                    '<h3><a href="' + profile.url + '" target="_blank">' + profile.displayName + '</a></h3>'+
+                    '<p><a href="' + profile.url + '" target="_blank"><img src="' + profile.image.url + '"></a></p>'+
+                  '</div>'+
+                '</div>'+
+              '</div>'
+            );
           }
         }
       });
@@ -182,7 +232,7 @@ var helper = (function() {
         contentType: 'application/octet-stream; charset=utf-8',
         success: function(result) {
           console.log(result);
-          helper.appendTasks(result);
+          helper.appendTasks(result, taskListId);
         },
         processData: false
       });
@@ -224,7 +274,19 @@ var helper = (function() {
       $('#visiblePeople').empty();
       for (var personIndex in people.items) {
         person = people.items[personIndex];
-        $('#visiblePeople').append('<div class="col-md-6"><div class="feature-box-style2"><div class="feature-box-title"><i class="fa fa-users"></i></div><div class="feature-box-containt"><h3><a href="' + person.url + '" target="_blank">' + person.displayName + '</a></h3><p><a href="' + person.url + '" target="_blank"><img src="' + person.image.url + '"></a></p></div></div></div>');
+        $('#visiblePeople').append(
+          '<div class="col-md-6">'+
+            '<div class="feature-box-style2">'+
+              '<div class="feature-box-title">'+
+                '<i class="fa fa-users"></i>'+
+              '</div>'+
+              '<div class="feature-box-containt">'+
+                '<h3><a href="' + person.url + '" target="_blank">' + person.displayName + '</a></h3>'+
+                '<p><a href="' + person.url + '" target="_blank"><img src="' + person.image.url + '"></a></p>'+
+              '</div>'+
+            '</div>'+
+          '</div>'
+        );
       }
     },
     /**
@@ -234,7 +296,22 @@ var helper = (function() {
       $('#circle').empty();
       for (var c in circles) {
         circle = circles[c];
-        $('#circle').append('<div class="col-md-6"><div class="feature-box-style2"><div class="feature-box-title"><i class="fa fa-support"></i></div><div class="feature-box-containt"><h3><a data-toggle="modal" data-target="#modal-window" data-remote=true href="/circles/' + circle.id + '">' + circle.display_name + '</a></h3><p>' + circle.description + ' <a data-toggle="modal" data-target="#modal-window" data-remote=true href="/circles/' + circle.id + '/destroy_show" class="btn btn-main-o" >Delete</a> <a class="btn btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/circles/' + circle.id + '/edit">Update</a></p></div></div></div>');
+        $('#circle').append(
+          '<div class="col-md-6">'+
+            '<div class="feature-box-style2">'+
+              '<div class="feature-box-title">'+
+                '<i class="fa fa-support"></i>'+
+              '</div>'+
+              '<div class="feature-box-containt">'+
+                '<h3><a data-toggle="modal" data-target="#modal-window" data-remote=true href="/circles/' + circle.id + '">' + circle.display_name + '</a></h3>'+
+                '<p>' + circle.description +
+                  ' <a class="btn btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/circles/' + circle.id + '/destroy">Delete</a>'+
+                  ' <a class="btn btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/circles/' + circle.id + '/edit">Update</a>'+
+                '</p>'+
+              '</div>'+
+            '</div>'+
+          '</div>'
+        );
       }
     },
     /**
@@ -244,7 +321,26 @@ var helper = (function() {
       $('#calendarEvent').empty();
       for (var eventIndex in events.items) {
         event = events.items[eventIndex];
-        $('#calendarEvent').append('<div class="col-md-6"><div class="feature-box-style2"><div class="feature-box-title"><i class="fa fa-calendar"></i></div><div class="feature-box-containt"><h3><a href="' + event.htmlLink + '" target="_blank"> ' + event.summary + '</a></h3><p>' + event.description + ' <a data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendars/primary/events/' + event.id + '/destroy_show" class="btn btn-main-o" >Delete</a> <a class="btn btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendars/primary/events/' + event.id + '">Update</a></p></div></div></div>');
+        if(event.hangoutLink) {
+          $('#calendarEvent').append(
+            '<div class="col-md-6">'+
+              '<div class="feature-box-style2">'+
+                '<div class="feature-box-title">'+
+                  '<i class="fa fa-calendar"></i>'+
+                '</div>'+
+                '<div class="feature-box-containt">'+
+                  '<h3><a href="' + event.htmlLink + '" target="_blank"> ' + event.summary + '</a></h3>'+
+                  '<p>' + event.description + '</p>'+
+                  '<p>'+
+                    ' <a class="btn btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendars/primary/events/' + event.id + '/destroy">Delete</a>'+
+                    ' <a class="btn btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendars/primary/events/' + event.id + '">Update</a>'+
+                    ' <a class="btn btn-primary" href="' + event.hangoutLink + '" target="_blank">Hangout</a>'+
+                  '</p>'+
+                '</div>'+
+              '</div>'+
+            '</div>'
+          );
+        }
       }
     },
     /**
@@ -254,7 +350,55 @@ var helper = (function() {
       $('#driveFiles').empty();
       for (var itemIndex in drive.items) {
         item = drive.items[itemIndex];
-        $('#driveFiles').append('<div class="col-md-3"><div class="feature-box-style2"><div class="feature-box-title"><i class="fa fa-file"></i></div><div class="feature-box-containt"><h3><a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a></h3></div></div></div>');
+        if(item.thumbnailLink) {
+          $('#driveFiles').append(
+            '<div class="col-md-3">'+
+              '<div class="feature-box-style2">'+
+                '<div class="feature-box-title">'+
+                  '<i class="fa fa-file"></i>'+
+                '</div>'+
+                '<div class="feature-box-containt">'+
+                  '<h3>'+
+                    '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
+                    '<ul class="project-details">'+
+                      '<li title="" data-rel="tooltip" data-placement="top" data-original-title="Type">'+
+                        '<img src="' + item.thumbnailLink + '" alt="screen" style="width: 100px;height: 75px;"/>'+
+                      '</li>'+
+                    '</ul>'+
+                  '</h3>'+
+                  '<p>'+
+                    ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
+                    ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
+                  '</p>'+
+                '</div>'+
+              '</div>'+
+            '</div>'
+          );
+        } else {
+          $('#driveFiles').append(
+            '<div class="col-md-3">'+
+              '<div class="feature-box-style2">'+
+                '<div class="feature-box-title">'+
+                  '<i class="fa fa-file"></i>'+
+                '</div>'+
+                '<div class="feature-box-containt">'+
+                  '<h3>'+
+                    '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
+                    '<ul class="project-details">'+
+                      '<li title="" data-rel="tooltip" data-placement="top" data-original-title="Type">'+
+                        '<img src="' + item.iconLink + '" alt="screen"/>'+
+                      '</li>'+
+                    '</ul>'+
+                  '</h3>'+
+                  '<p>'+
+                    ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
+                    ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
+                  '</p>'+
+                '</div>'+
+              '</div>'+
+            '</div>'
+          );
+        }
       }
     },
     /**
@@ -263,19 +407,48 @@ var helper = (function() {
     appendTaskLists: function(taskLists) {
       for (var taskListIndex in taskLists.items) {
         taskList = taskLists.items[taskListIndex];
+        $('#taskLists').append(
+          '<div class="col-md-6">'+
+            '<div class="feature-box-style2">'+
+              '<div class="feature-box-title">'+
+                '<i class="fa fa-tasks"></i>'+
+              '</div>'+
+              '<div class="feature-box-containt">'+
+                '<h3>' + taskList.title + ' <a class="btn btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskList.id + '/tasks/new">Create Task</a></h3>'+
+                '<p>'+
+                  ' <a class="btn btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskList.id + '/destroy">Delete</a>'+
+                  ' <a class="btn btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskList.id + '">Update</a>'+
+                '</p>'+
+              '</div>'+
+            '</div>'+
+          '</div>'
+        );
         helper.tasks(taskList.id);
       }
     },
     /**
      * Displays available Tasks in Task List retrieved from server.
      */
-    appendTasks: function(tasks) {
+    appendTasks: function(tasks, taskListId) {
       for (var taskIndex in tasks.items) {
         task = tasks.items[taskIndex];
         if (task.status == "completed") {
-          $('#tasksCompleted').append('<p>- Title: ' + task.title + ', Notes: ' + task.notes + ', Completed at: ' + task.completed.substring(0,10) + '</p>');
+          $('#tasksCompleted').append(
+            '<p>'+
+              '- Title: ' + task.title + ', Notes: ' + task.notes + ', Completed at: ' + task.completed.substring(0,10) +
+              ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '/destroy">Delete</a>'+
+              ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '">Update</a>'+
+            '</p>'
+          );
         } else {
-          $('#tasksPending').append('<p>- Title: ' + task.title + ', Notes: ' + task.notes + ', Due Date: ' + task.due.substring(0, 10) + '</p>');
+          $('#tasksPending').append(
+            '<p>'+
+              '- Title: ' + task.title + ', Notes: ' + task.notes + ', Due Date: ' + task.due.substring(0, 10) +
+              ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '/destroy">Delete</a>'+
+              ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '">Update</a>'+
+              ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '/complete">Complete</a>'+
+            '</p>'
+          );
         }
       }
     },
@@ -286,7 +459,18 @@ var helper = (function() {
       $('#activityFeeds').empty();
       for (var activityIndex in activity.items) {
         item = activity.items[activityIndex];
-        $('#activityFeeds').append('<div class="col-md-3"><div class="feature-box-style2"><div class="feature-box-title"><i class="fa fa-archive"></i></div><div class="feature-box-containt"><h3><a href="' + item.url + '" target="_blank">' + item.title + '</a></h3></div></div></div>');
+        $('#activityFeeds').append(
+          '<div class="col-md-3">'+
+            '<div class="feature-box-style2">'+
+              '<div class="feature-box-title">'+
+                '<i class="fa fa-archive"></i>'+
+              '</div>'+
+              '<div class="feature-box-containt">'+
+                '<h3><a href="' + item.url + '" target="_blank">' + item.title + '</a></h3>'+
+              '</div>'+
+            '</div>'+
+          '</div>'
+        );
       }
     },
   };

@@ -1,7 +1,7 @@
 class TasksController < ApplicationController
 
 	before_action :discover_api
-	before_action :get_task, only: [:show, :update, :complete_task]
+	before_action :get_task, only: [:show, :update, :complete_task, :destroy_show, :complete_show]
 
 	def index
     	# Get the list of tasks in task list.
@@ -12,8 +12,20 @@ class TasksController < ApplicationController
 	end
 
 	def show
-    	render json: @response.data.to_json
+    	@task = @response.data
+		@task_list_id = params[:task_list_id]
+        respond_to do |format|
+            format.html
+            format.js
+        end
 	end
+
+	def new
+    	respond_to do |format|
+      		format.html
+      		format.js { @task_list_id = params[:task_list_id] }
+    	end
+  	end
 
 	def create
     	task = { 
@@ -28,7 +40,8 @@ class TasksController < ApplicationController
     							:body_object => task,
 								:headers => {'Content-Type' => 'application/json'})
 
-    	render json: response.data.to_json
+    	# render json: response.data.to_json
+    	redirect_to root_path
 	end
 
 	def update
@@ -44,7 +57,8 @@ class TasksController < ApplicationController
     							:body_object => task,
 								:headers => {'Content-Type' => 'application/json'})
 
-    	render json: result.data.to_json
+    	# render json: result.data.to_json
+    	redirect_to root_path
 	end
 
 	def destroy
@@ -52,8 +66,18 @@ class TasksController < ApplicationController
     	response = $client.execute(:api_method => @tasks.tasks.delete,
     							:parameters => {'tasklist' => params[:task_list_id], 'task' => params[:id]})
 
-    	render json: response.data.to_json
+    	# render json: response.data.to_json
+    	redirect_to root_path
 	end
+
+	def destroy_show
+		@task = @response.data
+		@task_list_id = params[:task_list_id]
+        respond_to do |format|
+            format.html
+            format.js
+        end
+    end
 
 	def complete_task
 		task = @response.data
@@ -67,6 +91,15 @@ class TasksController < ApplicationController
 
 		render json: result.data.to_json
 	end
+
+	def complete_show
+        @task = @response.data
+		@task_list_id = params[:task_list_id]
+        respond_to do |format|
+            format.html
+            format.js
+        end
+    end
 
 	# Clears all completed tasks from the specified task list. The affected tasks will be marked as 'hidden' and no longer be returned by default when retrieving all tasks for a task list.
 	def clear

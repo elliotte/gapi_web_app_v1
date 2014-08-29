@@ -1,7 +1,7 @@
 class FilesController < ApplicationController
 
 	before_action :discover_api
-	before_action :get_file, only: [:show, :update]
+	before_action :get_file, only: [:show, :update, :destroy_show, :copy_show]
 
 	def index
     	# Get the list of files in drive
@@ -60,8 +60,16 @@ class FilesController < ApplicationController
 	    response = $client.execute(:api_method => @drive.files.delete,
     							:parameters => { 'fileId' => params[:id] })
 
-	    render json: response.data.to_json
+	    # render json: response.data.to_json
+	    redirect_to root_path
 	end
+
+	def destroy_show
+	    respond_to do |format|
+	      	format.html
+	      	format.js { @file = @response.data }
+	    end
+  	end
 
 	def copy
 		# Creates a copy of the specified file.
@@ -72,8 +80,16 @@ class FilesController < ApplicationController
 		    :body_object => copied_file,
 		    :parameters => { 'fileId' => params[:id] })
 
-		render json: response.data.to_json
+		# render json: response.data.to_json
+		redirect_to root_path
 	end
+
+	def copy_show
+	    respond_to do |format|
+	      	format.html
+	      	format.js { @file = @response.data }
+	    end
+  	end
 
 	def touch
 		# Set the file's updated time to the current server time. Update a file's modified date.

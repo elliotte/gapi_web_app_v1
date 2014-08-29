@@ -1,0 +1,27 @@
+<div class="modal-dialog modal-medium-width">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="myModalLabel">Create Task</h3>
+    </div>
+    <div class="modal-body">
+      <%= form_tag(task_list_tasks_path(task_list_id), :id => "create_task", :method => "post") do %>
+        <div class="form-group">
+          <%= hidden_field_tag "task_list_id", task_list_id %>
+          Title: <%= text_field_tag "task[title]", "", class: "form-control", placeholder: "Title" %>
+          Notes: <%= text_field_tag "task[notes]", "", class: "form-control", placeholder: "Notes" %>
+          Due Date: <%= text_field_tag "task[due]", "", class: "form-control", placeholder: "Due Date" %>
+        </div>
+      <% end %>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+      <button class="btn btn-primary" id="create_button">Create</button>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $('#create_button').click(function(){
+    $('#create_task').submit();
+  });
+</script>

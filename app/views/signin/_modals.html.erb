@@ -1,7 +1,7 @@
 <div class="modal fade" id="modal-window" tabindex="-1" role="dialog" aria-hidden="true"></div>
 					
 <div class="modal fade" id="modal-window-quick-create-event" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog" style="width: 500px;">
+	<div class="modal-dialog modal-medium-width">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -23,7 +23,7 @@
 </div>
 
 <div class="modal fade" id="modal-window-create-event" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-default-width">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -54,7 +54,7 @@
 </div>
 
 <div class="modal fade" id="modal-window-create-circle" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog" style="width: 500px;">
+	<div class="modal-dialog modal-medium-width">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -77,7 +77,7 @@
 </div>
 
 <div class="modal fade" id="modal-window-create-spreadsheet" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog" style="width: 500px;">
+	<div class="modal-dialog modal-medium-width">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -99,7 +99,7 @@
 </div>
 
 <div class="modal fade" id="modal-window-create-document" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog" style="width: 500px;">
+	<div class="modal-dialog modal-medium-width">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -117,5 +117,27 @@
 				<button class="btn btn-primary" id="create_button_document">Create</button>
 			</div>
 		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="modal-window-create-tasklist" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-medium-width">
+	  	<div class="modal-content">
+	    	<div class="modal-header">
+	      		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	      		<h3 id="myModalLabel">Create Task List</h3>
+	    	</div>
+	    	<div class="modal-body">
+	      		<%= form_tag(task_lists_path, :id => "create_tasklist_form", :method => "post") do %>
+	        		<div class="form-group">
+	          			Title: <%= text_field_tag "task_list[title]", "", class: "form-control", placeholder: "Title" %>
+	        		</div>
+	      		<% end %>
+	    	</div>
+	    	<div class="modal-footer">
+	      		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+	      		<button class="btn btn-primary" id="create_button_tasklist">Create</button>
+	    	</div>
+	  	</div>
 	</div>
 </div>
