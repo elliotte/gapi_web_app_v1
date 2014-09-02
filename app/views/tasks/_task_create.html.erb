@@ -11,6 +11,7 @@
           Title: <%= text_field_tag "task[title]", "", class: "form-control", placeholder: "Title" %>
           Notes: <%= text_field_tag "task[notes]", "", class: "form-control", placeholder: "Notes" %>
           Due Date: <%= text_field_tag "task[due]", "", class: "form-control", placeholder: "Due Date" %>
+          <%= hidden_field_tag "task[circle_id]", "" %>
         </div>
       <% end %>
     </div>

@@ -21,6 +21,8 @@ class FilesController < ApplicationController
     		'mimeType' => params[:file].content_type
 	  	})
 
+	  	file.properties = [{"key" => "circle_id", "value" => params[:circle_id]}]
+
 	  	media = Google::APIClient::UploadIO.new(params[:file].tempfile.path, params[:file].content_type)
 	  	response = $client.execute(
 	    	:api_method => @drive.files.insert,

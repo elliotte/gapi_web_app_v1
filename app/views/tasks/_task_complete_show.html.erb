@@ -3,7 +3,7 @@
     <div class="modal-header">
       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
       <h3 id="myModalLabel">Are you sure?</h3>
-      <%= form_tag(complete_show_task_list_task_path(task_list_id, task.id), :id => "complete_task", :method => "delete") do %>
+      <%= form_tag(complete_task_task_list_task_path(task_list_id, task.id), :id => "complete_task", :method => "put") do %>
       <% end %>
     </div>
     <div class="modal-footer">

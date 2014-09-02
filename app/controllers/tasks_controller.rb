@@ -28,8 +28,8 @@ class TasksController < ApplicationController
   	end
 
 	def create
-    	task = { 
-    			title: params[:task][:title] ,
+    	task = {
+    			title: "#{params[:task][:title]}[#{params[:task][:circle_id]}]" ,
     			notes: params[:task][:notes] ,
     			due: params[:task][:due].to_datetime
 				}
@@ -89,7 +89,8 @@ class TasksController < ApplicationController
 		                        :body_object => task,
 		                        :headers => {'Content-Type' => 'application/json'})
 
-		render json: result.data.to_json
+		# render json: result.data.to_json
+		redirect_to root_path
 	end
 
 	def complete_show

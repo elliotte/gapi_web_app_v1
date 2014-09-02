@@ -43,6 +43,11 @@ class CalendarEventsController < ApplicationController
           'displayName' => params[:event][:attendee_name]
         }
       ],
+      "extendedProperties" => {
+        "private" => {
+          "circle_id" => params[:event][:circle_id]
+        }
+      },
       'status' => params[:event][:status],
       'visibility' => params[:event][:visibility]
     }

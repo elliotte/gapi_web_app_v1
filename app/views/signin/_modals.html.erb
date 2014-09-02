@@ -42,6 +42,7 @@
 						Description: <%= text_field_tag "event[description]", "", class: "form-control", placeholder: "Description" %>
 						Status: <%= text_field_tag "event[status]", "confirmed", class: "form-control", placeholder: "Status" %>
 						Visibility: <%= text_field_tag "event[visibility]", "default", class: "form-control", placeholder: "Visibility" %>
+          				<%= hidden_field_tag "event[circle_id]", "" %>
 					</div>
 				<% end %>
 			</div>
@@ -87,6 +88,7 @@
 				<%= form_tag(files_path, :id => "create_spreadsheet_form", :method => "post", :multipart => true) do %>
 					<div class="form-group">
 						Select Spreadsheet: <%= file_field_tag "file", class: "form-control", :accept => ".csv, .xlsx, .xls" %>
+						<%= hidden_field_tag "circle_id", "" %>
 					</div>
 				<% end %>
 			</div>
@@ -109,6 +111,7 @@
 				<%= form_tag(files_path, :id => "create_document_form", :method => "post", :multipart => true) do %>
 					<div class="form-group">
 						Select Document: <%= file_field_tag "file", class: "form-control" %>
+						<%= hidden_field_tag "circle_id", "" %>
 					</div>
 				<% end %>
 			</div>
@@ -131,6 +134,7 @@
 	      		<%= form_tag(task_lists_path, :id => "create_tasklist_form", :method => "post") do %>
 	        		<div class="form-group">
 	          			Title: <%= text_field_tag "task_list[title]", "", class: "form-control", placeholder: "Title" %>
+	          			<%= hidden_field_tag "task_list[circle_id]", "" %>
 	        		</div>
 	      		<% end %>
 	    	</div>

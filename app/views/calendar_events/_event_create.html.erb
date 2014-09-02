@@ -17,6 +17,7 @@
           Description: <%= text_field_tag "event[description]", "", class: "form-control", placeholder: "Description", id: "description" %>
           Status: <%= text_field_tag "event[status]", "", class: "form-control", placeholder: "Status", id: "status" %>
           Visibility: <%= text_field_tag "event[visibility]", "", class: "form-control", placeholder: "Visibility", id: "visibility" %>
+          <%= hidden_field_tag "event[circle_id]", "" %>
         </div>
       <% end %>
     </div>

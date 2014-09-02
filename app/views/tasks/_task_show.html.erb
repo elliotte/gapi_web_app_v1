@@ -7,9 +7,13 @@
     <div class="modal-body">
       <%= form_tag(task_list_task_path(task_list_id, task.id), :id => "update_task", :method => "put") do %>
         <div class="form-group">
-          Title: <%= text_field_tag "task[title]", "", class: "form-control", placeholder: "Title" %>
-          Notes: <%= text_field_tag "task[notes]", "", class: "form-control", placeholder: "Notes" %>
-          Due Date: <%= text_field_tag "task[due]", "", class: "form-control", placeholder: "Due Date" %>
+          Title: <%= text_field_tag "task[title]", task.title, class: "form-control", placeholder: "Title" %>
+          Notes: <%= text_field_tag "task[notes]", task.notes, class: "form-control", placeholder: "Notes" %>
+          <% if task.status == "completed" %>
+            Completed Date: <%= text_field_tag "task[due]", task.completed, class: "form-control", placeholder: "Completed Date" %>
+          <% else %>
+            Due Date: <%= text_field_tag "task[due]", task.due, class: "form-control", placeholder: "Due Date" %>
+          <% end %>
           Status: <%= text_field_tag "task[status]", "completed", class: "form-control", placeholder: "Notes" %>
         </div>
       <% end %>
