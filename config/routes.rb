@@ -39,8 +39,12 @@ GooglePlay::Application.routes.draw do
     end
   end
 
-  get '/colors/calendar', :to => 'colors#calendar', :as => 'colors_calendar'
-  get '/colors/event', :to => 'colors#event', :as => 'colors_event'
+  resources :colors, except: [:index, :show, :new, :create, :edit, :update, :destroy] do
+    collection do
+      get :calendar, :as => 'calendar'
+      get :event, :as => 'event'
+    end
+  end
 
   resources :files, :only => [:index, :show, :create, :update, :destroy] do
     resources :file_comments, :only => [:index, :show, :create, :update, :destroy], :path => 'comments', :as => 'comments' do
@@ -76,6 +80,9 @@ GooglePlay::Application.routes.draw do
     end
     member do
       get :destroy_show, path: 'destroy'
+    end
+    collection do
+      post :create_task
     end
   end
 

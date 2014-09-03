@@ -3,8 +3,11 @@ class CirclesController < ApplicationController
 	before_action :get_circle, except: [:index, :create]
 
 	def index
-		@circle = Circle.all
-    	render json: @circle
+		@circles = Circle.all
+    	respond_to do |format|
+		  	format.html
+		  	format.json { render json: @circles }
+		end
 	end
 
 	def new
@@ -13,6 +16,7 @@ class CirclesController < ApplicationController
 
 	def show
 		respond_to do |format|
+			format.html
 	    	format.js { @circle }
     	end
 	end

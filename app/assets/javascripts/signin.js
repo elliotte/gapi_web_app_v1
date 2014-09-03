@@ -259,7 +259,8 @@ var helper = (function() {
       $.ajax({
         type: 'GET',
         url: '/circles',
-        contentType: 'application/octet-stream; charset=utf-8',
+        dataType: 'json',
+        contentType: 'application/json',
         success: function(result) {
           console.log(result);
           helper.appendCircles(result);
@@ -303,7 +304,7 @@ var helper = (function() {
                 '<i class="fa fa-support"></i>'+
               '</div>'+
               '<div class="feature-box-containt">'+
-                '<h3><a data-toggle="modal" data-target="#modal-window" data-remote=true href="/circles/' + circle.id + '">' + circle.display_name + '</a></h3>'+
+                '<h3><a href="/circles/' + circle.id + '">' + circle.display_name + '</a></h3>'+
                 '<p>' + circle.description + '</p>'+
                 '<p>'+
                   ' <a class="btn btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/circles/' + circle.id + '/destroy">Delete</a>'+
@@ -320,27 +321,87 @@ var helper = (function() {
      */
     appendCalendar: function(events) {
       $('#calendarEvent').empty();
+      $('#calendarTeamEvents').empty();
       for (var eventIndex in events.items) {
         event = events.items[eventIndex];
-        if(event.hangoutLink) {
-          $('#calendarEvent').append(
-            '<div class="col-md-6">'+
-              '<div class="feature-box-style2">'+
-                '<div class="feature-box-title">'+
-                  '<i class="fa fa-calendar"></i>'+
+        if(event.extendedProperties && event.extendedProperties.private.circle_id == $("#circle_id").text()) {
+          if(event.hangoutLink) {
+            $('#calendarTeamEvents').append(
+              '<div class="col-md-6">'+
+                '<div class="feature-box-style2">'+
+                  '<div class="feature-box-title">'+
+                    '<i class="fa fa-calendar"></i>'+
+                  '</div>'+
+                  '<div class="feature-box-containt">'+
+                    '<h3><a href="' + event.htmlLink + '" target="_blank"> ' + event.summary + '</a></h3>'+
+                    '<p>' + event.description + '</p>'+
+                    '<p>'+
+                      ' <a class="btn btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendars/primary/events/' + event.id + '/destroy">Delete</a>'+
+                      ' <a class="btn btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendars/primary/events/' + event.id + '">Update</a>'+
+                      ' <a class="btn btn-primary" href="' + event.hangoutLink + '" target="_blank">Hangout</a>'+
+                    '</p>'+
+                  '</div>'+
                 '</div>'+
-                '<div class="feature-box-containt">'+
-                  '<h3><a href="' + event.htmlLink + '" target="_blank"> ' + event.summary + '</a></h3>'+
-                  '<p>' + event.description + '</p>'+
-                  '<p>'+
-                    ' <a class="btn btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendars/primary/events/' + event.id + '/destroy">Delete</a>'+
-                    ' <a class="btn btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendars/primary/events/' + event.id + '">Update</a>'+
-                    ' <a class="btn btn-primary" href="' + event.hangoutLink + '" target="_blank">Hangout</a>'+
-                  '</p>'+
+              '</div>'
+            );
+          } else {
+            $('#calendarTeamEvents').append(
+              '<div class="col-md-6">'+
+                '<div class="feature-box-style2">'+
+                  '<div class="feature-box-title">'+
+                    '<i class="fa fa-calendar"></i>'+
+                  '</div>'+
+                  '<div class="feature-box-containt">'+
+                    '<h3><a href="' + event.htmlLink + '" target="_blank"> ' + event.summary + '</a></h3>'+
+                    '<p>' + event.description + '</p>'+
+                    '<p>'+
+                      ' <a class="btn btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendars/primary/events/' + event.id + '/destroy">Delete</a>'+
+                      ' <a class="btn btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendars/primary/events/' + event.id + '">Update</a>'+
+                    '</p>'+
+                  '</div>'+
                 '</div>'+
-              '</div>'+
-            '</div>'
-          );
+              '</div>'
+            );
+          }
+        } else {
+          if(event.hangoutLink) {
+            $('#calendarEvent').append(
+              '<div class="col-md-6">'+
+                '<div class="feature-box-style2">'+
+                  '<div class="feature-box-title">'+
+                    '<i class="fa fa-calendar"></i>'+
+                  '</div>'+
+                  '<div class="feature-box-containt">'+
+                    '<h3><a href="' + event.htmlLink + '" target="_blank"> ' + event.summary + '</a></h3>'+
+                    '<p>' + event.description + '</p>'+
+                    '<p>'+
+                      ' <a class="btn btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendars/primary/events/' + event.id + '/destroy">Delete</a>'+
+                      ' <a class="btn btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendars/primary/events/' + event.id + '">Update</a>'+
+                      ' <a class="btn btn-primary" href="' + event.hangoutLink + '" target="_blank">Hangout</a>'+
+                    '</p>'+
+                  '</div>'+
+                '</div>'+
+              '</div>'
+            );
+          } else {
+            $('#calendarEvent').append(
+              '<div class="col-md-6">'+
+                '<div class="feature-box-style2">'+
+                  '<div class="feature-box-title">'+
+                    '<i class="fa fa-calendar"></i>'+
+                  '</div>'+
+                  '<div class="feature-box-containt">'+
+                    '<h3><a href="' + event.htmlLink + '" target="_blank"> ' + event.summary + '</a></h3>'+
+                    '<p>' + event.description + '</p>'+
+                    '<p>'+
+                      ' <a class="btn btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendars/primary/events/' + event.id + '/destroy">Delete</a>'+
+                      ' <a class="btn btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendars/primary/events/' + event.id + '">Update</a>'+
+                    '</p>'+
+                  '</div>'+
+                '</div>'+
+              '</div>'
+            );
+          }
         }
       }
     },
@@ -349,56 +410,135 @@ var helper = (function() {
      */
     appendDrive: function(drive) {
       $('#driveFiles').empty();
+      $('#driveTeamFiles').empty();
+      var count = 0;
       for (var itemIndex in drive.items) {
+        count++;
         item = drive.items[itemIndex];
-        if(item.thumbnailLink) {
-          $('#driveFiles').append(
-            '<div class="col-md-3">'+
-              '<div class="feature-box-style2">'+
-                '<div class="feature-box-title">'+
-                  '<i class="fa fa-file"></i>'+
+        if(item.properties && item.properties[0].value == $("#circle_id").text()) {
+          if(item.thumbnailLink) {
+            if(count%4 == 0) {
+              $('#driveFiles').append('<div class="row">');
+            }
+            $('#driveTeamFiles').append(
+              '<div class="col-md-3">'+
+                '<div class="feature-box-style2">'+
+                  '<div class="feature-box-title">'+
+                    '<i class="fa fa-file"></i>'+
+                  '</div>'+
+                  '<div class="feature-box-containt">'+
+                    '<h3>'+
+                      '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
+                      '<ul class="project-details">'+
+                        '<li title="" data-rel="tooltip" data-placement="top" data-original-title="Type">'+
+                          '<img src="' + item.thumbnailLink + '" alt="screen" style="width: 100px;height: 75px;"/>'+
+                        '</li>'+
+                      '</ul>'+
+                    '</h3>'+
+                    '<p>'+
+                      ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
+                      ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
+                    '</p>'+
+                  '</div>'+
                 '</div>'+
-                '<div class="feature-box-containt">'+
-                  '<h3>'+
-                    '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
-                    '<ul class="project-details">'+
-                      '<li title="" data-rel="tooltip" data-placement="top" data-original-title="Type">'+
-                        '<img src="' + item.thumbnailLink + '" alt="screen" style="width: 100px;height: 75px;"/>'+
-                      '</li>'+
-                    '</ul>'+
-                  '</h3>'+
-                  '<p>'+
-                    ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
-                    ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
-                  '</p>'+
+              '</div>'
+            );
+            if(count%4 == 0) {
+              $('#driveFiles').append('</div>');
+            }
+          } else {
+            if(count%4 == 0) {
+              $('#driveFiles').append('<div class="row">');
+            }
+            $('#driveTeamFiles').append(
+              '<div class="col-md-3">'+
+                '<div class="feature-box-style2">'+
+                  '<div class="feature-box-title">'+
+                    '<i class="fa fa-file"></i>'+
+                  '</div>'+
+                  '<div class="feature-box-containt">'+
+                    '<h3>'+
+                      '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
+                      '<ul class="project-details">'+
+                        '<li title="" data-rel="tooltip" data-placement="top" data-original-title="Type">'+
+                          '<img src="' + item.iconLink + '" alt="screen"/>'+
+                        '</li>'+
+                      '</ul>'+
+                    '</h3>'+
+                    '<p>'+
+                      ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
+                      ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
+                    '</p>'+
+                  '</div>'+
                 '</div>'+
-              '</div>'+
-            '</div>'
-          );
+              '</div>'
+            );
+            if(count%4 == 0) {
+              $('#driveFiles').append('</div>');
+            }
+          }
         } else {
-          $('#driveFiles').append(
-            '<div class="col-md-3">'+
-              '<div class="feature-box-style2">'+
-                '<div class="feature-box-title">'+
-                  '<i class="fa fa-file"></i>'+
+          if(item.thumbnailLink) {
+            if(count%4 == 0) {
+              $('#driveFiles').append('<div class="row">');
+            }
+            $('#driveFiles').append(
+              '<div class="col-md-3">'+
+                '<div class="feature-box-style2">'+
+                  '<div class="feature-box-title">'+
+                    '<i class="fa fa-file"></i>'+
+                  '</div>'+
+                  '<div class="feature-box-containt">'+
+                    '<h3>'+
+                      '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
+                      '<ul class="project-details">'+
+                        '<li title="" data-rel="tooltip" data-placement="top" data-original-title="Type">'+
+                          '<img src="' + item.thumbnailLink + '" alt="screen" style="width: 100px;height: 75px;"/>'+
+                        '</li>'+
+                      '</ul>'+
+                    '</h3>'+
+                    '<p>'+
+                      ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
+                      ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
+                    '</p>'+
+                  '</div>'+
                 '</div>'+
-                '<div class="feature-box-containt">'+
-                  '<h3>'+
-                    '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
-                    '<ul class="project-details">'+
-                      '<li title="" data-rel="tooltip" data-placement="top" data-original-title="Type">'+
-                        '<img src="' + item.iconLink + '" alt="screen"/>'+
-                      '</li>'+
-                    '</ul>'+
-                  '</h3>'+
-                  '<p>'+
-                    ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
-                    ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
-                  '</p>'+
+              '</div>'
+            );
+            if(count%4 == 0) {
+              $('#driveFiles').append('</div>');
+            }
+          } else {
+            if(count%4 == 0) {
+              $('#driveFiles').append('<div class="row">');
+            }
+            $('#driveFiles').append(
+              '<div class="col-md-3">'+
+                '<div class="feature-box-style2">'+
+                  '<div class="feature-box-title">'+
+                    '<i class="fa fa-file"></i>'+
+                  '</div>'+
+                  '<div class="feature-box-containt">'+
+                    '<h3>'+
+                      '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
+                      '<ul class="project-details">'+
+                        '<li title="" data-rel="tooltip" data-placement="top" data-original-title="Type">'+
+                          '<img src="' + item.iconLink + '" alt="screen"/>'+
+                        '</li>'+
+                      '</ul>'+
+                    '</h3>'+
+                    '<p>'+
+                      ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
+                      ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
+                    '</p>'+
+                  '</div>'+
                 '</div>'+
-              '</div>'+
-            '</div>'
-          );
+              '</div>'
+            );
+            if(count%4 == 0) {
+              $('#driveFiles').append('</div>');
+            }
+          }
         }
       }
     },
@@ -408,6 +548,7 @@ var helper = (function() {
     appendTaskLists: function(taskLists) {
       for (var taskListIndex in taskLists.items) {
         taskList = taskLists.items[taskListIndex];
+        $('#task_list_id').val(taskList.id);
         $('#taskLists').append(
           '<div class="col-md-6">'+
             '<div class="feature-box-style2">'+
@@ -433,23 +574,62 @@ var helper = (function() {
     appendTasks: function(tasks, taskListId) {
       for (var taskIndex in tasks.items) {
         task = tasks.items[taskIndex];
-        if (task.status == "completed") {
-          $('#tasksCompleted').append(
-            '<p>'+ '- Title: ' + task.title + ', Notes: ' + task.notes + ', Completed at: ' + task.completed.substring(0,10) + '</p>'+
-            '<p>'+
-              ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '/destroy">Delete</a>'+
-              ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '">Update</a>'+
-            '</p>'
-          );
+        if(task.title.lastIndexOf("[") >= 0) {
+          if (task.status == "completed") {
+            $('#teamTasksCompleted').append(
+              '<p>'+ '- Title: ' + task.title.substring(0, task.title.lastIndexOf("[")) + ', Notes: ' + task.notes + ', Completed at: ' + task.completed.substring(0,10) + '</p>'+
+              '<p>'+
+                ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '/destroy">Delete</a>'+
+                ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '">Update</a>'+
+              '</p>'
+            );
+          } else {
+            $('#teamTasksPending').append(
+              '<p>'+ '- Title: ' + task.title.substring(0, task.title.lastIndexOf("[")) + ', Notes: ' + task.notes + ', Due Date: ' + task.due.substring(0, 10) + '</p>'+
+              '<p>'+
+                ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '/destroy">Delete</a>'+
+                ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '">Update</a>'+
+                ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '/complete">Complete</a>'+
+              '</p>'
+            );
+          }
+          if (task.status == "completed") {
+            $('#tasksCompleted').append(
+              '<p>'+ '- Title: ' + task.title.substring(0, task.title.lastIndexOf("[")) + ', Notes: ' + task.notes + ', Completed at: ' + task.completed.substring(0,10) + '</p>'+
+              '<p>'+
+                ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '/destroy">Delete</a>'+
+                ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '">Update</a>'+
+              '</p>'
+            );
+          } else {
+            $('#tasksPending').append(
+              '<p>'+ '- Title: ' + task.title.substring(0, task.title.lastIndexOf("[")) + ', Notes: ' + task.notes + ', Due Date: ' + task.due.substring(0, 10) + '</p>'+
+              '<p>'+
+                ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '/destroy">Delete</a>'+
+                ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '">Update</a>'+
+                ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '/complete">Complete</a>'+
+              '</p>'
+            );
+          }
         } else {
-          $('#tasksPending').append(
-            '<p>'+ '- Title: ' + task.title + ', Notes: ' + task.notes + ', Due Date: ' + task.due.substring(0, 10) + '</p>'+
-            '<p>'+
-              ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '/destroy">Delete</a>'+
-              ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '">Update</a>'+
-              ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '/complete">Complete</a>'+
-            '</p>'
-          );
+          if (task.status == "completed") {
+            $('#tasksCompleted').append(
+              '<p>'+ '- Title: ' + task.title + ', Notes: ' + task.notes + ', Completed at: ' + task.completed.substring(0,10) + '</p>'+
+              '<p>'+
+                ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '/destroy">Delete</a>'+
+                ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '">Update</a>'+
+              '</p>'
+            );
+          } else {
+            $('#tasksPending').append(
+              '<p>'+ '- Title: ' + task.title + ', Notes: ' + task.notes + ', Due Date: ' + task.due.substring(0, 10) + '</p>'+
+              '<p>'+
+                ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '/destroy">Delete</a>'+
+                ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '">Update</a>'+
+                ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '/complete">Complete</a>'+
+              '</p>'
+            );
+          }
         }
       }
     },

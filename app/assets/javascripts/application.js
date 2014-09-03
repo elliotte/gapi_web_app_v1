@@ -54,6 +54,26 @@ $(document).ready(function () {
 		$("#modal-window-create-tasklist").modal("show");
 	});
 
+	$("#create_team_event").click(function() {
+		$("#modal-window-create-circle-event").modal("show");
+	});
+	$("#create_team_task").click(function() {
+		$("#modal-window-create-circle-task").modal("show");
+	});
+	$("#create_team_file").click(function() {
+		$("#modal-window-create-circle-document").modal("show");
+	});
+
+	$('#create_button_circle_event').click(function(){
+	    $('#create_circle_event_form').submit();
+	});
+	$('#create_button_circle_task').click(function(){
+	    $('#create_circle_task_form').submit();
+	});
+	$('#create_button_circle_document').click(function(){
+	    $('#create_circle_document_form').submit();
+	});
+
 	$('#quick_create_button_event').click(function(){
 		$('#quick_create_event_form').submit();
 	});

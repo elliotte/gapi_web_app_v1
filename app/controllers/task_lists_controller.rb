@@ -9,8 +9,7 @@ class TaskListsController < ApplicationController
 
     	render json: response.data.to_json
 	end
-    # "[name] [substring]"[/.*\[([^\]]*)/,1]
-    # "test [1] sdfsdf [342424]".reverse.sub(/]\d+\[/,"").reverse
+    
 	def show
         respond_to do |format|
             format.html
@@ -19,7 +18,7 @@ class TaskListsController < ApplicationController
 	end
 
 	def create
-    	tasklist = { title: "#{params[:task_list][:title]}[#{params[:task_list][:circle_id]}]" }
+    	tasklist = { title: params[:task_list][:title]}
 
     	# Create the task list.
     	response = $client.execute(:api_method => @tasks.tasklists.insert,
@@ -29,6 +28,23 @@ class TaskListsController < ApplicationController
     	# render json: response.data.to_json
         redirect_to root_path
 	end
+
+    def create_task
+        task = {
+                title: "#{params[:task][:title]}[#{params[:task][:circle_id]}]" ,
+                notes: params[:task][:notes] ,
+                due: params[:task][:due].to_datetime
+                }
+
+        # Create the task in task list.
+        response = $client.execute(:api_method => @tasks.tasks.insert,
+                                :parameters => {'tasklist' => params[:task_list_id]},
+                                :body_object => task,
+                                :headers => {'Content-Type' => 'application/json'})
+
+        # render json: response.data.to_json
+        redirect_to root_path
+    end
 
 	def update
     	tasklist = @response.data

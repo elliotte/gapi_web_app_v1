@@ -1,0 +1,82 @@
+<div class="modal fade" id="modal-window" tabindex="-1" role="dialog" aria-hidden="true"></div>
+
+<div class="modal fade" id="modal-window-create-circle-event" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-default-width">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="myModalLabel">Create Event</h3>
+			</div>
+			<div class="modal-body">
+				<%= form_tag("/calendars/primary/events", :id => "create_circle_event_form", :method => "post") do %>
+					<div class="form-group">
+						Summary: <%= text_field_tag "event[summary]", "", class: "form-control", placeholder: "Summary" %>
+						Start Time: <%= text_field_tag "event[start_time]", "", class: "form-control", placeholder: "Start Time", id: "start_time_event" %>
+						End Time: <%= text_field_tag "event[end_time]", "", class: "form-control", placeholder: "End Time", id: "end_time_event" %>
+						Location: <%= text_field_tag "event[location]", "", class: "form-control", placeholder: "Location" %>
+						Attendees :-
+						Name: <%= text_field_tag "event[attendee_name]", "", class: "form-control", placeholder: "Attendee Name" %>
+						Email: <%= text_field_tag "event[attendee_email]", "", class: "form-control", placeholder: "Attendee Email" %>
+						Description: <%= text_field_tag "event[description]", "", class: "form-control", placeholder: "Description" %>
+						Status: <%= text_field_tag "event[status]", "confirmed", class: "form-control", placeholder: "Status" %>
+						Visibility: <%= text_field_tag "event[visibility]", "default", class: "form-control", placeholder: "Visibility" %>
+          				<%= hidden_field_tag "event[circle_id]", params[:id] %>
+					</div>
+				<% end %>
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+				<button class="btn btn-primary" id="create_button_circle_event">Create</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="modal-window-create-circle-task" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-medium-width">
+		<div class="modal-content">
+		    <div class="modal-header">
+		      	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		      	<h3 id="myModalLabel">Create Task</h3>
+		    </div>
+		    <div class="modal-body">
+		      	<%= form_tag(create_task_task_lists_path, :id => "create_circle_task_form", :method => "post") do %>
+		        	<div class="form-group">
+		          		<%= hidden_field_tag "task_list_id", "" %>
+		          		Title: <%= text_field_tag "task[title]", "", class: "form-control", placeholder: "Title" %>
+		          		Notes: <%= text_field_tag "task[notes]", "", class: "form-control", placeholder: "Notes" %>
+		          		Due Date: <%= text_field_tag "task[due]", "", class: "form-control", placeholder: "Due Date" %>
+		          		<%= hidden_field_tag "task[circle_id]", params[:id] %>
+		        	</div>
+		      	<% end %>
+		    </div>
+		    <div class="modal-footer">
+		      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		      <button class="btn btn-primary" id="create_button_circle_task">Create</button>
+		    </div>
+	  	</div>
+	</div>
+</div>
+
+<div class="modal fade" id="modal-window-create-circle-document" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-medium-width">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="myModalLabel">Create Document</h3>
+			</div>
+			<div class="modal-body">
+				<%= form_tag(files_path, :id => "create_circle_document_form", :method => "post", :multipart => true) do %>
+					<div class="form-group">
+						Select Document: <%= file_field_tag "file", class: "form-control" %>
+						<%= hidden_field_tag "circle_id", params[:id] %>
+					</div>
+				<% end %>
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+				<button class="btn btn-primary" id="create_button_circle_document">Create</button>
+			</div>
+		</div>
+	</div>
+</div>

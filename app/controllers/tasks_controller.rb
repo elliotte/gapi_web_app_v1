@@ -46,7 +46,7 @@ class TasksController < ApplicationController
 
 	def update
     	task = @response.data
-    	task.title = params[:task][:title]
+    	task.title = "#{params[:task][:title]}[#{params[:task][:circle_id]}]"
     	task.notes = params[:task][:notes]
     	task.due = params[:task][:due].to_datetime
     	task.status = params[:task][:status]

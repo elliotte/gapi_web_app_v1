@@ -1,0 +1,145 @@
+<!-- white-section -->
+<section id="white-section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+        	<!-- col-md-12 -->
+		    <div class="col-md-12">
+		    	<div id="authOps">
+					<!-- col-md-12 -->
+			        <div class="col-md-12">
+	                    <!-- section-title -->
+	                    <div class="section-title">
+	                        <!-- main-title -->
+	                        <div class="main-title">
+	                            <h2><%= @circle.display_name %></h2>
+	                        </div><!-- /main-title -->
+	                    </div><!-- /section-title -->
+			        </div><!-- /col-md-12 -->
+
+	                <!-- feature-boxs-wrapper -->
+	                <div class="feature-boxs-wrapper">
+	                	<div class="col-md-12">
+			            	<div class="row">
+			            		<div class="col-md-4" style="margin-bottom: 15px;">
+			            			<a class="btn btn-primary" style="display: list-item;" id="create_team_event"><i class="fa fa-calendar"></i> Create Team Event</a>
+			            		</div>
+			            		<div class="col-md-4" style="margin-bottom: 15px;">
+			            			<a class="btn btn-primary" style="display: list-item;" id="create_team_task"><i class="fa fa-tasks"></i> Create Team Tasks</a>
+			            		</div>
+			            		<div class="col-md-4" style="margin-bottom: 15px;">
+			            			<a class="btn btn-primary" style="display: list-item;" id="create_team_file"><i class="fa fa-file"></i> Create Team Files</a>
+			            		</div>
+			            	</div>
+
+			            	<div class="row" style="margin-bottom: 15px;">
+			            		<div class="feature-box-style2">
+					              	<div class="feature-box-title">
+					                	<i class="fa fa-users"></i>
+					              	</div>
+					              	<div class="feature-box-containt">
+					                	<h3><%= @circle.description %></h3>
+					                	<p>
+					                  		<a class="btn btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote="true" href="<%= destroy_show_circle_path(@circle.id) %>">Delete</a>
+					                  		<a class="btn btn-primary" data-toggle="modal" data-target="#modal-window" data-remote="true" href="<%= edit_circle_path(@circle.id) %>">Update</a>
+					                	</p>
+					              	</div>
+					            </div>
+				            </div>
+
+				            <div class="row">
+				            	<!-- col-md-12 -->
+						        <div class="col-md-12">
+				                    <!-- section-title -->
+				                    <div class="section-title">
+				                        <!-- main-title -->
+				                        <div class="main-title">
+				                            <h2>Team Events</h2>
+				                        </div><!-- /main-title -->
+				                    </div><!-- /section-title -->
+						        </div><!-- /col-md-12 -->
+						        <div class="feature-boxs-wrapper">
+						        	<div id="calendarTeamEvents">
+				              		</div>
+				              	</div>
+				            </div>
+
+				            <div class="row">
+				            	<!-- col-md-12 -->
+						        <div class="col-md-12">
+				                    <!-- section-title -->
+				                    <div class="section-title">
+				                        <!-- main-title -->
+				                        <div class="main-title">
+				                            <h2>Team Tasks</h2>
+				                        </div><!-- /main-title -->
+				                    </div><!-- /section-title -->
+						        </div><!-- /col-md-12 -->
+						        <!-- feature-boxs-wrapper -->
+				                <div class="feature-boxs-wrapper">
+				                    <!-- col-md-6 -->
+				                    <div class="col-md-6">
+				                        <!-- feature-box-style2 -->
+				                        <div class="feature-box-style2">
+				                            <!-- feature-box-title -->
+				                            <div class="feature-box-title">
+				                                <!-- icon -->
+				                                <i class="fa fa-tasks"></i>
+				                            </div><!-- /feature-box-title -->
+				                            <!-- feature-box-containt -->
+				                            <div class="feature-box-containt">
+				                                <h3>Completed Tasks</h3>
+				                                <div id="teamTasksCompleted"></div>
+				                            </div><!-- /feature-box-containt -->
+				                        </div><!-- /feature-box-style2 -->
+				                    </div><!-- /col-md-6 -->
+				                    <!-- col-md-6 -->
+				                    <div class="col-md-6">
+				                        <!-- feature-box-style2 -->
+				                        <div class="feature-box-style2">
+				                            <!-- feature-box-title -->
+				                            <div class="feature-box-title">
+				                                <!-- icon -->
+				                                <i class="fa fa-tasks"></i>
+				                            </div><!-- /feature-box-title -->
+				                            <!-- feature-box-containt -->
+				                            <div class="feature-box-containt">
+				                                <h3>Pending Tasks</h3>
+				                                <div id="teamTasksPending"></div>
+				                            </div><!-- /feature-box-containt -->
+				                        </div><!-- /feature-box-style2 -->
+				                    </div><!-- /col-md-6 -->
+				                </div><!-- /feature-boxs-wrapper -->
+				            </div>
+
+				            <div class="row">
+				            	<!-- col-md-12 -->
+						        <div class="col-md-12">
+				                    <!-- section-title -->
+				                    <div class="section-title">
+				                        <!-- main-title -->
+				                        <div class="main-title">
+				                            <h2>Team Files</h2>
+				                        </div><!-- /main-title -->
+				                    </div><!-- /section-title -->
+						        </div><!-- /col-md-12 -->
+						        <div class="feature-boxs-wrapper">
+						        	<div id="driveTeamFiles">
+				              		</div>
+				              	</div>
+				            </div>
+
+				            <h2>You are now signed in to the app using Google+</h2>
+							<p>If you chooses to disconnect, the app deletes all stored information retrieved from Google.</p>
+							<a href="javascript:void(0)" title="Sign Out" class="btn btn-sm btn-main-o" id="disconnect" style="margin-bottom: 15px;">Sign Out</a>
+							<div id="circle_id" class="hide"><%= params[:id] %></div>
+							<%= render 'circle_modals' %>
+							<%= render 'signin/modals' %>
+				        </div>
+	                </div><!-- /feature-boxs-wrapper -->
+	            </div>
+	        </div><!-- /col-md-12 -->
+	    </div><!-- /row -->
+	</div><!-- /container -->
+</section><!-- /white section
