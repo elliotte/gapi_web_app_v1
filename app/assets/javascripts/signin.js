@@ -157,6 +157,7 @@ var helper = (function() {
           helper.task_lists();
           helper.activities();
           helper.circles();
+          helper.circleMembers();
         },
         processData: false,
         data: this.authResult.code + ',' + this.authResult.id_token + ',' + this.authResult.access_token
@@ -267,6 +268,89 @@ var helper = (function() {
         },
         processData: false
       });
+    },
+    /**
+     * Calls the server endpoint to get the list of Circles.
+     */
+    circleMembers: function() {
+      $.ajax({
+        type: 'GET',
+        url: '/peoples/circle_peoples',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: {id: $("#circle_id").text()},
+        success: function(result) {
+          console.log(result);
+          helper.getCircleMembers(result);
+        }
+      });
+    },
+    /**
+     * get circle members from DB.
+     */
+    getCircleMembers: function(members) {
+      $('#circleMembers').empty();
+      for (var m in members) {
+        member = members[m];
+        $.ajax({
+        type: 'GET',
+        url: '/peoples/'+member.google_id,
+        dataType: 'json',
+        contentType: 'application/json',
+        success: function(result) {
+          console.log(result);
+          helper.appendCircleMembers(result);
+        }
+      });
+      }
+    },
+    /**
+     * Displays circle members retrieved from DB.
+     */
+    appendCircleMembers: function(member) {
+      if(member.gender == "male") {
+        $('#circleMembers').append(
+          '<div class="col-md-6">'+
+            '<div class="feature-box-style2">'+
+              '<div class="feature-box-title">'+
+                '<i class="fa fa-male"></i>'+
+              '</div>'+
+              '<div class="feature-box-containt">'+
+                '<h3><a href="' + member.url + '" target="_blank">' + member.displayName + '</a></h3>'+
+                '<p><a href="' + member.url + '" target="_blank"><img src="' + member.image.url + '"></a></p>'+
+              '</div>'+
+            '</div>'+
+          '</div>'
+        );
+      } else if(member.gender == "female") {
+        $('#circleMembers').append(
+          '<div class="col-md-6">'+
+            '<div class="feature-box-style2">'+
+              '<div class="feature-box-title">'+
+                '<i class="fa fa-female"></i>'+
+              '</div>'+
+              '<div class="feature-box-containt">'+
+                '<h3><a href="' + member.url + '" target="_blank">' + member.displayName + '</a></h3>'+
+                '<p><a href="' + member.url + '" target="_blank"><img src="' + member.image.url + '"></a></p>'+
+              '</div>'+
+            '</div>'+
+          '</div>'
+        );
+      } else {
+        $('#circleMembers').append(
+          '<div class="col-md-6">'+
+            '<div class="feature-box-style2">'+
+              '<div class="feature-box-title">'+
+                '<i class="fa fa-users"></i>'+
+              '</div>'+
+              '<div class="feature-box-containt">'+
+                '<h3><a href="' + member.url + '" target="_blank">' + member.displayName + '</a></h3>'+
+                '<p><a href="' + member.url + '" target="_blank"><img src="' + member.image.url + '"></a></p>'+
+              '</div>'+
+            '</div>'+
+          '</div>'
+        );
+      }
     },
     /**
      * Displays visible People retrieved from server.
@@ -575,23 +659,25 @@ var helper = (function() {
       for (var taskIndex in tasks.items) {
         task = tasks.items[taskIndex];
         if(task.title.lastIndexOf("[") >= 0) {
-          if (task.status == "completed") {
-            $('#teamTasksCompleted').append(
-              '<p>'+ '- Title: ' + task.title.substring(0, task.title.lastIndexOf("[")) + ', Notes: ' + task.notes + ', Completed at: ' + task.completed.substring(0,10) + '</p>'+
-              '<p>'+
-                ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '/destroy">Delete</a>'+
-                ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '">Update</a>'+
-              '</p>'
-            );
-          } else {
-            $('#teamTasksPending').append(
-              '<p>'+ '- Title: ' + task.title.substring(0, task.title.lastIndexOf("[")) + ', Notes: ' + task.notes + ', Due Date: ' + task.due.substring(0, 10) + '</p>'+
-              '<p>'+
-                ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '/destroy">Delete</a>'+
-                ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '">Update</a>'+
-                ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '/complete">Complete</a>'+
-              '</p>'
-            );
+          if(task.title.substring(task.title.lastIndexOf("[")+1, task.title.lastIndexOf("]")) == $("#circle_id").text()) {
+            if (task.status == "completed") {
+              $('#teamTasksCompleted').append(
+                '<p>'+ '- Title: ' + task.title.substring(0, task.title.lastIndexOf("[")) + ', Notes: ' + task.notes + ', Completed at: ' + task.completed.substring(0,10) + '</p>'+
+                '<p>'+
+                  ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '/destroy">Delete</a>'+
+                  ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '">Update</a>'+
+                '</p>'
+              );
+            } else {
+              $('#teamTasksPending').append(
+                '<p>'+ '- Title: ' + task.title.substring(0, task.title.lastIndexOf("[")) + ', Notes: ' + task.notes + ', Due Date: ' + task.due.substring(0, 10) + '</p>'+
+                '<p>'+
+                  ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '/destroy">Delete</a>'+
+                  ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '">Update</a>'+
+                  ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '/complete">Complete</a>'+
+                '</p>'
+              );
+            }
           }
           if (task.status == "completed") {
             $('#tasksCompleted').append(
@@ -654,11 +740,82 @@ var helper = (function() {
         );
       }
     },
+    /**
+     * Displays Search Results retrieved from server.
+     */
+    appendSearchResult: function(search) {
+      var count_search = 0;
+      $('#search_result').empty();
+      $("#modal-window-add-circle-member").modal("hide");
+      for (var searchIndex in search.items) {
+        count_search++;
+        people = search.items[searchIndex];
+        $('#search_result').append(
+          '<div class="feature-boxs-wrapper">'+
+            '<div class="feature-box-style2" style="margin: 0 0 5px 0;">'+
+              '<div class="feature-box-containt" style="margin-top: 0px;padding: 5px 0px 0;">'+
+                '<h3 style="padding-bottom: 5px;">'+
+                  '<div class="form-group" style="margin-bottom: 0px;">'+
+                    '<input name="google_id[]" type="checkbox" value="'+people.id+'" style="margin-right: 7px;">'+
+                    '<a href="'+people.url+'" target="_blank" style="margin-right: 7px;">'+people.displayName+'</a>'+
+                    '<a href="'+people.url+'" target="_blank"><img src="'+people.image.url+'"></a>'+
+                  '</div'+
+                '</h3>'+
+              '</div>'+
+            '</div>'+
+          '</div>'
+        );
+        if(search.nextPageToken) {
+          $('#next_results').html('<input id="next_page_token" name="next_page_token" type="hidden" value="'+search.nextPageToken+'">');
+        }
+      }
+      if(count_search == 0) {
+        $('#search_result').append(
+          '<div class="feature-boxs-wrapper">'+
+            '<div class="feature-box-style2" style="margin: 0 0 5px 0;">'+
+              '<div class="feature-box-containt" style="margin-top: 0px;padding: 5px 0px 0;">'+
+                '<h3 style="padding-bottom: 5px;">'+
+                  'No Result Found!!!!'+
+                '</h3>'+
+              '</div>'+
+            '</div>'+
+          '</div>'
+        );
+        $("#next_button_circle_member_search").hide();
+      }
+      $("#modal-window-circle-members-result").modal("show");
+    },
   };
 })();
 
 $(document).ready(function() {
   $('#disconnect').click(helper.disconnectServer);
+  $('#create_button_circle_member').click(function(){
+    $.ajax({
+      type: 'GET',
+      url: '/peoples/search',
+      dataType: 'json',
+      contentType: 'application/json',
+      data: {query: $("#add_circle_member_form #query").val()},
+      success: function(result) {
+        console.log(result);
+        helper.appendSearchResult(result);
+      }
+    });
+  });
+  $('#next_button_circle_member_search').click(function(){
+    $.ajax({
+      type: 'GET',
+      url: '/peoples/search',
+      dataType: 'json',
+      contentType: 'application/json',
+      data: {query: $("#add_circle_member_form #query").val(), next_page_token: $("#add_circle_member_search_form #next_page_token").val()},
+      success: function(result) {
+        console.log(result);
+        helper.appendSearchResult(result);
+      }
+    });
+  });
 });
 
 function onSignInCallback(authResult) {

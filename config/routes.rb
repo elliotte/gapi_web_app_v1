@@ -64,6 +64,8 @@ GooglePlay::Application.routes.draw do
     collection do
       get :search
       get :list_by_activity
+      get :circle_peoples
+      post :add_people
     end
   end
 

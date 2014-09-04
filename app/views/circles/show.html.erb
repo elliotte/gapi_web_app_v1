@@ -1,5 +1,5 @@
 <!-- white-section -->
-<section id="white-section">
+<section id="white-section" class ="white-section-background">
     <!-- container -->
     <div class="container">
         <!-- row -->
@@ -22,18 +22,21 @@
 	                <div class="feature-boxs-wrapper">
 	                	<div class="col-md-12">
 			            	<div class="row">
-			            		<div class="col-md-4" style="margin-bottom: 15px;">
-			            			<a class="btn btn-primary" style="display: list-item;" id="create_team_event"><i class="fa fa-calendar"></i> Create Team Event</a>
+			            		<div class="col-md-3 margin-bottom-15">
+			            			<a class="btn btn-primary btn-list-item" id="add_team_member"><i class="fa fa-calendar"></i> Add Team Member</a>
 			            		</div>
-			            		<div class="col-md-4" style="margin-bottom: 15px;">
-			            			<a class="btn btn-primary" style="display: list-item;" id="create_team_task"><i class="fa fa-tasks"></i> Create Team Tasks</a>
+			            		<div class="col-md-3 margin-bottom-15">
+			            			<a class="btn btn-primary btn-list-item" id="create_team_event"><i class="fa fa-calendar"></i> Create Team Event</a>
 			            		</div>
-			            		<div class="col-md-4" style="margin-bottom: 15px;">
-			            			<a class="btn btn-primary" style="display: list-item;" id="create_team_file"><i class="fa fa-file"></i> Create Team Files</a>
+			            		<div class="col-md-3 margin-bottom-15">
+			            			<a class="btn btn-primary btn-list-item" id="create_team_task"><i class="fa fa-tasks"></i> Create Team Tasks</a>
+			            		</div>
+			            		<div class="col-md-3 margin-bottom-15">
+			            			<a class="btn btn-primary btn-list-item" id="create_team_file"><i class="fa fa-file"></i> Create Team Files</a>
 			            		</div>
 			            	</div>
 
-			            	<div class="row" style="margin-bottom: 15px;">
+			            	<div class="row margin-bottom-15">
 			            		<div class="feature-box-style2">
 					              	<div class="feature-box-title">
 					                	<i class="fa fa-users"></i>
@@ -46,6 +49,23 @@
 					                	</p>
 					              	</div>
 					            </div>
+				            </div>
+
+				            <div class="row">
+				            	<!-- col-md-12 -->
+						        <div class="col-md-12">
+				                    <!-- section-title -->
+				                    <div class="section-title">
+				                        <!-- main-title -->
+				                        <div class="main-title">
+				                            <h2>Team Members</h2>
+				                        </div><!-- /main-title -->
+				                    </div><!-- /section-title -->
+						        </div><!-- /col-md-12 -->
+						        <div class="feature-boxs-wrapper">
+						        	<div id="circleMembers">
+				              		</div>
+				              	</div>
 				            </div>
 
 				            <div class="row">
@@ -132,7 +152,7 @@
 
 				            <h2>You are now signed in to the app using Google+</h2>
 							<p>If you chooses to disconnect, the app deletes all stored information retrieved from Google.</p>
-							<a href="javascript:void(0)" title="Sign Out" class="btn btn-sm btn-main-o" id="disconnect" style="margin-bottom: 15px;">Sign Out</a>
+							<a href="javascript:void(0)" title="Sign Out" class="btn btn-sm btn-main-o margin-bottom-15" id="disconnect">Sign Out</a>
 							<div id="circle_id" class="hide"><%= params[:id] %></div>
 							<%= render 'circle_modals' %>
 							<%= render 'signin/modals' %>

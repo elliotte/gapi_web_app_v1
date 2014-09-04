@@ -21,13 +21,15 @@ class PeoplesController < ApplicationController
 
 	def search
 		# Search all public profiles.
-		if params[:page_token].present?
+		if params[:next_page_token].present?
 		    response = $client.execute!(@plus.people.search,
 		                                {'query' => params[:query],
-		                                'pageToken' => params[:page_token]}).body
+		                                'maxResults' => 10,
+		                                'pageToken' => params[:next_page_token]}).body
 		else
 			response = $client.execute!(@plus.people.search,
-		                                {'query' => params[:query]}).body
+		                                {'query' => params[:query],
+		                                'maxResults' => 10}).body
 		end
 
 	    render json: JSON.parse(response).to_json
@@ -40,6 +42,20 @@ class PeoplesController < ApplicationController
 								   'collection' => params[:collection]}).body
 		
 	    render json: JSON.parse(response).to_json
+	end
+
+	def circle_peoples
+		@circles = Circle.find(params[:id]).team_members
+		render json: @circles
+	end
+
+	def add_people
+		if params[:google_id].present?
+			params[:google_id].each do |google_id|
+				TeamMember.create(circle_id: params[:circle_id], google_id: google_id)
+			end
+		end
+		redirect_to circle_path(params[:circle_id])
 	end
 
 	private

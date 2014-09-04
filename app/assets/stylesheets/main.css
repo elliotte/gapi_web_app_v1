@@ -8,8 +8,15 @@
 }
 
 .modal-medium-width {
-	width: 500px;
+	width: 360px;
 	padding-top: 50px;
+}
+
+@media screen and (min-width: 768px) {
+	.modal-search-width  {
+		width: 500px;
+		padding-top: 50px;
+	}
 }
 
 #search_p {
@@ -24,4 +31,16 @@
 	right: 0;
 	padding: 8px 27px;
 	color: #E6E6E6;
+}
+
+.white-section-background {
+	background: transparent url(/assets/patterns/overlay-pattern.png) repeat;
+}
+
+.margin-bottom-15 {
+	margin-bottom: 15px;
+}
+
+.btn-list-item {
+	display: list-item;
 }

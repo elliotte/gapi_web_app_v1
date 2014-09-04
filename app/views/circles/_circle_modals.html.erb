@@ -1,5 +1,57 @@
 <div class="modal fade" id="modal-window" tabindex="-1" role="dialog" aria-hidden="true"></div>
 
+<div class="modal fade" id="modal-window-add-circle-member" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-medium-width">
+		<div class="modal-content">
+		    <div class="modal-header">
+		      	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		      	<h3 id="myModalLabel">Search</h3>
+		    </div>
+		    <div class="modal-body">
+		      	<%= form_tag(search_peoples_path, :id => "add_circle_member_form", :method => "get") do %>
+		        	<div class="form-group">
+		          		Query: <%= text_field_tag "query", "", class: "form-control", placeholder: "Query" %>
+		          		<%= hidden_field_tag "circle_id", params[:id] %>
+		        	</div>
+		      	<% end %>
+		    </div>
+		    <div class="modal-footer">
+		      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		      <button class="btn btn-primary" id="create_button_circle_member">Search</button>
+		    </div>
+	  	</div>
+	</div>
+</div>
+
+<div class="modal fade" id="modal-window-circle-members-result" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-search-width">
+		<div class="modal-content">
+		    <div class="modal-header">
+		      	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		      	<h3 id="myModalLabel" style="text-align: center;">Search Result</h3>
+		    </div>
+		    <div class="modal-body">
+		    	<%= form_tag(add_people_peoples_path, :id => "add_circle_member_search_form", :method => "post") do %>
+		    		<%= hidden_field_tag "circle_id", params[:id] %>
+		    		<div id="search_result"></div>
+		    	<% end %>
+		    	<div class="hide">
+		    		<%= form_tag(search_peoples_path, :id => "add_circle_member_search_form", :method => "get") do %>
+		    			<%= hidden_field_tag "query", params[:query] %>
+		    			<%= hidden_field_tag "circle_id", params[:id] %>
+		    			<div id="next_results"></div>
+		    		<% end %>
+		    	</div>
+		    	<button class="btn btn-primary pull-right" id="next_button_circle_member_search">Next</button>
+		    </div>
+		    <div class="modal-footer">
+		      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		      <button class="btn btn-primary" id="create_button_circle_member_search">Add</button>
+		    </div>
+	  	</div>
+	</div>
+</div>
+
 <div class="modal fade" id="modal-window-create-circle-event" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog modal-default-width">
 		<div class="modal-content">
