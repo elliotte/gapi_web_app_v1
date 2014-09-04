@@ -6,6 +6,20 @@ class FileCommentsController < ApplicationController
 	def index
     	# Lists a file's comments.
     	if params[:page_token].present?
+		    @response = $client.execute(:api_method => @drive.comments.list,
+    									:parameters => {'fileId' => params[:file_id],
+		                            					'pageToken' => params[:page_token]})
+		else
+			@response = $client.execute(:api_method => @drive.comments.list,
+    									:parameters => {'fileId' => params[:file_id]})
+		end
+
+	    render json: @response.data.to_json
+	end
+
+	def comments_show
+    	# Lists a file's comments.
+    	if params[:page_token].present?
 		    response = $client.execute(:api_method => @drive.comments.list,
     									:parameters => {'fileId' => params[:file_id],
 		                            					'pageToken' => params[:page_token]})
@@ -14,7 +28,9 @@ class FileCommentsController < ApplicationController
     									:parameters => {'fileId' => params[:file_id]})
 		end
 
-	    render json: response.data.to_json
+	    respond_to do |format|
+	      	format.js { @comments = response.data.items }
+	    end
 	end
 
 	def show

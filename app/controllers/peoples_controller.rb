@@ -52,7 +52,9 @@ class PeoplesController < ApplicationController
 	def add_people
 		if params[:google_id].present?
 			params[:google_id].each do |google_id|
-				TeamMember.create(circle_id: params[:circle_id], google_id: google_id)
+				unless TeamMember.find_by(circle_id: params[:circle_id], google_id: google_id).present?
+					TeamMember.create(circle_id: params[:circle_id], google_id: google_id)
+				end
 			end
 		end
 		redirect_to circle_path(params[:circle_id])

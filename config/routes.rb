@@ -49,6 +49,9 @@ GooglePlay::Application.routes.draw do
   resources :files, :only => [:index, :show, :create, :update, :destroy] do
     resources :file_comments, :only => [:index, :show, :create, :update, :destroy], :path => 'comments', :as => 'comments' do
       resources :replies, :only => [:index, :show, :create, :update, :destroy]
+      collection do
+        get :comments_show, :path => "show", :as => "show"
+      end
     end
     member do
       post :copy
