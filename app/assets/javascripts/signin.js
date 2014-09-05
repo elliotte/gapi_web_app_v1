@@ -514,7 +514,6 @@ var helper = (function() {
       var count = 0;
       for (var itemIndex in drive.items) {
         var total_comments = 0;
-        count++;
         item = drive.items[itemIndex];
         $.ajax({
           type: 'GET',
@@ -527,278 +526,281 @@ var helper = (function() {
           },
           processData: false
         });
-        if(total_comments > 0) {
-          if(item.properties && item.properties[0].value == $("#circle_id").text()) {
-            if(item.thumbnailLink) {
-              if(count%4 == 0) {
-                $('#driveFiles').append('<div class="row">');
-              }
-              $('#driveTeamFiles').append(
-                '<div class="col-md-3">'+
-                  '<div class="feature-box-style2">'+
-                    '<div class="feature-box-title">'+
-                      '<i class="fa fa-file"></i>'+
+        if(!item.explicitlyTrashed) {
+          count++;
+          if(total_comments > 0) {
+            if(item.properties && item.properties[0].value == $("#circle_id").text()) {
+              if(item.thumbnailLink) {
+                if(count%4 == 0) {
+                  $('#driveFiles').append('<div class="row">');
+                }
+                $('#driveTeamFiles').append(
+                  '<div class="col-md-3">'+
+                    '<div class="feature-box-style2">'+
+                      '<div class="feature-box-title">'+
+                        '<i class="fa fa-file"></i>'+
+                      '</div>'+
+                      '<div class="feature-box-containt">'+
+                        '<p>Owner: ' + item.ownerNames[0] + '</p>'+
+                        '<p>Total Comments: ' + total_comments + '</p>'+
+                        '<h3>'+
+                          '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
+                          '<ul class="project-details">'+
+                            '<li title="" data-rel="tooltip" data-placement="top" data-original-title="Type">'+
+                              '<img src="' + item.thumbnailLink + '" alt="screen" style="width: 100px;height: 75px;"/>'+
+                            '</li>'+
+                          '</ul>'+
+                        '</h3>'+
+                        '<p>'+
+                          ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
+                          ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
+                          ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/comments/show">Comments</a>'+
+                        '</p>'+
+                      '</div>'+
                     '</div>'+
-                    '<div class="feature-box-containt">'+
-                      '<p>Owner: ' + item.ownerNames[0] + '</p>'+
-                      '<p>Total Comments: ' + total_comments + '</p>'+
-                      '<h3>'+
-                        '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
-                        '<ul class="project-details">'+
-                          '<li title="" data-rel="tooltip" data-placement="top" data-original-title="Type">'+
-                            '<img src="' + item.thumbnailLink + '" alt="screen" style="width: 100px;height: 75px;"/>'+
-                          '</li>'+
-                        '</ul>'+
-                      '</h3>'+
-                      '<p>'+
-                        ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
-                        ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
-                        ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/comments/show">Comments</a>'+
-                      '</p>'+
+                  '</div>'
+                );
+                if(count%4 == 0) {
+                  $('#driveFiles').append('</div>');
+                }
+              } else {
+                if(count%4 == 0) {
+                  $('#driveFiles').append('<div class="row">');
+                }
+                $('#driveTeamFiles').append(
+                  '<div class="col-md-3">'+
+                    '<div class="feature-box-style2">'+
+                      '<div class="feature-box-title">'+
+                        '<i class="fa fa-file"></i>'+
+                      '</div>'+
+                      '<div class="feature-box-containt">'+
+                        '<p>Owner: '+ item.ownerNames[0] + '</p>'+
+                        '<p>Total Comments: ' + total_comments + '</p>'+
+                        '<h3>'+
+                          '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
+                          '<ul class="project-details">'+
+                            '<li title="" data-rel="tooltip" data-placement="top" data-original-title="Type">'+
+                              '<img src="' + item.iconLink + '" alt="screen"/>'+
+                            '</li>'+
+                          '</ul>'+
+                        '</h3>'+
+                        '<p>'+
+                          ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
+                          ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
+                          ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/comments/show">Comments</a>'+
+                        '</p>'+
+                      '</div>'+
                     '</div>'+
-                  '</div>'+
-                '</div>'
-              );
-              if(count%4 == 0) {
-                $('#driveFiles').append('</div>');
-              }
-            } else {
-              if(count%4 == 0) {
-                $('#driveFiles').append('<div class="row">');
-              }
-              $('#driveTeamFiles').append(
-                '<div class="col-md-3">'+
-                  '<div class="feature-box-style2">'+
-                    '<div class="feature-box-title">'+
-                      '<i class="fa fa-file"></i>'+
-                    '</div>'+
-                    '<div class="feature-box-containt">'+
-                      '<p>Owner: '+ item.ownerNames[0] + '</p>'+
-                      '<p>Total Comments: ' + total_comments + '</p>'+
-                      '<h3>'+
-                        '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
-                        '<ul class="project-details">'+
-                          '<li title="" data-rel="tooltip" data-placement="top" data-original-title="Type">'+
-                            '<img src="' + item.iconLink + '" alt="screen"/>'+
-                          '</li>'+
-                        '</ul>'+
-                      '</h3>'+
-                      '<p>'+
-                        ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
-                        ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
-                        ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/comments/show">Comments</a>'+
-                      '</p>'+
-                    '</div>'+
-                  '</div>'+
-                '</div>'
-              );
-              if(count%4 == 0) {
-                $('#driveFiles').append('</div>');
-              }
-            }
-          } else {
-            if(item.thumbnailLink) {
-              if(count%4 == 0) {
-                $('#driveFiles').append('<div class="row">');
-              }
-              $('#driveFiles').append(
-                '<div class="col-md-3">'+
-                  '<div class="feature-box-style2">'+
-                    '<div class="feature-box-title">'+
-                      '<i class="fa fa-file"></i>'+
-                    '</div>'+
-                    '<div class="feature-box-containt">'+
-                      '<p>Owner: '+ item.ownerNames[0] + '</p>'+
-                      '<p>Total Comments: ' + total_comments + '</p>'+
-                      '<h3>'+
-                        '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
-                        '<ul class="project-details">'+
-                          '<li title="" data-rel="tooltip" data-placement="top" data-original-title="Type">'+
-                            '<img src="' + item.thumbnailLink + '" alt="screen" style="width: 100px;height: 75px;"/>'+
-                          '</li>'+
-                        '</ul>'+
-                      '</h3>'+
-                      '<p>'+
-                        ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
-                        ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
-                        ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/comments/show">Comments</a>'+
-                      '</p>'+
-                    '</div>'+
-                  '</div>'+
-                '</div>'
-              );
-              if(count%4 == 0) {
-                $('#driveFiles').append('</div>');
+                  '</div>'
+                );
+                if(count%4 == 0) {
+                  $('#driveFiles').append('</div>');
+                }
               }
             } else {
-              if(count%4 == 0) {
-                $('#driveFiles').append('<div class="row">');
-              }
-              $('#driveFiles').append(
-                '<div class="col-md-3">'+
-                  '<div class="feature-box-style2">'+
-                    '<div class="feature-box-title">'+
-                      '<i class="fa fa-file"></i>'+
+              if(item.thumbnailLink) {
+                if(count%4 == 0) {
+                  $('#driveFiles').append('<div class="row">');
+                }
+                $('#driveFiles').append(
+                  '<div class="col-md-3">'+
+                    '<div class="feature-box-style2">'+
+                      '<div class="feature-box-title">'+
+                        '<i class="fa fa-file"></i>'+
+                      '</div>'+
+                      '<div class="feature-box-containt">'+
+                        '<p>Owner: '+ item.ownerNames[0] + '</p>'+
+                        '<p>Total Comments: ' + total_comments + '</p>'+
+                        '<h3>'+
+                          '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
+                          '<ul class="project-details">'+
+                            '<li title="" data-rel="tooltip" data-placement="top" data-original-title="Type">'+
+                              '<img src="' + item.thumbnailLink + '" alt="screen" style="width: 100px;height: 75px;"/>'+
+                            '</li>'+
+                          '</ul>'+
+                        '</h3>'+
+                        '<p>'+
+                          ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
+                          ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
+                          ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/comments/show">Comments</a>'+
+                        '</p>'+
+                      '</div>'+
                     '</div>'+
-                    '<div class="feature-box-containt">'+
-                      '<p>Owner: '+ item.ownerNames[0] + '</p>'+
-                      '<p>Total Comments: ' + total_comments + '</p>'+
-                      '<h3>'+
-                        '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
-                        '<ul class="project-details">'+
-                          '<li title="" data-rel="tooltip" data-placement="top" data-original-title="Type">'+
-                            '<img src="' + item.iconLink + '" alt="screen"/>'+
-                          '</li>'+
-                        '</ul>'+
-                      '</h3>'+
-                      '<p>'+
-                        ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
-                        ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
-                        ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/comments/show">Comments</a>'+
-                      '</p>'+
+                  '</div>'
+                );
+                if(count%4 == 0) {
+                  $('#driveFiles').append('</div>');
+                }
+              } else {
+                if(count%4 == 0) {
+                  $('#driveFiles').append('<div class="row">');
+                }
+                $('#driveFiles').append(
+                  '<div class="col-md-3">'+
+                    '<div class="feature-box-style2">'+
+                      '<div class="feature-box-title">'+
+                        '<i class="fa fa-file"></i>'+
+                      '</div>'+
+                      '<div class="feature-box-containt">'+
+                        '<p>Owner: '+ item.ownerNames[0] + '</p>'+
+                        '<p>Total Comments: ' + total_comments + '</p>'+
+                        '<h3>'+
+                          '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
+                          '<ul class="project-details">'+
+                            '<li title="" data-rel="tooltip" data-placement="top" data-original-title="Type">'+
+                              '<img src="' + item.iconLink + '" alt="screen"/>'+
+                            '</li>'+
+                          '</ul>'+
+                        '</h3>'+
+                        '<p>'+
+                          ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
+                          ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
+                          ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/comments/show">Comments</a>'+
+                        '</p>'+
+                      '</div>'+
                     '</div>'+
-                  '</div>'+
-                '</div>'
-              );
-              if(count%4 == 0) {
-                $('#driveFiles').append('</div>');
+                  '</div>'
+                );
+                if(count%4 == 0) {
+                  $('#driveFiles').append('</div>');
+                }
               }
-            }
-          }
-        } else {
-          if(item.properties && item.properties[0].value == $("#circle_id").text()) {
-          if(item.thumbnailLink) {
-            if(count%4 == 0) {
-              $('#driveFiles').append('<div class="row">');
-            }
-            $('#driveTeamFiles').append(
-              '<div class="col-md-3">'+
-                '<div class="feature-box-style2">'+
-                  '<div class="feature-box-title">'+
-                    '<i class="fa fa-file"></i>'+
-                  '</div>'+
-                  '<div class="feature-box-containt">'+
-                    '<p>Owner: ' + item.ownerNames[0] + '</p>'+
-                    '<p>Total Comments: ' + total_comments + '</p>'+
-                    '<h3>'+
-                      '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
-                      '<ul class="project-details">'+
-                        '<li title="" data-rel="tooltip" data-placement="top" data-original-title="Type">'+
-                          '<img src="' + item.thumbnailLink + '" alt="screen" style="width: 100px;height: 75px;"/>'+
-                        '</li>'+
-                      '</ul>'+
-                    '</h3>'+
-                    '<p>'+
-                      ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
-                      ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
-                    '</p>'+
-                  '</div>'+
-                '</div>'+
-              '</div>'
-            );
-            if(count%4 == 0) {
-              $('#driveFiles').append('</div>');
             }
           } else {
-            if(count%4 == 0) {
-              $('#driveFiles').append('<div class="row">');
-            }
-            $('#driveTeamFiles').append(
-              '<div class="col-md-3">'+
-                '<div class="feature-box-style2">'+
-                  '<div class="feature-box-title">'+
-                    '<i class="fa fa-file"></i>'+
-                  '</div>'+
-                  '<div class="feature-box-containt">'+
-                    '<p>Owner: '+ item.ownerNames[0] + '</p>'+
-                    '<p>Total Comments: ' + total_comments + '</p>'+
-                    '<h3>'+
-                      '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
-                      '<ul class="project-details">'+
-                        '<li title="" data-rel="tooltip" data-placement="top" data-original-title="Type">'+
-                          '<img src="' + item.iconLink + '" alt="screen"/>'+
-                        '</li>'+
-                      '</ul>'+
-                    '</h3>'+
-                    '<p>'+
-                      ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
-                      ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
-                    '</p>'+
-                  '</div>'+
-                '</div>'+
-              '</div>'
-            );
-            if(count%4 == 0) {
-              $('#driveFiles').append('</div>');
+            if(item.properties && item.properties[0].value == $("#circle_id").text()) {
+              if(item.thumbnailLink) {
+                if(count%4 == 0) {
+                  $('#driveFiles').append('<div class="row">');
+                }
+                $('#driveTeamFiles').append(
+                  '<div class="col-md-3">'+
+                    '<div class="feature-box-style2">'+
+                      '<div class="feature-box-title">'+
+                        '<i class="fa fa-file"></i>'+
+                      '</div>'+
+                      '<div class="feature-box-containt">'+
+                        '<p>Owner: ' + item.ownerNames[0] + '</p>'+
+                        '<p>Total Comments: ' + total_comments + '</p>'+
+                        '<h3>'+
+                          '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
+                          '<ul class="project-details">'+
+                            '<li title="" data-rel="tooltip" data-placement="top" data-original-title="Type">'+
+                              '<img src="' + item.thumbnailLink + '" alt="screen" style="width: 100px;height: 75px;"/>'+
+                            '</li>'+
+                          '</ul>'+
+                        '</h3>'+
+                        '<p>'+
+                          ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
+                          ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
+                        '</p>'+
+                      '</div>'+
+                    '</div>'+
+                  '</div>'
+                );
+                if(count%4 == 0) {
+                  $('#driveFiles').append('</div>');
+                }
+              } else {
+                if(count%4 == 0) {
+                  $('#driveFiles').append('<div class="row">');
+                }
+                $('#driveTeamFiles').append(
+                  '<div class="col-md-3">'+
+                    '<div class="feature-box-style2">'+
+                      '<div class="feature-box-title">'+
+                        '<i class="fa fa-file"></i>'+
+                      '</div>'+
+                      '<div class="feature-box-containt">'+
+                        '<p>Owner: '+ item.ownerNames[0] + '</p>'+
+                        '<p>Total Comments: ' + total_comments + '</p>'+
+                        '<h3>'+
+                          '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
+                          '<ul class="project-details">'+
+                            '<li title="" data-rel="tooltip" data-placement="top" data-original-title="Type">'+
+                              '<img src="' + item.iconLink + '" alt="screen"/>'+
+                            '</li>'+
+                          '</ul>'+
+                        '</h3>'+
+                        '<p>'+
+                          ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
+                          ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
+                        '</p>'+
+                      '</div>'+
+                    '</div>'+
+                  '</div>'
+                );
+                if(count%4 == 0) {
+                  $('#driveFiles').append('</div>');
+                }
+              }
+            } else {
+              if(item.thumbnailLink) {
+                if(count%4 == 0) {
+                  $('#driveFiles').append('<div class="row">');
+                }
+                $('#driveFiles').append(
+                  '<div class="col-md-3">'+
+                    '<div class="feature-box-style2">'+
+                      '<div class="feature-box-title">'+
+                        '<i class="fa fa-file"></i>'+
+                      '</div>'+
+                      '<div class="feature-box-containt">'+
+                        '<p>Owner: '+ item.ownerNames[0] + '</p>'+
+                        '<p>Total Comments: ' + total_comments + '</p>'+
+                        '<h3>'+
+                          '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
+                          '<ul class="project-details">'+
+                            '<li title="" data-rel="tooltip" data-placement="top" data-original-title="Type">'+
+                              '<img src="' + item.thumbnailLink + '" alt="screen" style="width: 100px;height: 75px;"/>'+
+                            '</li>'+
+                          '</ul>'+
+                        '</h3>'+
+                        '<p>'+
+                          ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
+                          ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
+                        '</p>'+
+                      '</div>'+
+                    '</div>'+
+                  '</div>'
+                );
+                if(count%4 == 0) {
+                  $('#driveFiles').append('</div>');
+                }
+              } else {
+                if(count%4 == 0) {
+                  $('#driveFiles').append('<div class="row">');
+                }
+                $('#driveFiles').append(
+                  '<div class="col-md-3">'+
+                    '<div class="feature-box-style2">'+
+                      '<div class="feature-box-title">'+
+                        '<i class="fa fa-file"></i>'+
+                      '</div>'+
+                      '<div class="feature-box-containt">'+
+                        '<p>Owner: '+ item.ownerNames[0] + '</p>'+
+                        '<p>Total Comments: ' + total_comments + '</p>'+
+                        '<h3>'+
+                          '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
+                          '<ul class="project-details">'+
+                            '<li title="" data-rel="tooltip" data-placement="top" data-original-title="Type">'+
+                              '<img src="' + item.iconLink + '" alt="screen"/>'+
+                            '</li>'+
+                          '</ul>'+
+                        '</h3>'+
+                        '<p>'+
+                          ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
+                          ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
+                        '</p>'+
+                      '</div>'+
+                    '</div>'+
+                  '</div>'
+                );
+                if(count%4 == 0) {
+                  $('#driveFiles').append('</div>');
+                }
+              }
             }
           }
-        } else {
-          if(item.thumbnailLink) {
-            if(count%4 == 0) {
-              $('#driveFiles').append('<div class="row">');
-            }
-            $('#driveFiles').append(
-              '<div class="col-md-3">'+
-                '<div class="feature-box-style2">'+
-                  '<div class="feature-box-title">'+
-                    '<i class="fa fa-file"></i>'+
-                  '</div>'+
-                  '<div class="feature-box-containt">'+
-                    '<p>Owner: '+ item.ownerNames[0] + '</p>'+
-                    '<p>Total Comments: ' + total_comments + '</p>'+
-                    '<h3>'+
-                      '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
-                      '<ul class="project-details">'+
-                        '<li title="" data-rel="tooltip" data-placement="top" data-original-title="Type">'+
-                          '<img src="' + item.thumbnailLink + '" alt="screen" style="width: 100px;height: 75px;"/>'+
-                        '</li>'+
-                      '</ul>'+
-                    '</h3>'+
-                    '<p>'+
-                      ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
-                      ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
-                    '</p>'+
-                  '</div>'+
-                '</div>'+
-              '</div>'
-            );
-            if(count%4 == 0) {
-              $('#driveFiles').append('</div>');
-            }
-          } else {
-            if(count%4 == 0) {
-              $('#driveFiles').append('<div class="row">');
-            }
-            $('#driveFiles').append(
-              '<div class="col-md-3">'+
-                '<div class="feature-box-style2">'+
-                  '<div class="feature-box-title">'+
-                    '<i class="fa fa-file"></i>'+
-                  '</div>'+
-                  '<div class="feature-box-containt">'+
-                    '<p>Owner: '+ item.ownerNames[0] + '</p>'+
-                    '<p>Total Comments: ' + total_comments + '</p>'+
-                    '<h3>'+
-                      '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
-                      '<ul class="project-details">'+
-                        '<li title="" data-rel="tooltip" data-placement="top" data-original-title="Type">'+
-                          '<img src="' + item.iconLink + '" alt="screen"/>'+
-                        '</li>'+
-                      '</ul>'+
-                    '</h3>'+
-                    '<p>'+
-                      ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
-                      ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
-                    '</p>'+
-                  '</div>'+
-                '</div>'+
-              '</div>'
-            );
-            if(count%4 == 0) {
-              $('#driveFiles').append('</div>');
-            }
-          }
-        }
         }
       }
     },
