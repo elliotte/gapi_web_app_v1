@@ -26,6 +26,7 @@ var helper = (function() {
         console.log('There was an error: ' + authResult['error']);
         $('#authOps').hide('slow');
         $('#gConnect').show();
+        $('#share-button').hide();
       }
       console.log('authResult', authResult);
     },
@@ -118,6 +119,7 @@ var helper = (function() {
       });
       $('#authOps').show('slow');
       $('#gConnect').hide();
+      $('#share-button').show();
     },
     /**
      * Calls the server endpoint to disconnect the app for the user.
@@ -134,6 +136,7 @@ var helper = (function() {
           $('#profile').empty();
           $('#visiblePeople').empty();
           $('#gConnect').show();
+          $('#share-button').hide();
         },
         error: function(e) {
           console.log(e);
@@ -151,7 +154,7 @@ var helper = (function() {
         contentType: 'application/octet-stream; charset=utf-8',
         success: function(result) {
           console.log(result);
-          helper.people();
+          // helper.people();
           helper.calendar();
           helper.files();
           helper.task_lists();
@@ -556,11 +559,12 @@ var helper = (function() {
                           ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
                           ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/comments/show">Comments</a>'+
                         '</p>'+
+                        '<div class="g-plus" data-action="share" data-height="24" data-href="' + item.alternateLink + '"></div>'+
                       '</div>'+
                     '</div>'+
                   '</div>'
                 );
-                if(count%4 == 0) {
+                if(count%4 != 0) {
                   $('#driveFiles').append('</div>');
                 }
               } else {
@@ -589,11 +593,12 @@ var helper = (function() {
                           ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
                           ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/comments/show">Comments</a>'+
                         '</p>'+
+                        '<div class="g-plus" data-action="share" data-height="24" data-href="' + item.alternateLink + '"></div>'+
                       '</div>'+
                     '</div>'+
                   '</div>'
                 );
-                if(count%4 == 0) {
+                if(count%4 != 0) {
                   $('#driveFiles').append('</div>');
                 }
               }
@@ -624,11 +629,12 @@ var helper = (function() {
                           ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
                           ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/comments/show">Comments</a>'+
                         '</p>'+
+                        '<div class="g-plus" data-action="share" data-height="24" data-href="' + item.alternateLink + '"></div>'+
                       '</div>'+
                     '</div>'+
                   '</div>'
                 );
-                if(count%4 == 0) {
+                if(count%4 != 0) {
                   $('#driveFiles').append('</div>');
                 }
               } else {
@@ -657,11 +663,12 @@ var helper = (function() {
                           ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
                           ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/comments/show">Comments</a>'+
                         '</p>'+
+                        '<div class="g-plus" data-action="share" data-height="24" data-href="' + item.alternateLink + '"></div>'+
                       '</div>'+
                     '</div>'+
                   '</div>'
                 );
-                if(count%4 == 0) {
+                if(count%4 != 0) {
                   $('#driveFiles').append('</div>');
                 }
               }
@@ -693,11 +700,12 @@ var helper = (function() {
                           ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
                           ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
                         '</p>'+
+                        '<div class="g-plus" data-action="share" data-height="24" data-href="' + item.alternateLink + '"></div>'+
                       '</div>'+
                     '</div>'+
                   '</div>'
                 );
-                if(count%4 == 0) {
+                if(count%4 != 0) {
                   $('#driveFiles').append('</div>');
                 }
               } else {
@@ -725,11 +733,12 @@ var helper = (function() {
                           ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
                           ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
                         '</p>'+
+                        '<div class="g-plus" data-action="share" data-height="24" data-href="' + item.alternateLink + '"></div>'+
                       '</div>'+
                     '</div>'+
                   '</div>'
                 );
-                if(count%4 == 0) {
+                if(count%4 != 0) {
                   $('#driveFiles').append('</div>');
                 }
               }
@@ -759,11 +768,12 @@ var helper = (function() {
                           ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
                           ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
                         '</p>'+
+                        '<div class="g-plus" data-action="share" data-height="24" data-href="' + item.alternateLink + '"></div>'+
                       '</div>'+
                     '</div>'+
                   '</div>'
                 );
-                if(count%4 == 0) {
+                if(count%4 != 0) {
                   $('#driveFiles').append('</div>');
                 }
               } else {
@@ -791,11 +801,12 @@ var helper = (function() {
                           ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
                           ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
                         '</p>'+
+                        '<div class="g-plus" data-action="share" data-height="24" data-href="' + item.alternateLink + '"></div>'+
                       '</div>'+
                     '</div>'+
                   '</div>'
                 );
-                if(count%4 == 0) {
+                if(count%4 != 0) {
                   $('#driveFiles').append('</div>');
                 }
               }

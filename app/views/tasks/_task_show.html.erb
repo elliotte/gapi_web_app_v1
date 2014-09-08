@@ -11,10 +11,11 @@
           Notes: <%= text_field_tag "task[notes]", task.notes, class: "form-control", placeholder: "Notes" %>
           <% if task.status == "completed" %>
             Completed Date: <%= text_field_tag "task[due]", task.completed, class: "form-control", placeholder: "Completed Date" %>
+            Status: <%= select_tag "task[status]", options_for_select([ ["Complete","completed"], ["Not Complete","needsAction"] ], "completed"), class: "form-control" %>
           <% else %>
             Due Date: <%= text_field_tag "task[due]", task.due, class: "form-control", placeholder: "Due Date" %>
+            Status: <%= select_tag "task[status]", options_for_select([ ["Complete","completed"], ["Not Complete","needsAction"] ], "needsAction"), class: "form-control" %>
           <% end %>
-          Status: <%= text_field_tag "task[status]", "completed", class: "form-control", placeholder: "Notes" %>
           <%= hidden_field_tag "task[circle_id]", task.title[/.*\[([^\]]*)/,1] %>
         </div>
       <% end %>

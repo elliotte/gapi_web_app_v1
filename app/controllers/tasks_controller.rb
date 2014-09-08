@@ -45,18 +45,34 @@ class TasksController < ApplicationController
 	end
 
 	def update
-    	task = @response.data
-    	task.title = "#{params[:task][:title]}[#{params[:task][:circle_id]}]"
-    	task.notes = params[:task][:notes]
-    	task.due = params[:task][:due].to_datetime
-    	task.status = params[:task][:status]
+        if params[:task][:status] == "needsAction"
+            $client.execute(:api_method => @tasks.tasks.delete,
+                                :parameters => {'tasklist' => params[:task_list_id], 'task' => params[:id]})
 
-    	# Update the task in task list.
-    	result = $client.execute(:api_method => @tasks.tasks.update,
-    							:parameters => {'tasklist' => params[:task_list_id], 'task' => params[:id]},
-    							:body_object => task,
-								:headers => {'Content-Type' => 'application/json'})
+            task = {
+                title: "#{params[:task][:title]}[#{params[:task][:circle_id]}]" ,
+                notes: params[:task][:notes] ,
+                due: params[:task][:due].to_datetime
+            }
 
+            # Create the task in task list.
+            response = $client.execute(:api_method => @tasks.tasks.insert,
+                                    :parameters => {'tasklist' => params[:task_list_id]},
+                                    :body_object => task,
+                                    :headers => {'Content-Type' => 'application/json'})
+        elsif params[:task][:status] == "completed"
+            task = @response.data
+        	task.title = "#{params[:task][:title]}[#{params[:task][:circle_id]}]"
+        	task.notes = params[:task][:notes]
+        	task.due = params[:task][:due].to_datetime
+        	task.status = params[:task][:status]
+
+        	# Update the task in task list.
+        	result = $client.execute(:api_method => @tasks.tasks.update,
+        							:parameters => {'tasklist' => params[:task_list_id], 'task' => params[:id]},
+        							:body_object => task,
+    								:headers => {'Content-Type' => 'application/json'})
+        end
     	# render json: result.data.to_json
     	redirect_to root_path
 	end

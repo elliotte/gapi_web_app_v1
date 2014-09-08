@@ -4,11 +4,15 @@ class PeoplesController < ApplicationController
 
 	def index
     	# Get the list of people.
-	    response = $client.execute!(@plus.people.list,
+	    @response = $client.execute!(@plus.people.list,
 	                                :collection => 'visible',
-	                                :userId => 'me').body
+	                                :userId => 'me')
 
-	    render json: JSON.parse(response).to_json
+	    respond_to do |format|
+	      	format.html
+	      	format.js { @peoples = @response.data }
+	    end
+	    # render json: JSON.parse(@response).to_json
 	end
 
 	def show

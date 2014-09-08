@@ -10,7 +10,15 @@
             Comment: <%= text_field_tag "comment", comment.content, class: "form-control", placeholder: "Title", readonly: "readonly" %>
             <% if comment.replies.length > 0 %>
               <% comment.replies.each do |reply| %>
-                <div style="padding-left: 10px;"%>Reply: <%= text_field_tag "reply", reply.content, class: "form-control", placeholder: "Title", readonly: "readonly" %> </div>
+                <div style="padding-left: 10px;">
+                  <% if (!reply.content || reply.content == "") && reply.verb == "resolve" %>
+                    Status: <%= text_field_tag "status", "Marked as resolved", class: "form-control", placeholder: "Status", readonly: "readonly" %>
+                  <% elsif (!reply.content || reply.content == "") && reply.verb == "reopen" %>
+                    Status: <%= text_field_tag "status", "Re-opened", class: "form-control", placeholder: "Status", readonly: "readonly" %>
+                  <% else %>
+                    Reply: <%= text_field_tag "reply", reply.content, class: "form-control", placeholder: "Reply", readonly: "readonly" %>
+                  <% end %>
+                </div>
               <% end %>
             <% end %>
           <% end %>

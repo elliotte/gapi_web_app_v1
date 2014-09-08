@@ -1,0 +1,2 @@
+$("#modal-window").html("<%= escape_javascript(render partial: 'peoples_show', locals: { peoples: @peoples }) %>");
+$("#modal-window").modal("show");

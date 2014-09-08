@@ -27,14 +27,24 @@
         <ul class="menu-social-icons">
            	<!-- search -->
            	<li>
-				<div class="col-xs-12">
+				<div class="col-xs-12" id="search-form">
 					<input class="form-control" type="search" id="search_p" placeholder="Search" />
 					<span class="glyphicon glyphicon-search" id="search-glyphicon"></span>
 				</div>
-			</li> <!-- /search -->
-            <li><a href="<%= root_path %>" title="Discover Virgin">DISCOVER ELLIOTTE <i class="fa fa-th-large"></i></a></li>
+			</li>
             <li>
-            	<div id="gConnect" style="padding-top: 9px;">
+                <div class="btn-group" id="discover-menu">
+                  <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+                    DISCOVER ELLIOTTE <i class="fa fa-th-large"></i> <span class="caret" id="discover-menu-caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu" id="discover-dropdown-ul">
+                    <li class="discover-dropdown-li"><a href="https://mail.google.com/mail/" title="Gmail" target="_blank">Gmail <i class="fa fa-th-envelope"></i></a></li>
+                    <li class="discover-dropdown-li"><a href="https://www.google.com/calendar/" title="Calendar" target="_blank">Calendar <i class="fa fa-th-calendar"></i></a></li>
+                  </ul>
+                </div>
+            </li>
+            <li>
+            	<div id="gConnect">
 					<button class="g-signin"
 	    				data-scope="<%= ENV['PLUS_LOGIN_SCOPE'] %>"
 	    				data-requestvisibleactions="http://schemas.google.com/AddActivity"
@@ -45,6 +55,9 @@
 					    data-cookiepolicy="single_host_origin">
 					</button>
 				</div>
+                <div id="share-button">
+                    <div class="g-plus" data-action="share" data-height="24"></div>
+                </div>
             </li>
         </ul><!-- /menu-social-icons -->
     </li><!-- /#menu-social-icons -->

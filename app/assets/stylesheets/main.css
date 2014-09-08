@@ -1,46 +1,60 @@
 .modal-default-width {
 	padding-top: 50px;
 }
-
 .modal-small-width {
 	width: 300px;
 	padding-top: 50px;
 }
-
 .modal-medium-width {
 	width: 360px;
 	padding-top: 50px;
 }
-
 @media screen and (min-width: 768px) {
 	.modal-search-width  {
 		width: 500px;
 		padding-top: 50px;
 	}
 }
-
 #search_p {
 	color: #E6E6E6;
 	background-color: #7B7B7B;
 	border: 1px solid #7B7B7B;
 	border-radius: 0px;
 }
-
 #search-glyphicon {
 	position: absolute;
 	right: 0;
-	padding: 8px 27px;
+	padding: 16px 27px;
 	color: #E6E6E6;
 }
-
 .white-section-background {
 	background: transparent url(/assets/patterns/overlay-pattern.png) repeat;
 }
-
 .margin-bottom-15 {
 	margin-bottom: 15px;
 }
-
 .btn-list-item {
 	display: list-item;
+}
+#share-button {
+	margin-top: 6px;
+	display: none;
+}
+#gConnect {
+	padding-top: 9px;
+}
+#search-form {
+	padding-top: 8px;
+}
+#discover-menu {
+	padding-bottom: 5px;
+}
+#discover-menu-caret {
+	padding-top: 4px;
+}
+#discover-dropdown-ul {
+	width: 186px;
+}
+.discover-dropdown-li {
+	width: 183px !important;
 }

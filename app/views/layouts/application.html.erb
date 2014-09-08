@@ -8,13 +8,15 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <%= stylesheet_link_tag "application" %>
+    <script type="text/javascript" src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://apis.google.com/js/plusone.js"></script>
 	<%= javascript_include_tag "application" %>
-	<script type="text/javascript" src="https://apis.google.com/js/platform.js"></script>
 	<%= csrf_meta_tags %>
 </head>
 <body>
 	<%= render "layouts/header" %>
   	<%= yield %>
+  	<script type="text/javascript">gapi.plus.go();</script>
   	<%= render "layouts/footer" %>
 </body>
 </html>
