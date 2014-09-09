@@ -2,25 +2,32 @@
   <div class="modal-content">
     <div class="modal-header">
       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-      <h3 id="myModalLabel">Comments</h3>
+      <h3 id="myModalLabel" class="modal-text-center">Comments</h3>
+      <% if comments.present? %>
+        <div  class="modal-text-center">Total Comments: <%= comments.size %></div>
+      <% end %>
     </div>
     <div class="modal-body">
         <div class="form-group">
-          <% comments.each do |comment| %>
-            Comment: <%= text_field_tag "comment", comment.content, class: "form-control", placeholder: "Title", readonly: "readonly" %>
-            <% if comment.replies.length > 0 %>
-              <% comment.replies.each do |reply| %>
-                <div style="padding-left: 10px;">
-                  <% if (!reply.content || reply.content == "") && reply.verb == "resolve" %>
-                    Status: <%= text_field_tag "status", "Marked as resolved", class: "form-control", placeholder: "Status", readonly: "readonly" %>
-                  <% elsif (!reply.content || reply.content == "") && reply.verb == "reopen" %>
-                    Status: <%= text_field_tag "status", "Re-opened", class: "form-control", placeholder: "Status", readonly: "readonly" %>
-                  <% else %>
-                    Reply: <%= text_field_tag "reply", reply.content, class: "form-control", placeholder: "Reply", readonly: "readonly" %>
-                  <% end %>
-                </div>
+          <% if comments.present? %>
+            <% comments.each do |comment| %>
+              Comment: <%= text_field_tag "comment", comment.content, class: "form-control", placeholder: "Title", readonly: "readonly" %>
+              <% if comment.replies.length > 0 %>
+                <% comment.replies.each do |reply| %>
+                  <div style="padding-left: 10px;">
+                    <% if (!reply.content || reply.content == "") && reply.verb == "resolve" %>
+                      Status: <%= text_field_tag "status", "Marked as resolved", class: "form-control", placeholder: "Status", readonly: "readonly" %>
+                    <% elsif (!reply.content || reply.content == "") && reply.verb == "reopen" %>
+                      Status: <%= text_field_tag "status", "Re-opened", class: "form-control", placeholder: "Status", readonly: "readonly" %>
+                    <% else %>
+                      Reply: <%= text_field_tag "reply", reply.content, class: "form-control", placeholder: "Reply", readonly: "readonly" %>
+                    <% end %>
+                  </div>
+                <% end %>
               <% end %>
             <% end %>
+          <% else %>
+            <div class="modal-text-center">No Comments!!!!</div>
           <% end %>
         </div>
     </div>

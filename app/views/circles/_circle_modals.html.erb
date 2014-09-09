@@ -12,7 +12,7 @@
 		    <div class="modal-body">
 		      	<%= form_tag(search_peoples_path, :id => "add_circle_member_form", :method => "get") do %>
 		        	<div class="form-group">
-		          		Query: <%= text_field_tag "query", "", class: "form-control", placeholder: "Query" %>
+		          		Search: <%= text_field_tag "query", "", class: "form-control", placeholder: "Search" %>
 		          		<%= hidden_field_tag "circle_id", params[:id] %>
 		        	</div>
 		      	<% end %>
