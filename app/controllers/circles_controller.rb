@@ -3,7 +3,7 @@ class CirclesController < ApplicationController
 	before_action :get_circle, except: [:index, :create]
 
 	def index
-		@circles = Circle.all
+		@circles = User.find_by(google_id: params[:user_google_id]).circles
     	respond_to do |format|
 		  	format.html
 		  	format.json { render json: @circles }
@@ -29,9 +29,10 @@ class CirclesController < ApplicationController
 
 	def create
 		circle = Circle.new(circle_params)
+		circle.user_id = User.find_by(google_id: params[:circle][:user_id]).id
 		if circle.save
 			# render json: circle
-			redirect_to root_path
+			redirect_to circle_path(circle.id)
 		else
 			# render json: "Circle not saved"
 			redirect_to root_path
@@ -41,7 +42,7 @@ class CirclesController < ApplicationController
 	def update
 		if @circle.update_attributes(circle_params)
 			# render json: @circle
-			redirect_to root_path
+			redirect_to circle_path(circle.id)
 		else
 			# render json: "Circle not updated"
 			redirect_to root_path

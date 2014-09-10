@@ -32,8 +32,32 @@ class FilesController < ApplicationController
 	      		'uploadType' => 'multipart',
 	      		'alt' => 'json'})
 
+	  	TeamFile.create(circle_id: params[:circle_id], file_id: response.data.id)
+
+	  	team_members = Circle.find(params[:circle_id]).team_members
+	    if team_members.present?
+	    	team_members.each do |team_member|
+	    		user = User.find_by(google_id: team_member.google_id)
+	    		if user
+	    			new_permission = @drive.permissions.insert.request_schema.new({
+					    'value' => user.email,
+					    'type' => "user",
+					    'role' => "reader"
+					})
+
+					result = $client.execute(:api_method => @drive.permissions.insert,
+										    :body_object => new_permission,
+										    :parameters => { 'fileId' => response.data.id })
+	    		end
+	    	end
+	    end
+
 	    # render json: response.data.to_json
-	    redirect_to root_path
+	    if params[:circle_id].present?
+	    	redirect_to circle_path(params[:circle_id])
+	    else
+	    	redirect_to root_path
+	    end
 	end
 
 	def update

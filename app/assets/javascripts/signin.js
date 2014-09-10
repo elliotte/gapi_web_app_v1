@@ -8,7 +8,7 @@
 
 var helper = (function() {
   var authResult = undefined;
-
+  var user_google_id = "";
   return {
     /**
     * Hides the sign-in button and connects the server-side app after
@@ -40,14 +40,14 @@ var helper = (function() {
         $.ajax({
           type: 'POST',
           url: '/signin/save_user',
-          contentType: 'application/octet-stream; charset=utf-8',
+          data: {id: profile.id, email: profile.emails[0].value},
           success: function(result) {
             console.log(result);
-          },
-          processData: false,
-          data: profile.id
+            helper.circles();
+          }
         });
-
+        $('#circle_user_id').val(profile.id);
+        user_google_id = profile.id;
         $('#profile').empty();
         if (profile.error) {
           $('#profile').append(profile.error);
@@ -159,9 +159,8 @@ var helper = (function() {
           helper.files();
           helper.task_lists();
           helper.activities();
-          helper.circles();
+          // helper.circles();
           helper.circleMembers();
-          helper.fileComments();
         },
         processData: false,
         data: this.authResult.code + ',' + this.authResult.id_token + ',' + this.authResult.access_token
@@ -208,30 +207,6 @@ var helper = (function() {
         success: function(result) {
           console.log(result);
           helper.appendDrive(result);
-          // $.getScript("https://apis.google.com/js/platform.js");
-          // jQuery.getScript("https://apis.google.com/js/platform.js", function(data, textStatus, jqxhr){ });
-          // var gbuttons = $(".g-plus");
-          // if (gbuttons.length > 0) {
-          //     if (typeof (gapi) != 'undefined') {
-          //         gbuttons.each(function () {
-          //             gapi.plusone.render($(this).get(0));
-          //         });
-          //     } else {
-          //         $.getScript("https://apis.google.com/js/platform.js");
-          //         $.getScript('https://apis.google.com/js/plusone.js');
-          //     }
-          // }
-          // (function() {
-          //   var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-          //   po.src = 'https://apis.google.com/js/plusone.js';
-          //   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-          // })();
-          // (function() {
-          //   var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-          //   po.src = 'https://apis.google.com/js/platform.js';
-          //   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-          // })();
-          // gapi.plus.go();
         },
         processData: false
       });
@@ -282,21 +257,6 @@ var helper = (function() {
       });
     },
     /**
-     * Calls the server endpoint to get the list of Comments of files.
-     */
-    fileComments: function() {
-      $.ajax({
-        type: 'GET',
-        url: '/files/1rciY7bqeHHlWhEw9bSNQLv5g-H1lCNdiWaS6Yi4wTXA/comments',
-        contentType: 'application/octet-stream; charset=utf-8',
-        success: function(result) {
-          console.log(result);
-          // helper.appendActivity(result);
-        },
-        processData: false
-      });
-    },
-    /**
      * Calls the server endpoint to get the list of Circles.
      */
     circles: function() {
@@ -305,11 +265,11 @@ var helper = (function() {
         url: '/circles',
         dataType: 'json',
         contentType: 'application/json',
+        data: {user_google_id: user_google_id},
         success: function(result) {
           console.log(result);
           helper.appendCircles(result);
-        },
-        processData: false
+        }
       });
     },
     /**
@@ -569,12 +529,26 @@ var helper = (function() {
                         ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
                         ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/comments/show">Comments</a>'+
                       '</p>'+
+                      '<p>'+
+                        '<div id="export-links-' + item.id + '"></div>'+
+                      '</p>'+
                       '<div class="common-share"><div class="g-plus" data-action="share" data-height="24" data-href="' + item.alternateLink + '"></div></div>'+
                       '<script type="text/javascript">gapi.plus.go();</script>'+
                     '</div>'+
                   '</div>'+
                 '</div>'
               );
+              if(item.exportLinks){
+                var st = "#export-links-"+item.id
+                $(st).html(
+                  'Export: '
+                );
+                Object.keys(item.exportLinks).forEach(function(key) {
+                  $(st).append(
+                    '<a class="capitalize" href="' + item.exportLinks[key] + '" target="_blank">' + item.exportLinks[key].substring(item.exportLinks[key].lastIndexOf("=")+1,item.exportLinks[key].length) + '</a> '
+                  );
+                });
+              }
               if(count%4 != 0) {
                 $('#driveFiles').append('</div>');
               }
@@ -603,12 +577,26 @@ var helper = (function() {
                         ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
                         ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/comments/show">Comments</a>'+
                       '</p>'+
+                      '<p>'+
+                        '<div id="export-links-' + item.id + '"></div>'+
+                      '</p>'+
                       '<div class="common-share"><div class="g-plus" data-action="share" data-height="24" data-href="' + item.alternateLink + '"></div></div>'+
                       '<script type="text/javascript">gapi.plus.go();</script>'+
                     '</div>'+
                   '</div>'+
                 '</div>'
               );
+              if(item.exportLinks){
+                var st = "#export-links-"+item.id
+                $(st).html(
+                  'Export: '
+                );
+                Object.keys(item.exportLinks).forEach(function(key) {
+                  $(st).append(
+                    '<a class="capitalize" href="' + item.exportLinks[key] + '" target="_blank">' + item.exportLinks[key].substring(item.exportLinks[key].lastIndexOf("=")+1,item.exportLinks[key].length) + '</a> '
+                  );
+                });
+              }
               if(count%4 != 0) {
                 $('#driveFiles').append('</div>');
               }
@@ -639,12 +627,26 @@ var helper = (function() {
                         ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
                         ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/comments/show">Comments</a>'+
                       '</p>'+
+                      '<p>'+
+                        '<div id="export-links-' + item.id + '"></div>'+
+                      '</p>'+
                       '<div class="common-share"><div class="g-plus" data-action="share" data-height="24" data-href="' + item.alternateLink + '"></div></div>'+
                       '<script type="text/javascript">gapi.plus.go();</script>'+
                     '</div>'+
                   '</div>'+
                 '</div>'
               );
+              if(item.exportLinks){
+                var st = "#export-links-"+item.id
+                $(st).html(
+                  'Export: '
+                );
+                Object.keys(item.exportLinks).forEach(function(key) {
+                  $(st).append(
+                    '<a class="capitalize" href="' + item.exportLinks[key] + '" target="_blank">' + item.exportLinks[key].substring(item.exportLinks[key].lastIndexOf("=")+1,item.exportLinks[key].length) + '</a> '
+                  );
+                });
+              }
               if(count%4 != 0) {
                 $('#driveFiles').append('</div>');
               }
@@ -673,12 +675,26 @@ var helper = (function() {
                         ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
                         ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/comments/show">Comments</a>'+
                       '</p>'+
+                      '<p>'+
+                        '<div id="export-links-' + item.id + '"></div>'+
+                      '</p>'+
                       '<div class="common-share"><div class="g-plus" data-action="share" data-height="24" data-href="' + item.alternateLink + '"></div></div>'+
                       '<script type="text/javascript">gapi.plus.go();</script>'+
                     '</div>'+
                   '</div>'+
                 '</div>'
               );
+              if(item.exportLinks){
+                var st = "#export-links-"+item.id
+                $(st).html(
+                  'Export: '
+                );
+                Object.keys(item.exportLinks).forEach(function(key) {
+                  $(st).append(
+                    '<a class="capitalize" href="' + item.exportLinks[key] + '" target="_blank">' + item.exportLinks[key].substring(item.exportLinks[key].lastIndexOf("=")+1,item.exportLinks[key].length) + '</a> '
+                  );
+                });
+              }
               if(count%4 != 0) {
                 $('#driveFiles').append('</div>');
               }

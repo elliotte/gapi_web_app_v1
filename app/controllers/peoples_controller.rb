@@ -49,15 +49,33 @@ class PeoplesController < ApplicationController
 	end
 
 	def circle_peoples
-		@circles = Circle.find(params[:id]).team_members
-		render json: @circles
+		@team_members = Circle.find(params[:id]).team_members
+		render json: @team_members
 	end
 
 	def add_people
 		if params[:google_id].present?
 			params[:google_id].each do |google_id|
 				unless TeamMember.find_by(circle_id: params[:circle_id], google_id: google_id).present?
-					TeamMember.create(circle_id: params[:circle_id], google_id: google_id)
+					team_member = TeamMember.create(circle_id: params[:circle_id], google_id: google_id)
+					user = User.find_by(google_id: google_id)
+					if user
+						drive = $client.discovered_api('drive', 'v2')
+						teamfiles = team_member.circle.team_files
+			            if teamfiles
+			              	teamfiles.each do |teamfile|
+				                new_permission = drive.permissions.insert.request_schema.new({
+				                  	'value' => user.email,
+				                  	'type' => "user",
+				                  	'role' => "reader"
+				                })
+
+			                	result = $client.execute(:api_method => drive.permissions.insert,
+			                        :body_object => new_permission,
+			                        :parameters => { 'fileId' => teamfile.file_id })
+			              	end
+			            end
+			        end
 				end
 			end
 		end

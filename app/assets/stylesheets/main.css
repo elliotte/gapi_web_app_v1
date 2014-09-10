@@ -64,3 +64,6 @@
 .modal-text-center {
 	text-align: center;
 }
+.capitalize {
+	text-transform:capitalize;
+}

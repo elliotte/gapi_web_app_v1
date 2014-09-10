@@ -796,7 +796,8 @@ input.gn-search:focus {
     margin: 0;
     padding: 0;
     width: 100%;
-    overflow: hidden;
+    /*overflow: hidden;*/
+    overflow: visible;
 }
 .feature-boxs-wrapper1 {
     margin: 0;

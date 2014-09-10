@@ -55,10 +55,35 @@ class SigninController < ApplicationController
 
   def save_user
     # Save or find User
-    if User.find_or_create_by(google_id: request.body.read)
-      render json: 'User is saved.'.to_json
+    if User.find_by(google_id: params[:id])
+      render json: 'User is already saved.'.to_json
     else
-      render json: 'User is not saved.'.to_json
+      user = User.new(google_id: params[:id], email: params[:email])
+      if user.save
+        drive = $client.discovered_api('drive', 'v2')
+        team_members = TeamMember.all.where(google_id: user.google_id)
+        if team_members.present?
+          team_members.each do |team_member|
+            teamfiles = team_member.circle.team_files
+            if teamfiles
+              teamfiles.each do |teamfile|
+                new_permission = drive.permissions.insert.request_schema.new({
+                  'value' => user.email,
+                  'type' => "user",
+                  'role' => "reader"
+                })
+
+                result = $client.execute(:api_method => drive.permissions.insert,
+                            :body_object => new_permission,
+                            :parameters => { 'fileId' => teamfile.file_id })
+              end
+            end
+          end
+        end
+        render json: 'User is saved.'.to_json
+      else
+        render json: 'User is not saved.'.to_json
+      end
     end
   end
 end
