@@ -1,3 +1,34 @@
+<div class="backstretch-overlayer"></div>
+
+<!-- home-section -->
+<section id="home-section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+        	<div class="flexslider home-slider">
+				<ul class="slides">
+                    <li>
+                        <div class="flex-caption">
+                            <div class="caption-animation">
+                                <div class="caption-1">
+                                    <h1 class="base-slider-bg-color"><%= @circle.display_name %></h1>
+                                </div>
+                                <div class="caption-2">
+                                    <h1 class=""><%= @circle.description %></h1>
+                                </div>
+                                <div class="caption-3">
+                                    <a class="" data-toggle="modal" data-target="#modal-window" data-remote="true" href="<%= destroy_show_circle_path(@circle.id) %>"><i class="fa fa-times"></i></a>
+					                <a class="" data-toggle="modal" data-target="#modal-window" data-remote="true" href="<%= edit_circle_path(@circle.id) %>"><i class="fa fa-edit"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+		</div> <!-- /row -->
+	</div><!-- /container -->
+</section><!-- /home-section -->
 <!-- white-section -->
 <section id="white-section" class ="white-section-background">
     <!-- container -->
@@ -6,21 +37,14 @@
         <div class="row">
         	<!-- col-md-12 -->
 		    <div class="col-md-12">
-		    	<div id="authOps">
+		    	<div id="authOps" style="display:none;">
 					<!-- col-md-12 -->
 			        <div class="col-md-12">
-	                    <!-- section-title -->
-	                    <div class="section-title">
-	                        <!-- main-title -->
-	                        <div class="main-title">
-	                            <h2><%= @circle.display_name %></h2>
-	                        </div><!-- /main-title -->
-	                    </div><!-- /section-title -->
 			        </div><!-- /col-md-12 -->
 	                <!-- feature-boxs-wrapper -->
 	                <div class="feature-boxs-wrapper">
 	                	<div class="col-md-12">
-			            	<div class="row">
+			            	<div class="row" style="padding-top: 15px;">
 			            		<div class="col-md-3 margin-bottom-15">
 			            			<a class="btn btn-primary btn-list-item" id="add_team_member"><i class="fa fa-calendar"></i> Add Team Member</a>
 			            		</div>
@@ -36,18 +60,6 @@
 			            	</div>
 
 			            	<div class="row margin-bottom-15">
-			            		<div class="feature-box-style2">
-					              	<div class="feature-box-title">
-					                	<i class="fa fa-support"></i>
-					              	</div>
-					              	<div class="feature-box-containt">
-					                	<h3><%= @circle.description %></h3>
-					                	<p>
-					                  		<a class="btn btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote="true" href="<%= destroy_show_circle_path(@circle.id) %>">Delete</a>
-					                  		<a class="btn btn-primary" data-toggle="modal" data-target="#modal-window" data-remote="true" href="<%= edit_circle_path(@circle.id) %>">Update</a>
-					                	</p>
-					              	</div>
-					            </div>
 				            </div>
 
 				            <div class="row">
@@ -62,8 +74,20 @@
 				                    </div><!-- /section-title -->
 						        </div><!-- /col-md-12 -->
 						        <div class="feature-boxs-wrapper">
-						        	<div id="circleMembers">
+						        	<div id="circleMembers" style="display:none;">
 				              		</div>
+					                <div id="noCircleMembers" style="display:none;">
+					                	<div class="col-md-12">
+					                		<div class="feature-box-style2">
+					                			<div class="feature-box-title">
+					                				<i class="fa fa-users"></i>
+					                			</div>
+					                			<div class="feature-box-containt">
+					                				<h3>No Team Members!!!!</h3>
+					                			</div>
+					                		</div>
+					                	</div>
+					                </div>
 				              	</div>
 				            </div>
 
@@ -79,8 +103,20 @@
 				                    </div><!-- /section-title -->
 						        </div><!-- /col-md-12 -->
 						        <div class="feature-boxs-wrapper">
-						        	<div id="calendarTeamEvents">
+						        	<div id="calendarTeamEvents" style="display:none;">
 				              		</div>
+					                <div id="noCalendarTeamEvents" style="display:none;">
+					                	<div class="col-md-12">
+					                		<div class="feature-box-style2">
+					                			<div class="feature-box-title">
+					                				<i class="fa fa-calendar"></i>
+					                			</div>
+					                			<div class="feature-box-containt">
+					                				<h3>No Team Events!!!!</h3>
+					                			</div>
+					                		</div>
+					                	</div>
+					                </div>
 				              	</div>
 				            </div>
 
@@ -98,7 +134,7 @@
 						        <!-- feature-boxs-wrapper -->
 				                <div class="feature-boxs-wrapper">
 				                    <!-- col-md-6 -->
-				                    <div class="col-md-6">
+				                    <div class="col-md-6" id="teamCompletedTasks" style="display:none;">
 				                        <!-- feature-box-style2 -->
 				                        <div class="feature-box-style2">
 				                            <!-- feature-box-title -->
@@ -114,7 +150,7 @@
 				                        </div><!-- /feature-box-style2 -->
 				                    </div><!-- /col-md-6 -->
 				                    <!-- col-md-6 -->
-				                    <div class="col-md-6">
+				                    <div class="col-md-6" id="teamPendingTasks" style="display:none;">
 				                        <!-- feature-box-style2 -->
 				                        <div class="feature-box-style2">
 				                            <!-- feature-box-title -->
@@ -129,6 +165,20 @@
 				                            </div><!-- /feature-box-containt -->
 				                        </div><!-- /feature-box-style2 -->
 				                    </div><!-- /col-md-6 -->
+				                    <div class="col-md-12" id="noTeamTasks" style="display:none;">
+				                    	<!-- feature-box-style2 -->
+				                        <div class="feature-box-style2">
+				                            <!-- feature-box-title -->
+				                            <div class="feature-box-title">
+				                                <!-- icon -->
+				                                <i class="fa fa-tasks"></i>
+				                            </div><!-- /feature-box-title -->
+				                            <!-- feature-box-containt -->
+				                            <div class="feature-box-containt">
+				                                <h3>No Team Tasks!!!!</h3>
+				                            </div><!-- /feature-box-containt -->
+				                        </div><!-- /feature-box-style2 -->
+				                    </div>
 				                </div><!-- /feature-boxs-wrapper -->
 				            </div>
 
@@ -144,8 +194,20 @@
 				                    </div><!-- /section-title -->
 						        </div><!-- /col-md-12 -->
 						        <div class="feature-boxs-wrapper">
-						        	<div id="driveTeamFiles">
+						        	<div id="driveTeamFiles" style="display:none;">
 				              		</div>
+					                <div id="noDriveTeamFiles" style="display:none;">
+					                	<div class="col-md-12">
+					                		<div class="feature-box-style2">
+					                			<div class="feature-box-title">
+					                				<i class="fa fa-file"></i>
+					                			</div>
+					                			<div class="feature-box-containt">
+					                				<h3>No Team Files!!!!</h3>
+					                			</div>
+					                		</div>
+					                	</div>
+					                </div>
 				              	</div>
 				            </div>
 

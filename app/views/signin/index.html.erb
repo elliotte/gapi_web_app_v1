@@ -17,7 +17,7 @@
         <div class="row">
         	<!-- col-md-12 -->
 		    <div class="col-md-12">
-		    	<div id="authOps">
+		    	<div id="authOps" style="display:none;">
 					<h2>You are now signed in to the app using Google+</h2>
 					<p>If you chooses to disconnect, the app deletes all stored information retrieved from Google.</p>
 					<a href="javascript:void(0)" title="Sign Out" class="btn btn-sm btn-main-o" id="disconnect">Sign Out</a>
@@ -75,7 +75,19 @@
 
 	                <!-- feature-boxs-wrapper -->
 	                <div class="feature-boxs-wrapper">
-	                	<div id="circle">
+	                	<div id="circle" style="display:none;">
+		                </div>
+		                <div id="noCircle" style="display:none;">
+		                	<div class="col-md-12">
+		                		<div class="feature-box-style2">
+		                			<div class="feature-box-title">
+		                				<i class="fa fa-support"></i>
+		                			</div>
+		                			<div class="feature-box-containt">
+		                				<h3>No Circles!!!!</h3>
+		                			</div>
+		                		</div>
+		                	</div>
 		                </div>
 	                </div><!-- /feature-boxs-wrapper -->
 	                <!--####################################### /Circles ###################### -->
@@ -94,7 +106,19 @@
 
 	                <!-- feature-boxs-wrapper -->
 	                <div class="feature-boxs-wrapper">
-	                	<div id="taskLists">
+	                	<div id="taskLists" style="display:none;">
+		                </div>
+		                <div id="noTaskLists" style="display:none;">
+		                	<div class="col-md-12">
+		                		<div class="feature-box-style2">
+		                			<div class="feature-box-title">
+		                				<i class="fa fa-tasks"></i>
+		                			</div>
+		                			<div class="feature-box-containt">
+		                				<h3>No Task Lists!!!!</h3>
+		                			</div>
+		                		</div>
+		                	</div>
 		                </div>
 	                </div><!-- /feature-boxs-wrapper -->
 	                <!--####################################### /Task Lists ###################### -->
@@ -114,7 +138,7 @@
 	                <!-- feature-boxs-wrapper -->
 	                <div class="feature-boxs-wrapper">
 	                    <!-- col-md-6 -->
-	                    <div class="col-md-6">
+	                    <div class="col-md-6" id="completedTasks" style="display:none;">
 	                        <!-- feature-box-style2 -->
 	                        <div class="feature-box-style2">
 	                            <!-- feature-box-title -->
@@ -130,7 +154,7 @@
 	                        </div><!-- /feature-box-style2 -->
 	                    </div><!-- /col-md-6 -->
 	                    <!-- col-md-6 -->
-	                    <div class="col-md-6">
+	                    <div class="col-md-6" id="pendingTasks" style="display:none;">
 	                        <!-- feature-box-style2 -->
 	                        <div class="feature-box-style2">
 	                            <!-- feature-box-title -->
@@ -145,6 +169,20 @@
 	                            </div><!-- /feature-box-containt -->
 	                        </div><!-- /feature-box-style2 -->
 	                    </div><!-- /col-md-6 -->
+	                    <div class="col-md-12" id="noTasks" style="display:none;">
+	                    	<!-- feature-box-style2 -->
+	                        <div class="feature-box-style2">
+	                            <!-- feature-box-title -->
+	                            <div class="feature-box-title">
+	                                <!-- icon -->
+	                                <i class="fa fa-tasks"></i>
+	                            </div><!-- /feature-box-title -->
+	                            <!-- feature-box-containt -->
+	                            <div class="feature-box-containt">
+	                                <h3>No Tasks!!!!</h3>
+	                            </div><!-- /feature-box-containt -->
+	                        </div><!-- /feature-box-style2 -->
+	                    </div>
 	                </div><!-- /feature-boxs-wrapper -->
 	                <!--####################################### /Tasks ###################### -->
 
@@ -162,7 +200,19 @@
 
 	                <!-- feature-boxs-wrapper -->
 	                <div class="feature-boxs-wrapper">
-	                	<div id="calendarEvent">
+	                	<div id="calendarEvent" style="display:none;">
+		                </div>
+		                <div id="noCalendarEvent" style="display:none;">
+		                	<div class="col-md-12">
+		                		<div class="feature-box-style2">
+		                			<div class="feature-box-title">
+		                				<i class="fa fa-calendar"></i>
+		                			</div>
+		                			<div class="feature-box-containt">
+		                				<h3>No Calendar Events!!!!</h3>
+		                			</div>
+		                		</div>
+		                	</div>
 		                </div>
 	                </div><!-- /feature-boxs-wrapper -->
 	                <!--####################################### /Calendar Events ###################### -->
@@ -181,7 +231,19 @@
 
 	                <!-- feature-boxs-wrapper -->
 	                <div class="feature-boxs-wrapper">
-	                	<div id="driveFiles">
+	                	<div id="driveFiles" style="display:none;">
+		                </div>
+		                <div id="noDriveFiles" style="display:none;">
+		                	<div class="col-md-12">
+		                		<div class="feature-box-style2">
+		                			<div class="feature-box-title">
+		                				<i class="fa fa-file"></i>
+		                			</div>
+		                			<div class="feature-box-containt">
+		                				<h3>No Drive Files!!!!</h3>
+		                			</div>
+		                		</div>
+		                	</div>
 		                </div>
 	                </div><!-- /feature-boxs-wrapper -->
 	                <!--####################################### /Drive Files ###################### -->
@@ -200,14 +262,26 @@
 
 	                <!-- feature-boxs-wrapper -->
 	                <div class="feature-boxs-wrapper">
-	                	<div id="activityFeeds">
+	                	<div id="activityFeeds" style="display:none;">
+		                </div>
+		                <div id="noActivityFeeds" style="display:none;">
+		                	<div class="col-md-12">
+		                		<div class="feature-box-style2">
+		                			<div class="feature-box-title">
+		                				<i class="fa fa-file"></i>
+		                			</div>
+		                			<div class="feature-box-containt">
+		                				<h3>No Activity Feeds!!!!</h3>
+		                			</div>
+		                		</div>
+		                	</div>
 		                </div>
 	                </div><!-- /feature-boxs-wrapper -->
 	                <!--####################################### /Activity Feeds ###################### -->
 
 					<div id="state" class="hide"><%= @state %></div>
 
-					<div class="g-hangout" data-render="createhangout"></div>
+					<!-- <div class="g-hangout" data-render="createhangout"></div> -->
 
 					<%= render "modals" %>
 				</div>

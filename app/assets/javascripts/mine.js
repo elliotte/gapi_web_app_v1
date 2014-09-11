@@ -669,17 +669,17 @@ jQuery(document).ready(function () {
 
     /* Nice Scroll
     ========================================================================== */
-	$("html").niceScroll({
-		scrollspeed: 70,
-		mousescrollstep: 10,
-		cursorwidth: 8,
-		cursorborder: 0,
-		cursorcolor: '#333333',
-		autohidemode: false,
-		zindex: 6998,
-		horizrailenabled: false,
-		cursorborderradius: 0
-	});
+	// $("html").niceScroll({
+	// 	scrollspeed: 70,
+	// 	mousescrollstep: 10,
+	// 	cursorwidth: 8,
+	// 	cursorborder: 0,
+	// 	cursorcolor: '#333333',
+	// 	autohidemode: false,
+	// 	zindex: 6998,
+	// 	horizrailenabled: false,
+	// 	cursorborderradius: 0
+	// });
 
 
     /* ==========================================================================

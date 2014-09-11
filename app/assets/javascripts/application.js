@@ -29,7 +29,6 @@
 //= require jquery.cbpQTRotator
 //= require jquery.fitvids
 //= require snap.svg-min
-//= require jquery.nicescroll.min
 //= require retina-1.1.0
 //= require bootstrap-datepicker
 //= require mine

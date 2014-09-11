@@ -9,6 +9,12 @@
 var helper = (function() {
   var authResult = undefined;
   var user_google_id = "";
+  var taskListsCount = 0;
+  var taskCompletedCount = 0;
+  var taskPendingCount = 0;
+  var taskTeamCompletedCount = 0;
+  var taskTeamPendingCount = 0;
+
   return {
     /**
     * Hides the sign-in button and connects the server-side app after
@@ -133,8 +139,6 @@ var helper = (function() {
         success: function(result) {
           console.log('revoke response: ' + result);
           $('#authOps').hide();
-          $('#profile').empty();
-          $('#visiblePeople').empty();
           $('#gConnect').show();
           $('#share-button').hide();
         },
@@ -219,6 +223,7 @@ var helper = (function() {
         type: 'GET',
         url: '/task_lists',
         contentType: 'application/octet-stream; charset=utf-8',
+        async: false,
         success: function(result) {
           console.log(result);
           helper.appendTaskLists(result);
@@ -234,6 +239,7 @@ var helper = (function() {
         type: 'GET',
         url: '/task_lists/' + taskListId + '/tasks',
         contentType: 'application/octet-stream; charset=utf-8',
+        async: false,
         success: function(result) {
           console.log(result);
           helper.appendTasks(result, taskListId);
@@ -292,19 +298,25 @@ var helper = (function() {
      * get circle members from DB.
      */
     getCircleMembers: function(members) {
+      var circleMembersCount = 0;
       $('#circleMembers').empty();
       for (var m in members) {
+        circleMembersCount++;
+        $('#circleMembers').show();
         member = members[m];
         $.ajax({
-        type: 'GET',
-        url: '/peoples/'+member.google_id,
-        dataType: 'json',
-        contentType: 'application/json',
-        success: function(result) {
-          console.log(result);
-          helper.appendCircleMembers(result);
-        }
-      });
+          type: 'GET',
+          url: '/peoples/'+member.google_id,
+          dataType: 'json',
+          contentType: 'application/json',
+          success: function(result) {
+            console.log(result);
+            helper.appendCircleMembers(result);
+          }
+        });
+      }
+      if(circleMembersCount == 0){
+        $('#noCircleMembers').show();
       }
     },
     /**
@@ -381,8 +393,11 @@ var helper = (function() {
      * Displays circles retrieved from DB.
      */
     appendCircles: function(circles) {
+      var circleCount = 0;
       $('#circle').empty();
       for (var c in circles) {
+        circleCount++;
+        $('#circle').show();
         circle = circles[c];
         $('#circle').append(
           '<div class="col-md-6">'+
@@ -402,16 +417,23 @@ var helper = (function() {
           '</div>'
         );
       }
+      if(circleCount==0){
+        $('#noCircle').show();
+      }
     },
     /**
      * Displays available Calendar Event retrieved from server.
      */
     appendCalendar: function(events) {
+      var calendarCount = 0;
+      var teamCalendarCount = 0;
       $('#calendarEvent').empty();
       $('#calendarTeamEvents').empty();
       for (var eventIndex in events.items) {
         event = events.items[eventIndex];
         if(event.extendedProperties && event.extendedProperties.private.circle_id == $("#circle_id").text()) {
+          teamCalendarCount++;
+          $('#calendarTeamEvents').show();
           if(event.hangoutLink) {
             $('#calendarTeamEvents').append(
               '<div class="col-md-6">'+
@@ -451,6 +473,8 @@ var helper = (function() {
             );
           }
         } else {
+          calendarCount++;
+          $('#calendarEvent').show();
           if(event.hangoutLink) {
             $('#calendarEvent').append(
               '<div class="col-md-6">'+
@@ -491,11 +515,19 @@ var helper = (function() {
           }
         }
       }
+      if(calendarCount == 0){
+        $('#noCalendarEvent').show();
+      }
+      if(teamCalendarCount==0){
+        $('#noCalendarTeamEvents').show();
+      }
     },
     /**
      * Displays available files in drive retrieved from server.
      */
     appendDrive: function(drive) {
+      var fileCount = 0;
+      var teamFileCount = 0;
       $('#driveFiles').empty();
       $('#driveTeamFiles').empty();
       var count = 0;
@@ -504,6 +536,8 @@ var helper = (function() {
         if(!item.explicitlyTrashed) {
           count++;
           if(item.properties && item.properties[0].value == $("#circle_id").text()) {
+            teamFileCount++;
+            $('#driveTeamFiles').show();
             if(item.thumbnailLink) {
               if(count%4 == 0) {
                 $('#driveFiles').append('<div class="row">');
@@ -602,6 +636,8 @@ var helper = (function() {
               }
             }
           } else {
+            fileCount++;
+            $('#driveFiles').show();
             if(item.thumbnailLink) {
               if(count%4 == 0) {
                 $('#driveFiles').append('<div class="row">');
@@ -702,12 +738,20 @@ var helper = (function() {
           }
         }
       }
+      if(fileCount == 0){
+        $('#noDriveFiles').show();
+      }
+      if(teamFileCount == 0){
+        $('#noDriveTeamFiles').show();
+      }
     },
     /**
      * Displays available Task Lists retrieved from server.
      */
     appendTaskLists: function(taskLists) {
       for (var taskListIndex in taskLists.items) {
+        taskListsCount++;
+        $('#taskLists').show();
         taskList = taskLists.items[taskListIndex];
         $('#task_list_id').val(taskList.id);
         $('#taskLists').append(
@@ -728,6 +772,15 @@ var helper = (function() {
         );
         helper.tasks(taskList.id);
       }
+      if(taskListsCount == 0){
+        $('#noTaskLists').show();
+      }
+      if(taskCompletedCount == 0 && taskPendingCount == 0){
+        $('#noTasks').show();
+      }
+      if(taskTeamCompletedCount == 0 && taskTeamPendingCount == 0){
+        $('#noTeamTasks').show();
+      }
     },
     /**
      * Displays available Tasks in Task List retrieved from server.
@@ -737,7 +790,9 @@ var helper = (function() {
         task = tasks.items[taskIndex];
         if(task.title.lastIndexOf("[") >= 0) {
           if(task.title.substring(task.title.lastIndexOf("[")+1, task.title.lastIndexOf("]")) == $("#circle_id").text()) {
-            if (task.status == "completed") {
+            if (task.status == "completed" && task.completed) {
+              taskTeamCompletedCount++;
+              $('#teamCompletedTasks').show();
               $('#teamTasksCompleted').append(
                 '<p>'+ '- Title: ' + task.title.substring(0, task.title.lastIndexOf("[")) + ', Notes: ' + task.notes + ', Completed at: ' + task.completed.substring(0,10) + '</p>'+
                 '<p>'+
@@ -745,7 +800,9 @@ var helper = (function() {
                   ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '">Update</a>'+
                 '</p>'
               );
-            } else {
+            } else if(task.status == "needsAction" && task.due) {
+              taskTeamPendingCount++;
+              $('#teamPendingTasks').show();
               $('#teamTasksPending').append(
                 '<p>'+ '- Title: ' + task.title.substring(0, task.title.lastIndexOf("[")) + ', Notes: ' + task.notes + ', Due Date: ' + task.due.substring(0, 10) + '</p>'+
                 '<p>'+
@@ -756,7 +813,9 @@ var helper = (function() {
               );
             }
           }
-          if (task.status == "completed") {
+          if (task.status == "completed" && task.completed) {
+            taskCompletedCount++;
+            $('#completedTasks').show();
             $('#tasksCompleted').append(
               '<p>'+ '- Title: ' + task.title.substring(0, task.title.lastIndexOf("[")) + ', Notes: ' + task.notes + ', Completed at: ' + task.completed.substring(0,10) + '</p>'+
               '<p>'+
@@ -764,7 +823,9 @@ var helper = (function() {
                 ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '">Update</a>'+
               '</p>'
             );
-          } else {
+          } else if(task.status == "needsAction" && task.due) {
+            taskPendingCount++;
+            $('#pendingTasks').show();
             $('#tasksPending').append(
               '<p>'+ '- Title: ' + task.title.substring(0, task.title.lastIndexOf("[")) + ', Notes: ' + task.notes + ', Due Date: ' + task.due.substring(0, 10) + '</p>'+
               '<p>'+
@@ -775,7 +836,9 @@ var helper = (function() {
             );
           }
         } else {
-          if (task.status == "completed") {
+          if (task.status == "completed" && task.completed) {
+            taskCompletedCount++;
+            $('#completedTasks').show();
             $('#tasksCompleted').append(
               '<p>'+ '- Title: ' + task.title + ', Notes: ' + task.notes + ', Completed at: ' + task.completed.substring(0,10) + '</p>'+
               '<p>'+
@@ -783,7 +846,9 @@ var helper = (function() {
                 ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '">Update</a>'+
               '</p>'
             );
-          } else {
+          } else if(task.status == "needsAction" && task.due) {
+            taskPendingCount++;
+            $('#pendingTasks').show();
             $('#tasksPending').append(
               '<p>'+ '- Title: ' + task.title + ', Notes: ' + task.notes + ', Due Date: ' + task.due.substring(0, 10) + '</p>'+
               '<p>'+
@@ -800,8 +865,11 @@ var helper = (function() {
      * Displays available Activities retrieved from server.
      */
     appendActivity: function(activity) {
+      var activityCount = 0;
       $('#activityFeeds').empty();
       for (var activityIndex in activity.items) {
+        activityCount++;
+        $('#activityFeeds').show();
         item = activity.items[activityIndex];
         $('#activityFeeds').append(
           '<div class="col-md-3">'+
@@ -815,6 +883,9 @@ var helper = (function() {
             '</div>'+
           '</div>'
         );
+      }
+      if(activityCount == 0){
+        $('#noActivityFeeds').show();
       }
     },
     /**
