@@ -15,11 +15,11 @@
                                     <h1 class="base-slider-bg-color"><%= @circle.display_name %></h1>
                                 </div>
                                 <div class="caption-2">
-                                    <h1 class=""><%= @circle.description %></h1>
+                                    <h3><%= @circle.description %></h3>
                                 </div>
                                 <div class="caption-3">
-                                    <a class="" data-toggle="modal" data-target="#modal-window" data-remote="true" href="<%= destroy_show_circle_path(@circle.id) %>"><i class="fa fa-times"></i></a>
-					                <a class="" data-toggle="modal" data-target="#modal-window" data-remote="true" href="<%= edit_circle_path(@circle.id) %>"><i class="fa fa-edit"></i></a>
+                                    <a data-toggle="modal" data-target="#modal-window" data-remote="true" href="<%= destroy_show_circle_path(@circle.id) %>"><i class="fa fa-trash-o"></i></a>
+					                <a data-toggle="modal" data-target="#modal-window" data-remote="true" href="<%= edit_circle_path(@circle.id) %>"><i class="fa fa-edit"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -46,7 +46,7 @@
 	                	<div class="col-md-12">
 			            	<div class="row" style="padding-top: 15px;">
 			            		<div class="col-md-3 margin-bottom-15">
-			            			<a class="btn btn-primary btn-list-item" id="add_team_member"><i class="fa fa-calendar"></i> Add Team Member</a>
+			            			<a class="btn btn-primary btn-list-item" id="add_team_member"><i class="fa fa-users"></i> Add Team Member</a>
 			            		</div>
 			            		<div class="col-md-3 margin-bottom-15">
 			            			<a class="btn btn-primary btn-list-item" id="create_team_event"><i class="fa fa-calendar"></i> Create Team Event</a>

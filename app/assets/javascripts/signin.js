@@ -563,11 +563,12 @@ var helper = (function() {
                         ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
                         ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/comments/show">Comments</a>'+
                       '</p>'+
-                      '<p>'+
-                        '<div id="export-links-' + item.id + '"></div>'+
-                      '</p>'+
+                      '<div id="export-links-' + item.id + '"></div>'+
                       '<div class="common-share"><div class="g-plus" data-action="share" data-height="24" data-href="' + item.alternateLink + '"></div></div>'+
                       '<script type="text/javascript">gapi.plus.go();</script>'+
+                      '<p style="margin-bottom: 10px;">'+
+                        ' <a class="btn btn-sm btn-primary" href="https://drive.google.com/file/d/' + item.id + '/edit?usp=sharing" target="_blank"><i class="fa fa-google-plus"></i> Share with users</a>'+
+                      '</p>'+
                     '</div>'+
                   '</div>'+
                 '</div>'
@@ -611,11 +612,12 @@ var helper = (function() {
                         ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
                         ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/comments/show">Comments</a>'+
                       '</p>'+
-                      '<p>'+
-                        '<div id="export-links-' + item.id + '"></div>'+
-                      '</p>'+
+                      '<div id="export-links-' + item.id + '"></div>'+
                       '<div class="common-share"><div class="g-plus" data-action="share" data-height="24" data-href="' + item.alternateLink + '"></div></div>'+
                       '<script type="text/javascript">gapi.plus.go();</script>'+
+                      '<p style="margin-bottom: 10px;">'+
+                        ' <a class="btn btn-sm btn-primary" href="https://drive.google.com/file/d/' + item.id + '/edit?usp=sharing" target="_blank"><i class="fa fa-google-plus"></i> Share with users</a>'+
+                      '</p>'+
                     '</div>'+
                   '</div>'+
                 '</div>'
@@ -663,11 +665,12 @@ var helper = (function() {
                         ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
                         ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/comments/show">Comments</a>'+
                       '</p>'+
-                      '<p>'+
-                        '<div id="export-links-' + item.id + '"></div>'+
-                      '</p>'+
+                      '<div id="export-links-' + item.id + '"></div>'+
                       '<div class="common-share"><div class="g-plus" data-action="share" data-height="24" data-href="' + item.alternateLink + '"></div></div>'+
                       '<script type="text/javascript">gapi.plus.go();</script>'+
+                      '<p style="margin-bottom: 10px;">'+
+                        ' <a class="btn btn-sm btn-primary" href="https://drive.google.com/file/d/' + item.id + '/edit?usp=sharing" target="_blank"><i class="fa fa-google-plus"></i> Share with users</a>'+
+                      '</p>'+
                     '</div>'+
                   '</div>'+
                 '</div>'
@@ -711,11 +714,12 @@ var helper = (function() {
                         ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
                         ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/comments/show">Comments</a>'+
                       '</p>'+
-                      '<p>'+
-                        '<div id="export-links-' + item.id + '"></div>'+
-                      '</p>'+
+                      '<div id="export-links-' + item.id + '"></div>'+
                       '<div class="common-share"><div class="g-plus" data-action="share" data-height="24" data-href="' + item.alternateLink + '"></div></div>'+
                       '<script type="text/javascript">gapi.plus.go();</script>'+
+                      '<p style="margin-bottom: 10px;">'+
+                        ' <a class="btn btn-sm btn-primary" href="https://drive.google.com/file/d/' + item.id + '/edit?usp=sharing" target="_blank"><i class="fa fa-google-plus"></i> Share with users</a>'+
+                      '</p>'+
                     '</div>'+
                   '</div>'+
                 '</div>'
