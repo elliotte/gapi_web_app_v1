@@ -35,13 +35,59 @@ $(document).ready(function () {
 	    $('#add_circle_member_search_form').submit();
 	});
 	$('#create_button_circle_event').click(function(){
-	    $('#create_circle_event_form').submit();
+		$('form#create_circle_event_form .error').remove();
+	    var hasError = false;
+	    $('form#create_circle_event_form .requiredField').each(function () {
+	      	if (jQuery.trim($(this).val()) === '') {
+	        	$(this).parent().append('<span class="error"><i class="fa fa-exclamation-triangle"></i></span>');
+	        	$(this).addClass('inputError');
+	        	hasError = true;
+	      	} else if ($(this).hasClass('email')) {
+                var emailReg = /^([\w-\.]+@([\w]+\.)+[\w]{2,4})?$/;
+                if (!emailReg.test(jQuery.trim($(this).val()))) {
+                    $(this).parent().append('<span class="error"><i class="fa fa-exclamation-triangle"></i></span>');
+                    $(this).addClass('inputError');
+                    hasError = true;
+                }
+            }
+	    });
+	    if (hasError) {
+	      	return false;
+	    } else {
+	    	$('#create_circle_event_form').submit();
+	    }
 	});
 	$('#create_button_circle_task').click(function(){
-	    $('#create_circle_task_form').submit();
+		$('form#create_circle_task_form .error').remove();
+	    var hasError = false;
+	    $('form#create_circle_task_form .requiredField').each(function () {
+	      	if (jQuery.trim($(this).val()) === '') {
+	        	$(this).parent().append('<span class="error"><i class="fa fa-exclamation-triangle"></i></span>');
+	        	$(this).addClass('inputError');
+	        	hasError = true;
+	      	}
+	    });
+	    if (hasError) {
+	      	return false;
+	    } else {
+	    	$('#create_circle_task_form').submit();
+	    }
 	});
 	$('#create_button_circle_document').click(function(){
-	    $('#create_circle_document_form').submit();
+		$('form#create_circle_document_form .error').remove();
+	    var hasError = false;
+	    $('form#create_circle_document_form .requiredField').each(function () {
+	      	if (jQuery.trim($(this).val()) === '') {
+	        	$(this).parent().append('<span class="error"><i class="fa fa-exclamation-triangle"></i></span>');
+	        	$(this).addClass('inputError');
+	        	hasError = true;
+	      	}
+	    });
+	    if (hasError) {
+	      	return false;
+	    } else {
+	    	$('#create_circle_document_form').submit();
+	    }
 	});
 
 	$('#quick_create_button_event').click(function(){

@@ -263,7 +263,7 @@ var helper = (function() {
       });
     },
     /**
-     * Calls the server endpoint to get the list of Circles.
+     * Get Circles from DB.
      */
     circles: function() {
       $.ajax({
@@ -279,7 +279,7 @@ var helper = (function() {
       });
     },
     /**
-     * Calls the server endpoint to get the list of Circles.
+     * Calls the server endpoint to get the Circle Member.
      */
     circleMembers: function() {
       $.ajax({
@@ -539,8 +539,8 @@ var helper = (function() {
             teamFileCount++;
             $('#driveTeamFiles').show();
             if(item.thumbnailLink) {
-              if(count%4 == 0) {
-                $('#driveFiles').append('<div class="row">');
+              if(teamFileCount%4 == 1) {
+                $('#driveTeamFiles').append('<div class="row">');
               }
               $('#driveTeamFiles').append(
                 '<div class="col-md-3">'+
@@ -553,7 +553,7 @@ var helper = (function() {
                       '<h3>'+
                         '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
                         '<ul class="project-details">'+
-                          '<li title="" data-rel="tooltip" data-placement="top" data-original-title="Type">'+
+                          '<li>'+
                             '<img src="' + item.thumbnailLink + '" alt="screen" style="width: 100px;height: 75px;"/>'+
                           '</li>'+
                         '</ul>'+
@@ -584,12 +584,12 @@ var helper = (function() {
                   );
                 });
               }
-              if(count%4 != 0) {
-                $('#driveFiles').append('</div>');
+              if(teamFileCount%4 == 0) {
+                $('#driveTeamFiles').append('</div>');
               }
             } else {
-              if(count%4 == 0) {
-                $('#driveFiles').append('<div class="row">');
+              if(teamFileCount%4 == 1) {
+                $('#driveTeamFiles').append('<div class="row">');
               }
               $('#driveTeamFiles').append(
                 '<div class="col-md-3">'+
@@ -602,7 +602,7 @@ var helper = (function() {
                       '<h3>'+
                         '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
                         '<ul class="project-details">'+
-                          '<li title="" data-rel="tooltip" data-placement="top" data-original-title="Type">'+
+                          '<li>'+
                             '<img src="' + item.iconLink + '" alt="screen"/>'+
                           '</li>'+
                         '</ul>'+
@@ -633,15 +633,15 @@ var helper = (function() {
                   );
                 });
               }
-              if(count%4 != 0) {
-                $('#driveFiles').append('</div>');
+              if(teamFileCount%4 == 0) {
+                $('#driveTeamFiles').append('</div>');
               }
             }
           } else {
             fileCount++;
             $('#driveFiles').show();
             if(item.thumbnailLink) {
-              if(count%4 == 0) {
+              if(fileCount%4 == 1) {
                 $('#driveFiles').append('<div class="row">');
               }
               $('#driveFiles').append(
@@ -655,7 +655,7 @@ var helper = (function() {
                       '<h3>'+
                         '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
                         '<ul class="project-details">'+
-                          '<li title="" data-rel="tooltip" data-placement="top" data-original-title="Type">'+
+                          '<li>'+
                             '<img src="' + item.thumbnailLink + '" alt="screen" style="width: 100px;height: 75px;"/>'+
                           '</li>'+
                         '</ul>'+
@@ -686,11 +686,11 @@ var helper = (function() {
                   );
                 });
               }
-              if(count%4 != 0) {
+              if(fileCount%4 == 0) {
                 $('#driveFiles').append('</div>');
               }
             } else {
-              if(count%4 == 0) {
+              if(fileCount%4 == 1) {
                 $('#driveFiles').append('<div class="row">');
               }
               $('#driveFiles').append(
@@ -704,7 +704,7 @@ var helper = (function() {
                       '<h3>'+
                         '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
                         '<ul class="project-details">'+
-                          '<li title="" data-rel="tooltip" data-placement="top" data-original-title="Type">'+
+                          '<li>'+
                             '<img src="' + item.iconLink + '" alt="screen"/>'+
                           '</li>'+
                         '</ul>'+
@@ -735,7 +735,7 @@ var helper = (function() {
                   );
                 });
               }
-              if(count%4 != 0) {
+              if(fileCount%4 == 0) {
                 $('#driveFiles').append('</div>');
               }
             }
@@ -943,17 +943,30 @@ var helper = (function() {
 $(document).ready(function() {
   $('#disconnect').click(helper.disconnectServer);
   $('#create_button_circle_member').click(function(){
-    $.ajax({
-      type: 'GET',
-      url: '/peoples/search',
-      dataType: 'json',
-      contentType: 'application/json',
-      data: {query: $("#add_circle_member_form #query").val()},
-      success: function(result) {
-        console.log(result);
-        helper.appendSearchResult(result);
+    $('form#add_circle_member_form .error').remove();
+    var hasError = false;
+    $('form#add_circle_member_form .requiredField').each(function () {
+      if (jQuery.trim($(this).val()) === '') {
+        $(this).parent().append('<span class="error"><i class="fa fa-exclamation-triangle"></i></span>');
+        $(this).addClass('inputError');
+        hasError = true;
       }
     });
+    if (hasError) {
+      return false;
+    } else {
+      $.ajax({
+        type: 'GET',
+        url: '/peoples/search',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: {query: $("#add_circle_member_form #query").val()},
+        success: function(result) {
+          console.log(result);
+          helper.appendSearchResult(result);
+        }
+      });
+    }
   });
   $('#next_button_circle_member_search').click(function(){
     $.ajax({

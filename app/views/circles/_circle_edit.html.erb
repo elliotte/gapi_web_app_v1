@@ -5,10 +5,18 @@
       <h3 id="myModalLabel">Circle Details</h3>
     </div>
     <div class="modal-body">
-      <%= form_tag(circle_path(circle.id), :id => "update_circle", :method => "put") do %>
+      <%= form_tag(circle_path(circle.id), :id => "update_circle", class: "contactForm", :method => "put") do %>
         <div class="form-group">
-          Name: <%= text_field_tag "circle[display_name]", circle.display_name, class: "form-control", placeholder: "Name", id: "name" %>
-          Description: <%= text_area_tag "circle[description]", circle.description, class: "form-control", placeholder: "Description", id: "description" %>
+          <label for="name">Name:</label>
+          <div class="controls">
+            <%= text_field_tag "circle[display_name]", circle.display_name, class: "form-control requiredField", placeholder: "Name", id: "name" %>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="description">Description:</label>
+          <div class="controls">
+            <%= text_area_tag "circle[description]", circle.description, class: "form-control requiredField", placeholder: "Description", id: "description", rows: "10" %>
+          </div>
         </div>
       <% end %>
     </div>
@@ -21,5 +29,23 @@
 <script type="text/javascript">
   $('#update_button').click(function(){
     $('#update_circle').submit();
+  });
+  jQuery(document).ready(function () {
+    $('form#update_circle').submit(function () {
+      $('form#update_circle .error').remove();
+      var hasError = false;
+      $('form#update_circle .requiredField').each(function () {
+        if (jQuery.trim($(this).val()) === '') {
+          $(this).parent().append('<span class="error"><i class="fa fa-exclamation-triangle"></i></span>');
+          $(this).addClass('inputError');
+          hasError = true;
+        }
+      });
+      if (hasError) {
+        return false;
+      } else {
+        return true;
+      }
+    });
   });
 </script>

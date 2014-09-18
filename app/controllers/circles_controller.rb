@@ -42,7 +42,7 @@ class CirclesController < ApplicationController
 	def update
 		if @circle.update_attributes(circle_params)
 			# render json: @circle
-			redirect_to circle_path(circle.id)
+			redirect_to circle_path(@circle.id)
 		else
 			# render json: "Circle not updated"
 			redirect_to root_path

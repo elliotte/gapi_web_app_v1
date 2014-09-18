@@ -10,10 +10,13 @@
 		      	<h3 id="myModalLabel">Search</h3>
 		    </div>
 		    <div class="modal-body">
-		      	<%= form_tag(search_peoples_path, :id => "add_circle_member_form", :method => "get") do %>
+		      	<%= form_tag(search_peoples_path, :id => "add_circle_member_form", class: "contactForm", :method => "get") do %>
+		          	<%= hidden_field_tag "circle_id", params[:id] %>
 		        	<div class="form-group">
-		          		Search: <%= text_field_tag "query", "", class: "form-control", placeholder: "Search" %>
-		          		<%= hidden_field_tag "circle_id", params[:id] %>
+		          		<label for="query">Search:</label>
+		          		<div class="controls">
+		          			<%= text_field_tag "query", "", class: "form-control requiredField", placeholder: "Search" %>
+		          		</div>
 		        	</div>
 		      	<% end %>
 		    </div>
@@ -62,20 +65,63 @@
 				<h3 id="myModalLabel">Create Event</h3>
 			</div>
 			<div class="modal-body">
-				<%= form_tag("/calendars/primary/events", :id => "create_circle_event_form", :method => "post") do %>
-					<div class="form-group">
-						Summary: <%= text_field_tag "event[summary]", "", class: "form-control", placeholder: "Summary" %>
-						Start Time: <%= text_field_tag "event[start_time]", "", class: "form-control", placeholder: "Start Time", id: "start_time_event" %>
-						End Time: <%= text_field_tag "event[end_time]", "", class: "form-control", placeholder: "End Time", id: "end_time_event" %>
-						Location: <%= text_field_tag "event[location]", "", class: "form-control", placeholder: "Location" %>
-						Attendees :-
-						Name: <%= text_field_tag "event[attendee_name]", "", class: "form-control", placeholder: "Attendee Name" %>
-						Email: <%= text_field_tag "event[attendee_email]", "", class: "form-control", placeholder: "Attendee Email" %>
-						Description: <%= text_field_tag "event[description]", "", class: "form-control", placeholder: "Description" %>
-						Status: <%= text_field_tag "event[status]", "confirmed", class: "form-control", placeholder: "Status" %>
-						Visibility: <%= text_field_tag "event[visibility]", "default", class: "form-control", placeholder: "Visibility" %>
-          				<%= hidden_field_tag "event[circle_id]", params[:id] %>
-					</div>
+				<%= form_tag("/calendars/primary/events", :id => "create_circle_event_form", class: "contactForm", :method => "post") do %>
+          			<%= hidden_field_tag "event[circle_id]", params[:id] %>
+          			<div class="form-group">
+		          		<label for="event_summary">Summary:</label>
+		          		<div class="controls">
+			          		<%= text_field_tag "event[summary]", "", class: "form-control requiredField", placeholder: "Summary" %>
+			          	</div>
+		        	</div>
+		        	<div class="form-group">
+		          		<label for="start_time_event">Start Time:</label>
+		          		<div class="controls">
+			          		<%= text_field_tag "event[start_time]", "", class: "form-control requiredField", placeholder: "Start Time", id: "start_time_event" %>
+			          	</div>
+		        	</div>
+		        	<div class="form-group">
+		          		<label for="end_time_event">End Time:</label>
+		          		<div class="controls">
+			          		<%= text_field_tag "event[end_time]", "", class: "form-control requiredField", placeholder: "End Time", id: "end_time_event" %>
+			          	</div>
+		        	</div>
+		        	<div class="form-group">
+		          		<label for="event_location">Location:</label>
+		          		<div class="controls">
+			          		<%= text_field_tag "event[location]", "", class: "form-control requiredField", placeholder: "Location" %>
+			          	</div>
+		        	</div>
+		        	<div style="font-weight: bold;">Attendees :-</div>
+		        	<div class="form-group">
+		          		<label for="event_attendee_name">Name:</label>
+		          		<div class="controls">
+			          		<%= text_field_tag "event[attendee_name]", "", class: "form-control requiredField", placeholder: "Attendee Name" %>
+			          	</div>
+		        	</div>
+		        	<div class="form-group">
+		          		<label for="event_attendee_email">Email:</label>
+		          		<div class="controls">
+			          		<%= text_field_tag "event[attendee_email]", "", class: "form-control requiredField email", placeholder: "Attendee Email" %>
+			          	</div>
+		        	</div>
+		        	<div class="form-group">
+		          		<label for="event_description">Description:</label>
+		          		<div class="controls">
+			          		<%= text_field_tag "event[description]", "", class: "form-control requiredField", placeholder: "Description" %>
+			          	</div>
+		        	</div>
+		        	<div class="form-group">
+		          		<label for="event_status">Status:</label>
+		          		<div class="controls">
+			          		<%= text_field_tag "event[status]", "confirmed", class: "form-control requiredField", placeholder: "Status: confirmed, tentative, cancelled" %>
+			          	</div>
+		        	</div>
+		        	<div class="form-group">
+		          		<label for="event_visibility">Visibility:</label>
+		          		<div class="controls">
+			          		<%= text_field_tag "event[visibility]", "default", class: "form-control requiredField", placeholder: "Visibility: default, public, private, confidential" %>
+			          	</div>
+		        	</div>
 				<% end %>
 			</div>
 			<div class="modal-footer">
@@ -94,13 +140,26 @@
 		      	<h3 id="myModalLabel">Create Task</h3>
 		    </div>
 		    <div class="modal-body">
-		      	<%= form_tag(create_task_task_lists_path, :id => "create_circle_task_form", :method => "post") do %>
+		      	<%= form_tag(create_task_task_lists_path, :id => "create_circle_task_form", class: "contactForm", :method => "post") do %>
+		          	<%= hidden_field_tag "task_list_id", "" %>
+			        <%= hidden_field_tag "task[circle_id]", params[:id] %>
 		        	<div class="form-group">
-		          		<%= hidden_field_tag "task_list_id", "" %>
-		          		Title: <%= text_field_tag "task[title]", "", class: "form-control", placeholder: "Title" %>
-		          		Notes: <%= text_field_tag "task[notes]", "", class: "form-control", placeholder: "Notes" %>
-		          		Due Date: <%= text_field_tag "task[due]", "", class: "form-control", placeholder: "Due Date" %>
-		          		<%= hidden_field_tag "task[circle_id]", params[:id] %>
+		          		<label for="task_title">Title:</label>
+		          		<div class="controls">
+			          		<%= text_field_tag "task[title]", "", class: "form-control requiredField", placeholder: "Title" %>
+			          	</div>
+		        	</div>
+		        	<div class="form-group">
+		          		<label for="task_notes">Notes:</label>
+		          		<div class="controls">
+			          		<%= text_field_tag "task[notes]", "", class: "form-control requiredField", placeholder: "Notes" %>
+			          	</div>
+		        	</div>
+		        	<div class="form-group">
+		          		<label for="task_due">Due Date:</label>
+		          		<div class="controls">
+			          		<%= text_field_tag "task[due]","", class: "form-control requiredField", placeholder: "Due Date" %>
+			          	</div>
 		        	</div>
 		      	<% end %>
 		    </div>
@@ -120,10 +179,13 @@
 				<h3 id="myModalLabel">Create Document</h3>
 			</div>
 			<div class="modal-body">
-				<%= form_tag(files_path, :id => "create_circle_document_form", :method => "post", :multipart => true) do %>
+				<%= form_tag(files_path, :id => "create_circle_document_form", class: "contactForm", :method => "post", :multipart => true) do %>
+					<%= hidden_field_tag "circle_id", params[:id] %>
 					<div class="form-group">
-						Select Document: <%= file_field_tag "file", class: "form-control" %>
-						<%= hidden_field_tag "circle_id", params[:id] %>
+						<label for="file">Select Document:</label>
+						<div class="controls">
+							<%= file_field_tag "file", class: "form-control requiredField" %>
+						</div>
 					</div>
 				<% end %>
 			</div>
