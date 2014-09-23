@@ -12,8 +12,6 @@ var helper = (function() {
   var taskListsCount = 0;
   var taskCompletedCount = 0;
   var taskPendingCount = 0;
-  var taskTeamCompletedCount = 0;
-  var taskTeamPendingCount = 0;
 
   return {
     /**
@@ -158,31 +156,13 @@ var helper = (function() {
         contentType: 'application/octet-stream; charset=utf-8',
         success: function(result) {
           console.log(result);
-          // helper.people();
           helper.calendar();
           helper.files();
           helper.task_lists();
           helper.activities();
-          // helper.circles();
-          helper.circleMembers();
         },
         processData: false,
         data: this.authResult.code + ',' + this.authResult.id_token + ',' + this.authResult.access_token
-      });
-    },
-    /**
-     * Calls the server endpoint to get the list of people in user's circle.
-     */
-    people: function() {
-      $.ajax({
-        type: 'GET',
-        url: '/peoples',
-        contentType: 'application/octet-stream; charset=utf-8',
-        success: function(result) {
-          console.log(result);
-          helper.appendCircled(result);
-        },
-        processData: false
       });
     },
     /**
@@ -279,117 +259,6 @@ var helper = (function() {
       });
     },
     /**
-     * Calls the server endpoint to get the Circle Member.
-     */
-    circleMembers: function() {
-      $.ajax({
-        type: 'GET',
-        url: '/peoples/circle_peoples',
-        dataType: 'json',
-        contentType: 'application/json',
-        data: {id: $("#circle_id").text()},
-        success: function(result) {
-          console.log(result);
-          helper.getCircleMembers(result);
-        }
-      });
-    },
-    /**
-     * get circle members from DB.
-     */
-    getCircleMembers: function(members) {
-      var circleMembersCount = 0;
-      $('#circleMembers').empty();
-      for (var m in members) {
-        circleMembersCount++;
-        $('#circleMembers').show();
-        member = members[m];
-        $.ajax({
-          type: 'GET',
-          url: '/peoples/'+member.google_id,
-          dataType: 'json',
-          contentType: 'application/json',
-          success: function(result) {
-            console.log(result);
-            helper.appendCircleMembers(result);
-          }
-        });
-      }
-      if(circleMembersCount == 0){
-        $('#noCircleMembers').show();
-      }
-    },
-    /**
-     * Displays circle members retrieved from DB.
-     */
-    appendCircleMembers: function(member) {
-      if(member.gender == "male") {
-        $('#circleMembers').append(
-          '<div class="col-md-6">'+
-            '<div class="feature-box-style2">'+
-              '<div class="feature-box-title">'+
-                '<i class="fa fa-male"></i>'+
-              '</div>'+
-              '<div class="feature-box-containt">'+
-                '<h3><a href="' + member.url + '" target="_blank">' + member.displayName + '</a></h3>'+
-                '<p><a href="' + member.url + '" target="_blank"><img src="' + member.image.url + '"></a></p>'+
-              '</div>'+
-            '</div>'+
-          '</div>'
-        );
-      } else if(member.gender == "female") {
-        $('#circleMembers').append(
-          '<div class="col-md-6">'+
-            '<div class="feature-box-style2">'+
-              '<div class="feature-box-title">'+
-                '<i class="fa fa-female"></i>'+
-              '</div>'+
-              '<div class="feature-box-containt">'+
-                '<h3><a href="' + member.url + '" target="_blank">' + member.displayName + '</a></h3>'+
-                '<p><a href="' + member.url + '" target="_blank"><img src="' + member.image.url + '"></a></p>'+
-              '</div>'+
-            '</div>'+
-          '</div>'
-        );
-      } else {
-        $('#circleMembers').append(
-          '<div class="col-md-6">'+
-            '<div class="feature-box-style2">'+
-              '<div class="feature-box-title">'+
-                '<i class="fa fa-users"></i>'+
-              '</div>'+
-              '<div class="feature-box-containt">'+
-                '<h3><a href="' + member.url + '" target="_blank">' + member.displayName + '</a></h3>'+
-                '<p><a href="' + member.url + '" target="_blank"><img src="' + member.image.url + '"></a></p>'+
-              '</div>'+
-            '</div>'+
-          '</div>'
-        );
-      }
-    },
-    /**
-     * Displays visible People retrieved from server.
-     */
-    appendCircled: function(people) {
-      $('#visiblePeople').empty();
-      for (var personIndex in people.items) {
-        person = people.items[personIndex];
-        $('#visiblePeople').append(
-          '<div class="col-md-6">'+
-            '<div class="feature-box-style2">'+
-              '<div class="feature-box-title">'+
-                '<i class="fa fa-users"></i>'+
-              '</div>'+
-              '<div class="feature-box-containt">'+
-                '<h3><a href="' + person.url + '" target="_blank">' + person.displayName + '</a></h3>'+
-                '<p><a href="' + person.url + '" target="_blank"><img src="' + person.image.url + '"></a></p>'+
-              '</div>'+
-            '</div>'+
-          '</div>'
-        );
-      }
-    },
-    /**
      * Displays circles retrieved from DB.
      */
     appendCircles: function(circles) {
@@ -426,100 +295,52 @@ var helper = (function() {
      */
     appendCalendar: function(events) {
       var calendarCount = 0;
-      var teamCalendarCount = 0;
       $('#calendarEvent').empty();
-      $('#calendarTeamEvents').empty();
       for (var eventIndex in events.items) {
         event = events.items[eventIndex];
-        if(event.extendedProperties && event.extendedProperties.private.circle_id == $("#circle_id").text()) {
-          teamCalendarCount++;
-          $('#calendarTeamEvents').show();
-          if(event.hangoutLink) {
-            $('#calendarTeamEvents').append(
-              '<div class="col-md-6">'+
-                '<div class="feature-box-style2">'+
-                  '<div class="feature-box-title">'+
-                    '<i class="fa fa-calendar"></i>'+
-                  '</div>'+
-                  '<div class="feature-box-containt">'+
-                    '<h3><a href="' + event.htmlLink + '" target="_blank"> ' + event.summary + '</a></h3>'+
-                    '<p>' + event.description + '</p>'+
-                    '<p>'+
-                      ' <a class="btn btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendars/primary/events/' + event.id + '/destroy">Delete</a>'+
-                      ' <a class="btn btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendars/primary/events/' + event.id + '">Update</a>'+
-                      ' <a class="btn btn-primary" href="' + event.hangoutLink + '" target="_blank">Hangout</a>'+
-                    '</p>'+
-                  '</div>'+
+        calendarCount++;
+        $('#calendarEvent').show();
+        if(event.hangoutLink) {
+          $('#calendarEvent').append(
+            '<div class="col-md-6">'+
+              '<div class="feature-box-style2">'+
+                '<div class="feature-box-title">'+
+                  '<i class="fa fa-calendar"></i>'+
                 '</div>'+
-              '</div>'
-            );
-          } else {
-            $('#calendarTeamEvents').append(
-              '<div class="col-md-6">'+
-                '<div class="feature-box-style2">'+
-                  '<div class="feature-box-title">'+
-                    '<i class="fa fa-calendar"></i>'+
-                  '</div>'+
-                  '<div class="feature-box-containt">'+
-                    '<h3><a href="' + event.htmlLink + '" target="_blank"> ' + event.summary + '</a></h3>'+
-                    '<p>' + event.description + '</p>'+
-                    '<p>'+
-                      ' <a class="btn btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendars/primary/events/' + event.id + '/destroy">Delete</a>'+
-                      ' <a class="btn btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendars/primary/events/' + event.id + '">Update</a>'+
-                    '</p>'+
-                  '</div>'+
+                '<div class="feature-box-containt">'+
+                  '<h3><a href="' + event.htmlLink + '" target="_blank"> ' + event.summary + '</a></h3>'+
+                  '<p>' + event.description + '</p>'+
+                  '<p>'+
+                    ' <a class="btn btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendars/primary/events/' + event.id + '/destroy">Delete</a>'+
+                    ' <a class="btn btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendars/primary/events/' + event.id + '">Update</a>'+
+                    ' <a class="btn btn-primary" href="' + event.hangoutLink + '" target="_blank">Hangout</a>'+
+                  '</p>'+
                 '</div>'+
-              '</div>'
-            );
-          }
+              '</div>'+
+            '</div>'
+          );
         } else {
-          calendarCount++;
-          $('#calendarEvent').show();
-          if(event.hangoutLink) {
-            $('#calendarEvent').append(
-              '<div class="col-md-6">'+
-                '<div class="feature-box-style2">'+
-                  '<div class="feature-box-title">'+
-                    '<i class="fa fa-calendar"></i>'+
-                  '</div>'+
-                  '<div class="feature-box-containt">'+
-                    '<h3><a href="' + event.htmlLink + '" target="_blank"> ' + event.summary + '</a></h3>'+
-                    '<p>' + event.description + '</p>'+
-                    '<p>'+
-                      ' <a class="btn btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendars/primary/events/' + event.id + '/destroy">Delete</a>'+
-                      ' <a class="btn btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendars/primary/events/' + event.id + '">Update</a>'+
-                      ' <a class="btn btn-primary" href="' + event.hangoutLink + '" target="_blank">Hangout</a>'+
-                    '</p>'+
-                  '</div>'+
+          $('#calendarEvent').append(
+            '<div class="col-md-6">'+
+              '<div class="feature-box-style2">'+
+                '<div class="feature-box-title">'+
+                  '<i class="fa fa-calendar"></i>'+
                 '</div>'+
-              '</div>'
-            );
-          } else {
-            $('#calendarEvent').append(
-              '<div class="col-md-6">'+
-                '<div class="feature-box-style2">'+
-                  '<div class="feature-box-title">'+
-                    '<i class="fa fa-calendar"></i>'+
-                  '</div>'+
-                  '<div class="feature-box-containt">'+
-                    '<h3><a href="' + event.htmlLink + '" target="_blank"> ' + event.summary + '</a></h3>'+
-                    '<p>' + event.description + '</p>'+
-                    '<p>'+
-                      ' <a class="btn btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendars/primary/events/' + event.id + '/destroy">Delete</a>'+
-                      ' <a class="btn btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendars/primary/events/' + event.id + '">Update</a>'+
-                    '</p>'+
-                  '</div>'+
+                '<div class="feature-box-containt">'+
+                  '<h3><a href="' + event.htmlLink + '" target="_blank"> ' + event.summary + '</a></h3>'+
+                  '<p>' + event.description + '</p>'+
+                  '<p>'+
+                    ' <a class="btn btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendars/primary/events/' + event.id + '/destroy">Delete</a>'+
+                    ' <a class="btn btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/calendars/primary/events/' + event.id + '">Update</a>'+
+                  '</p>'+
                 '</div>'+
-              '</div>'
-            );
-          }
+              '</div>'+
+            '</div>'
+          );
         }
       }
       if(calendarCount == 0){
         $('#noCalendarEvent').show();
-      }
-      if(teamCalendarCount==0){
-        $('#noCalendarTeamEvents').show();
       }
     },
     /**
@@ -527,226 +348,119 @@ var helper = (function() {
      */
     appendDrive: function(drive) {
       var fileCount = 0;
-      var teamFileCount = 0;
       $('#driveFiles').empty();
-      $('#driveTeamFiles').empty();
       var count = 0;
       for (var itemIndex in drive.items) {
         item = drive.items[itemIndex];
         if(!item.explicitlyTrashed) {
           count++;
-          if(item.properties && item.properties[0].value == $("#circle_id").text()) {
-            teamFileCount++;
-            $('#driveTeamFiles').show();
-            if(item.thumbnailLink) {
-              if(teamFileCount%4 == 1) {
-                $('#driveTeamFiles').append('<div class="row">');
-              }
-              $('#driveTeamFiles').append(
-                '<div class="col-md-3">'+
-                  '<div class="feature-box-style2">'+
-                    '<div class="feature-box-title">'+
-                      '<i class="fa fa-file"></i>'+
-                    '</div>'+
-                    '<div class="feature-box-containt">'+
-                      '<p>Owner: ' + item.ownerNames[0] + '</p>'+
-                      '<h3>'+
-                        '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
-                        '<ul class="project-details">'+
-                          '<li>'+
-                            '<img src="' + item.thumbnailLink + '" alt="screen" style="width: 100px;height: 75px;"/>'+
-                          '</li>'+
-                        '</ul>'+
-                      '</h3>'+
-                      '<p>'+
-                        ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
-                        ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
-                        ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/comments/show">Comments</a>'+
-                      '</p>'+
-                      '<div id="export-links-' + item.id + '"></div>'+
-                      '<div class="common-share"><div class="g-plus" data-action="share" data-height="24" data-href="' + item.alternateLink + '"></div></div>'+
-                      '<script type="text/javascript">gapi.plus.go();</script>'+
-                      '<p style="margin-bottom: 10px;">'+
-                        ' <a class="btn btn-sm btn-primary" href="https://drive.google.com/file/d/' + item.id + '/edit?usp=sharing" target="_blank"><i class="fa fa-google-plus"></i> Share with users</a>'+
-                      '</p>'+
-                    '</div>'+
+          fileCount++;
+          $('#driveFiles').show();
+          if(item.thumbnailLink) {
+            if(fileCount%4 == 1) {
+              $('#driveFiles').append('<div class="row">');
+            }
+            $('#driveFiles').append(
+              '<div class="col-md-3">'+
+                '<div class="feature-box-style2">'+
+                  '<div class="feature-box-title">'+
+                    '<i class="fa fa-file"></i>'+
                   '</div>'+
-                '</div>'
-              );
-              if(item.exportLinks){
-                var st = "#export-links-"+item.id
-                $(st).html(
-                  'Export: '
-                );
-                Object.keys(item.exportLinks).forEach(function(key) {
-                  $(st).append(
-                    '<a class="capitalize" href="' + item.exportLinks[key] + '" target="_blank">' + item.exportLinks[key].substring(item.exportLinks[key].lastIndexOf("=")+1,item.exportLinks[key].length) + '</a> '
-                  );
-                });
-              }
-              if(teamFileCount%4 == 0) {
-                $('#driveTeamFiles').append('</div>');
-              }
-            } else {
-              if(teamFileCount%4 == 1) {
-                $('#driveTeamFiles').append('<div class="row">');
-              }
-              $('#driveTeamFiles').append(
-                '<div class="col-md-3">'+
-                  '<div class="feature-box-style2">'+
-                    '<div class="feature-box-title">'+
-                      '<i class="fa fa-file"></i>'+
-                    '</div>'+
-                    '<div class="feature-box-containt">'+
-                      '<p>Owner: '+ item.ownerNames[0] + '</p>'+
-                      '<h3>'+
-                        '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
-                        '<ul class="project-details">'+
-                          '<li>'+
-                            '<img src="' + item.iconLink + '" alt="screen"/>'+
-                          '</li>'+
-                        '</ul>'+
-                      '</h3>'+
-                      '<p>'+
-                        ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
-                        ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
-                        ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/comments/show">Comments</a>'+
-                      '</p>'+
-                      '<div id="export-links-' + item.id + '"></div>'+
-                      '<div class="common-share"><div class="g-plus" data-action="share" data-height="24" data-href="' + item.alternateLink + '"></div></div>'+
-                      '<script type="text/javascript">gapi.plus.go();</script>'+
-                      '<p style="margin-bottom: 10px;">'+
-                        ' <a class="btn btn-sm btn-primary" href="https://drive.google.com/file/d/' + item.id + '/edit?usp=sharing" target="_blank"><i class="fa fa-google-plus"></i> Share with users</a>'+
-                      '</p>'+
-                    '</div>'+
+                  '<div class="feature-box-containt">'+
+                    '<p>Owner: '+ item.ownerNames[0] + '</p>'+
+                    '<h3>'+
+                      '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
+                      '<ul class="project-details">'+
+                        '<li>'+
+                          '<img src="' + item.thumbnailLink + '" alt="screen" style="width: 100px;height: 75px;"/>'+
+                        '</li>'+
+                      '</ul>'+
+                    '</h3>'+
+                    '<p>'+
+                      ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
+                      ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
+                      ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/comments/show">Comments</a>'+
+                    '</p>'+
+                    '<div id="export-links-' + item.id + '"></div>'+
+                    '<p style="margin-bottom: 10px;">'+
+                      ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/share"><i class="fa fa-google-plus"></i> Share with teams</a>'+
+                    '</p>'+
+                    '<p style="margin-bottom: 10px;">'+
+                      ' <a class="btn btn-sm btn-primary" href="https://drive.google.com/file/d/' + item.id + '/edit?usp=sharing" target="_blank"><i class="fa fa-google-plus"></i> Share with users</a>'+
+                    '</p>'+
                   '</div>'+
-                '</div>'
+                '</div>'+
+              '</div>'
+            );
+            if(item.exportLinks){
+              var st = "#export-links-"+item.id
+              $(st).html(
+                'Export: '
               );
-              if(item.exportLinks){
-                var st = "#export-links-"+item.id
-                $(st).html(
-                  'Export: '
+              Object.keys(item.exportLinks).forEach(function(key) {
+                $(st).append(
+                  '<a class="capitalize" href="' + item.exportLinks[key] + '" target="_blank">' + item.exportLinks[key].substring(item.exportLinks[key].lastIndexOf("=")+1,item.exportLinks[key].length) + '</a> '
                 );
-                Object.keys(item.exportLinks).forEach(function(key) {
-                  $(st).append(
-                    '<a class="capitalize" href="' + item.exportLinks[key] + '" target="_blank">' + item.exportLinks[key].substring(item.exportLinks[key].lastIndexOf("=")+1,item.exportLinks[key].length) + '</a> '
-                  );
-                });
-              }
-              if(teamFileCount%4 == 0) {
-                $('#driveTeamFiles').append('</div>');
-              }
+              });
+            }
+            if(fileCount%4 == 0) {
+              $('#driveFiles').append('</div>');
             }
           } else {
-            fileCount++;
-            $('#driveFiles').show();
-            if(item.thumbnailLink) {
-              if(fileCount%4 == 1) {
-                $('#driveFiles').append('<div class="row">');
-              }
-              $('#driveFiles').append(
-                '<div class="col-md-3">'+
-                  '<div class="feature-box-style2">'+
-                    '<div class="feature-box-title">'+
-                      '<i class="fa fa-file"></i>'+
-                    '</div>'+
-                    '<div class="feature-box-containt">'+
-                      '<p>Owner: '+ item.ownerNames[0] + '</p>'+
-                      '<h3>'+
-                        '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
-                        '<ul class="project-details">'+
-                          '<li>'+
-                            '<img src="' + item.thumbnailLink + '" alt="screen" style="width: 100px;height: 75px;"/>'+
-                          '</li>'+
-                        '</ul>'+
-                      '</h3>'+
-                      '<p>'+
-                        ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
-                        ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
-                        ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/comments/show">Comments</a>'+
-                      '</p>'+
-                      '<div id="export-links-' + item.id + '"></div>'+
-                      '<div class="common-share"><div class="g-plus" data-action="share" data-height="24" data-href="' + item.alternateLink + '"></div></div>'+
-                      '<script type="text/javascript">gapi.plus.go();</script>'+
-                      '<p style="margin-bottom: 10px;">'+
-                        ' <a class="btn btn-sm btn-primary" href="https://drive.google.com/file/d/' + item.id + '/edit?usp=sharing" target="_blank"><i class="fa fa-google-plus"></i> Share with users</a>'+
-                      '</p>'+
-                    '</div>'+
+            if(fileCount%4 == 1) {
+              $('#driveFiles').append('<div class="row">');
+            }
+            $('#driveFiles').append(
+              '<div class="col-md-3">'+
+                '<div class="feature-box-style2">'+
+                  '<div class="feature-box-title">'+
+                    '<i class="fa fa-file"></i>'+
                   '</div>'+
-                '</div>'
-              );
-              if(item.exportLinks){
-                var st = "#export-links-"+item.id
-                $(st).html(
-                  'Export: '
-                );
-                Object.keys(item.exportLinks).forEach(function(key) {
-                  $(st).append(
-                    '<a class="capitalize" href="' + item.exportLinks[key] + '" target="_blank">' + item.exportLinks[key].substring(item.exportLinks[key].lastIndexOf("=")+1,item.exportLinks[key].length) + '</a> '
-                  );
-                });
-              }
-              if(fileCount%4 == 0) {
-                $('#driveFiles').append('</div>');
-              }
-            } else {
-              if(fileCount%4 == 1) {
-                $('#driveFiles').append('<div class="row">');
-              }
-              $('#driveFiles').append(
-                '<div class="col-md-3">'+
-                  '<div class="feature-box-style2">'+
-                    '<div class="feature-box-title">'+
-                      '<i class="fa fa-file"></i>'+
-                    '</div>'+
-                    '<div class="feature-box-containt">'+
-                      '<p>Owner: '+ item.ownerNames[0] + '</p>'+
-                      '<h3>'+
-                        '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
-                        '<ul class="project-details">'+
-                          '<li>'+
-                            '<img src="' + item.iconLink + '" alt="screen"/>'+
-                          '</li>'+
-                        '</ul>'+
-                      '</h3>'+
-                      '<p>'+
-                        ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
-                        ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
-                        ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/comments/show">Comments</a>'+
-                      '</p>'+
-                      '<div id="export-links-' + item.id + '"></div>'+
-                      '<div class="common-share"><div class="g-plus" data-action="share" data-height="24" data-href="' + item.alternateLink + '"></div></div>'+
-                      '<script type="text/javascript">gapi.plus.go();</script>'+
-                      '<p style="margin-bottom: 10px;">'+
-                        ' <a class="btn btn-sm btn-primary" href="https://drive.google.com/file/d/' + item.id + '/edit?usp=sharing" target="_blank"><i class="fa fa-google-plus"></i> Share with users</a>'+
-                      '</p>'+
-                    '</div>'+
+                  '<div class="feature-box-containt">'+
+                    '<p>Owner: '+ item.ownerNames[0] + '</p>'+
+                    '<h3>'+
+                      '<a href="' + item.alternateLink + '" target="_blank">' + item.title + '</a>'+
+                      '<ul class="project-details">'+
+                        '<li>'+
+                          '<img src="' + item.iconLink + '" alt="screen"/>'+
+                        '</li>'+
+                      '</ul>'+
+                    '</h3>'+
+                    '<p>'+
+                      ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/destroy">Delete</a>'+
+                      ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/copy">Copy</a>'+
+                      ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/comments/show">Comments</a>'+
+                    '</p>'+
+                    '<div id="export-links-' + item.id + '"></div>'+
+                    '<p style="margin-bottom: 10px;">'+
+                      ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/files/' + item.id + '/share"><i class="fa fa-google-plus"></i> Share with teams</a>'+
+                    '</p>'+
+                    '<p style="margin-bottom: 10px;">'+
+                      ' <a class="btn btn-sm btn-primary" href="https://drive.google.com/file/d/' + item.id + '/edit?usp=sharing" target="_blank"><i class="fa fa-google-plus"></i> Share with users</a>'+
+                    '</p>'+
                   '</div>'+
-                '</div>'
+                '</div>'+
+              '</div>'
+            );
+            if(item.exportLinks){
+              var st = "#export-links-"+item.id
+              $(st).html(
+                'Export: '
               );
-              if(item.exportLinks){
-                var st = "#export-links-"+item.id
-                $(st).html(
-                  'Export: '
+              Object.keys(item.exportLinks).forEach(function(key) {
+                $(st).append(
+                  '<a class="capitalize" href="' + item.exportLinks[key] + '" target="_blank">' + item.exportLinks[key].substring(item.exportLinks[key].lastIndexOf("=")+1,item.exportLinks[key].length) + '</a> '
                 );
-                Object.keys(item.exportLinks).forEach(function(key) {
-                  $(st).append(
-                    '<a class="capitalize" href="' + item.exportLinks[key] + '" target="_blank">' + item.exportLinks[key].substring(item.exportLinks[key].lastIndexOf("=")+1,item.exportLinks[key].length) + '</a> '
-                  );
-                });
-              }
-              if(fileCount%4 == 0) {
-                $('#driveFiles').append('</div>');
-              }
+              });
+            }
+            if(fileCount%4 == 0) {
+              $('#driveFiles').append('</div>');
             }
           }
         }
       }
       if(fileCount == 0){
         $('#noDriveFiles').show();
-      }
-      if(teamFileCount == 0){
-        $('#noDriveTeamFiles').show();
       }
     },
     /**
@@ -782,9 +496,6 @@ var helper = (function() {
       if(taskCompletedCount == 0 && taskPendingCount == 0){
         $('#noTasks').show();
       }
-      if(taskTeamCompletedCount == 0 && taskTeamPendingCount == 0){
-        $('#noTeamTasks').show();
-      }
     },
     /**
      * Displays available Tasks in Task List retrieved from server.
@@ -793,30 +504,6 @@ var helper = (function() {
       for (var taskIndex in tasks.items) {
         task = tasks.items[taskIndex];
         if(task.title.lastIndexOf("[") >= 0) {
-          if(task.title.substring(task.title.lastIndexOf("[")+1, task.title.lastIndexOf("]")) == $("#circle_id").text()) {
-            if (task.status == "completed" && task.completed) {
-              taskTeamCompletedCount++;
-              $('#teamCompletedTasks').show();
-              $('#teamTasksCompleted').append(
-                '<p>'+ '- Title: ' + task.title.substring(0, task.title.lastIndexOf("[")) + ', Notes: ' + task.notes + ', Completed at: ' + task.completed.substring(0,10) + '</p>'+
-                '<p>'+
-                  ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '/destroy">Delete</a>'+
-                  ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '">Update</a>'+
-                '</p>'
-              );
-            } else if(task.status == "needsAction" && task.due) {
-              taskTeamPendingCount++;
-              $('#teamPendingTasks').show();
-              $('#teamTasksPending').append(
-                '<p>'+ '- Title: ' + task.title.substring(0, task.title.lastIndexOf("[")) + ', Notes: ' + task.notes + ', Due Date: ' + task.due.substring(0, 10) + '</p>'+
-                '<p>'+
-                  ' <a class="btn btn-sm btn-main-o" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '/destroy">Delete</a>'+
-                  ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '">Update</a>'+
-                  ' <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-window" data-remote=true href="/task_lists/' + taskListId + '/tasks/' + task.id + '/complete">Complete</a>'+
-                '</p>'
-              );
-            }
-          }
           if (task.status == "completed" && task.completed) {
             taskCompletedCount++;
             $('#completedTasks').show();

@@ -37,6 +37,9 @@ GooglePlay::Application.routes.draw do
     member do
       get :destroy_show, path: 'destroy'
     end
+    collection do
+      get :circles_names
+    end
   end
 
   resources :colors, except: [:index, :show, :new, :create, :edit, :update, :destroy] do
@@ -60,6 +63,11 @@ GooglePlay::Application.routes.draw do
       post :untrash
       get :destroy_show, path: 'destroy'
       get :copy_show, path: 'copy'
+      get :share
+    end
+    collection do
+      post :share_files
+      get :circle_files
     end
   end
 

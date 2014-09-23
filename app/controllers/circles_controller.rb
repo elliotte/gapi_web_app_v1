@@ -1,6 +1,6 @@
 class CirclesController < ApplicationController
 
-	before_action :get_circle, except: [:index, :create]
+	before_action :get_circle, except: [:index, :create, :circles_names]
 
 	def index
 		@circles = User.find_by(google_id: params[:user_google_id]).circles
@@ -9,6 +9,18 @@ class CirclesController < ApplicationController
 		  	format.json { render json: @circles }
 		end
 	end
+
+	def circles_names
+		user = User.find_by(google_id: session[:user_google_id])
+	    circle_names = []
+	    if user.present?
+		    circles = user.circles.where("display_name ilike ?", "%#{params[:q]}%").order('display_name ASC')
+		    circles.each do |circle|
+		      circle_names.push({ id: circle.id, name: circle.display_name})
+		    end
+		end
+	    render json: circle_names.to_json
+  	end
 
 	def new
 		@circle = Circle.new

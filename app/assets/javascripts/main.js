@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
 	$("#quick_add_event").click(function() {
 		$("#modal-window-quick-create-event").modal("show");
 	});

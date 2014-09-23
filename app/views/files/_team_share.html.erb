@@ -1,0 +1,58 @@
+<div class="modal-dialog modal-medium-width">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="myModalLabel">Share with Team</h3>
+    </div>
+    <div class="modal-body">
+      <%= form_tag(share_files_files_path, :id => "share_team_document_form", class: "contactForm", :method => "post") do %>
+        <%= hidden_field_tag "file_id", file_id %>
+        <div class="form-group">
+          <label for="query">Teams:</label>
+          <div class="controls">
+            <%= text_field_tag "teams", "", class: "form-control requiredField", id: "search_team", placeholder: "Search Team" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+      <button class="btn btn-primary" id="share_team_document_button">Share</button>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $('#share_team_document_button').click(function(){
+    $('#share_team_document_form').submit();
+  });
+  jQuery(document).ready(function () {
+    $('form#share_team_document_form').submit(function () {
+      $('form#share_team_document_form .error').remove();
+      var hasError = false;
+      $('form#share_team_document_form .requiredField').each(function () {
+        if (jQuery.trim($(this).val()) === '') {
+          $(this).parent().append('<span class="error" style="margin: -30px 10px 0 0;"><i class="fa fa-exclamation-triangle"></i></span>');
+          $(this).addClass('inputError');
+          hasError = true;
+        }
+      });
+      if (hasError) {
+        return false;
+      } else {
+        return true;
+      }
+    });
+
+    $("#search_team").tokenInput("/circles/circles_names.json", {
+      theme: "facebook",
+      crossDomain: false,
+      hintText: "Type in to search circle"
+    });
+    $(".token-input-dropdown-facebook").css("z-index","9999")
+  });
+</script>
+<style>
+  #token-input-search_team {
+    width: auto;
+  }
+</style>

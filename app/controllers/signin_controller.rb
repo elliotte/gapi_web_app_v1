@@ -43,6 +43,8 @@ class SigninController < ApplicationController
     # Destroy session token
     session.delete(:token)
 
+    session.delete(:user_google_id)
+
     # Sending the revocation request and returning the result.
     revokePath = 'https://accounts.google.com/o/oauth2/revoke?token=' + token
     uri = URI.parse(revokePath)
@@ -85,5 +87,6 @@ class SigninController < ApplicationController
         render json: 'User is not saved.'.to_json
       end
     end
+    session[:user_google_id] = params[:id]
   end
 end

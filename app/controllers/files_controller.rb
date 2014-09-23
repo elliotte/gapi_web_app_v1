@@ -14,6 +14,11 @@ class FilesController < ApplicationController
 	    render json: @response.data.to_json
 	end
 
+	def circle_files
+		@team_files = Circle.find(params[:id]).team_files
+		render json: @team_files
+	end
+
 	def create
 		# Create the file in drive
 	  	file = @drive.files.insert.request_schema.new({
@@ -119,6 +124,23 @@ class FilesController < ApplicationController
 	      	format.html
 	      	format.js { @file = @response.data }
 	    end
+  	end
+
+  	def share
+  		respond_to do |format|
+	      	format.html
+	      	format.js { @file_id = params[:id] }
+	    end
+  	end
+
+  	def share_files
+  		if params[:teams].present?
+	        teams = params[:teams].split(',')
+	        teams.each do |team|
+	        	TeamFile.create(circle_id: team, file_id: params[:file_id])
+	        end
+	    end
+	    redirect_to root_path
   	end
 
 	def touch

@@ -13,7 +13,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require modernizr.custom
-//= require signin
 //= require bootstrap.min
 //= require jquery.easing.1.3
 //= require jquery.backstretch.min
@@ -32,4 +31,5 @@
 //= require retina-1.1.0
 //= require bootstrap-datepicker
 //= require mine
+//= require jquery.tokeninput
 //= require main
