@@ -42,7 +42,7 @@ class SigninController < ApplicationController
 
     # Destroy session token
     session.delete(:token)
-
+    # Destroy session user logged in with google id
     session.delete(:user_google_id)
 
     # Sending the revocation request and returning the result.

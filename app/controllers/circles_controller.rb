@@ -27,6 +27,13 @@ class CirclesController < ApplicationController
 	end
 
 	def show
+		# Create a string for verification
+	    if !session[:state]
+	      state = (0...13).map{('a'..'z').to_a[rand(26)]}.join
+	      session[:state] = state
+	    end
+	    @state = session[:state]
+	    
 		respond_to do |format|
 			format.html
 	    	format.js { @circle }
