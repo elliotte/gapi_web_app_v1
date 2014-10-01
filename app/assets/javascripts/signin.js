@@ -31,6 +31,7 @@ var helper = (function() {
         $('#authOps').hide('slow');
         $('#gConnect').show();
         $('#share-button').hide();
+        $('.side-items').hide();
       }
       console.log('authResult', authResult);
     },
@@ -124,6 +125,7 @@ var helper = (function() {
       $('#authOps').show('slow');
       $('#gConnect').hide();
       $('#share-button').show();
+      $('.side-items').show();
     },
     /**
      * Calls the server endpoint to disconnect the app for the user.
@@ -139,6 +141,7 @@ var helper = (function() {
           $('#authOps').hide();
           $('#gConnect').show();
           $('#share-button').hide();
+          $('.side-items').hide();
         },
         error: function(e) {
           console.log(e);
